@@ -1,6 +1,5 @@
 #Peliä varten täytyy asentaa mysql-connector-python 8.0.29!!!
 
-import mysql.connector
 #Yhteyden luonti tietokantaan erillisessä filessä
 #database.py kysyy tietokanta käyttäjän ja salasanan
 import database
