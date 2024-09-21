@@ -4,11 +4,11 @@
 # - PRINT KÄYTTÄJÄLLE OHJEET & KOMENTOVAIHTOEHDOT
 # - MÄÄRITÄ SIJAINTI
 # - ARVO MARKALAUKUN SIJAINTI
-# - ALOITA VIHJE LASKURI
+# - ALOITA VIHJE LASKURI            nämä täytyy alustaa funktion ulkopuolella koska muuttuja sokeus!
 # - ALOITA PÄÄSTÖ LASKURI
 # - KYSY NIMI
-# - KYSY SEURAAVA MATKUSTUSMAA
-# - MATKUSTA
+# - KYSY SEURAAVA MATKUSTUSMAA   #Komento()
+# - MATKUSTA                   #Matkustus()
 
 # STEP 2
 # - ILMOITA SAAPUMISMAAN TIEDOT
@@ -19,21 +19,11 @@
 # - KYSY PELAAJALTA UUSI MATKUSTUSMAA
 
 # STEP 3
-# - Luo kirjasto jossa vain sallitut matkustusmaat (eurooppa)
+# - Luo kirjasto jossa vain sallitut matkustusmaat (eurooppa)            #Rajataan SQL kyselyn avulla nämä
 # - Pelaaja saapuu automaattisesti syöttämänsä maan päälentokentälle
 
-import mysql.connector
-from geopy.distance import geodesic
-import random
 
-yhteys = mysql.connector.connect(
-         host='127.0.0.1',
-         port= 3306,
-         database='flight_game',
-         user='megapint',
-         password='wine',
-         autocommit=True
-         )
+import random
 
 #  PELINALUSTUS
 def aloita_peli():
@@ -42,14 +32,22 @@ def aloita_peli():
     print("PRINT OHJEISTUS MITEN MATKUSTAA / SIIRTYY / komennot")
     print("PRINT KIRJOITA sana ICAO -> Kirjoita maan -> saat vastauksena sen pääkentän ICAO:n ")
 
+
     pelaaja = input("SYÖTÄ PELAAJAN NIMI: ")
-    current_location = "EFHK"
+    current_location = "EFHK" #Tämä täytyisi insertata tietokantaan game.location
     print (f"Olet lentokentälklä: {current_location}")
     matkalaukun_sijainti = random_sijainti() # ARPOO LAUKUN SIJAINNIN
     # MÄÄRITETÄÄN KM LASKURI JA VIHJE LASKURI
+    #Tähän asti näyttää hyvältä. loput jutut voisi hajauttaa ja tehdä funktiot itsenäisiksi osiksi
+    #ehkä jopa omiin .py fileihin ettei tule
+    #Liian spagettimainen koodi
+
     total_kilometrit = 0
     vihje_counter = 0
 
+
+    #Miks tää on pelinalustus funktion sisällä??
+    #Komento funktiosta ois hyvä saada erillinen mikä palauttaa sen käyttäjän inputin sit parametrina siis
     while True:
         user_input = input("Syötä seuraavan kentän ICAO tai kirjoita ICAO:").upper()
 
