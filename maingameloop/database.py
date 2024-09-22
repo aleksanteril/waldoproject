@@ -8,3 +8,9 @@ yhteys = mysql.connector.connect(
         password= input("Database PASSWORD: "),
         autocommit=True
         )
+
+def database_query(query):
+    kursori = yhteys.cursor()
+    kursori.execute(query)
+    tulos = kursori.fetchall()
+    return tulos

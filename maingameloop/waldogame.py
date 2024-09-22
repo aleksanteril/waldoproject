@@ -3,19 +3,16 @@
 #Yhteyden luonti tietokantaan erillisessä filessä
 #database.py kysyy tietokanta käyttäjän ja salasanan
 import database
-
-
+from aliohjelmat_jesse_aleksanteri import testi
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
 
 
-#Esimerkki sql kysely! Esimerkin vuoksi miten kursori menee
-sql = (f"SELECT name "
-       f"FROM airport "
-       f"WHERE iso_country = 'FI'")
-kursori = database.yhteys.cursor()
-kursori.execute(sql)
-tulos = kursori.fetchall()
-print(tulos)
+
+#Esimerkki miten kyselyt toteutetaan hyvällä tavalla?
+print(database.database_query(testi.sql_query_airport_name))
+
+#Emme tarvitse kuin 1 funktion ja parametrina on sql kysely toisessa filessä
+print(database.database_query(testi.sql_query_airport_elevation))
 
 #Main gameloop
