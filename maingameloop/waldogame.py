@@ -9,10 +9,9 @@ import kyselyt
 
 
 
-#Esimerkki miten kyselyt toteutetaan hyvällä tavalla?
-print(database.database_query(kyselyt.sql_query_airport_name))
 
-#Emme tarvitse kuin 1 funktion ja parametrina on sql kysely toisessa filessä
-print(database.database_query(kyselyt.sql_query_airport_elevation))
+
+
+print(database.database_query(kyselyt.sql_query_country_hint))
 
 #Main gameloop
