@@ -10,12 +10,18 @@ from aliohjelmat_jesse_aleksanteri import pack1
 
 
 
-
-
+#Määritetään vakio komennot monikkoon
+commands = ("vihje", "hae", "matkusta", "tracker", "lämpötila", "maat", "help")
 case_location = "EGBN"
 #Main gameloop
 
+#Kysytään käyttäjän input funktiolla
+user_command = pack1.user_command(commands)
+
 ##Vihje funktio joka tulostaa maan vihjeen perustuen matkalaukun ICAO sijaintiin (case_location)
-pack1.country_clue(database.database_query(
-    kyselyt.query_country_hint(case_location)))
+if user_command == commands[0]:
+    clue = database.database_query(
+        kyselyt.query_country_hint(case_location)
+    )
+    pack1.country_clue(clue)
 
