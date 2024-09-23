@@ -3,16 +3,16 @@
 #Yhteyden luonti tietokantaan erillisessä filessä
 #database.py kysyy tietokanta käyttäjän ja salasanan
 import database
-from aliohjelmat_jesse_aleksanteri import testi
+import kyselyt
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
 
 
 
 #Esimerkki miten kyselyt toteutetaan hyvällä tavalla?
-print(database.database_query(testi.sql_query_airport_name))
+print(database.database_query(kyselyt.sql_query_airport_name))
 
 #Emme tarvitse kuin 1 funktion ja parametrina on sql kysely toisessa filessä
-print(database.database_query(testi.sql_query_airport_elevation))
+print(database.database_query(kyselyt.sql_query_airport_elevation))
 
 #Main gameloop

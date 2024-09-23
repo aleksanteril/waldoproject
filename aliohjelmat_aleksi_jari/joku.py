@@ -20,8 +20,8 @@
 
 # STEP 3
 # - Luo kirjasto jossa vain sallitut matkustusmaat (eurooppa)            #Rajataan SQL kyselyn avulla nämä
-# - Pelaaja saapuu automaattisesti syöttämänsä maan päälentokentälle
-
+# - Pelaaja saapuu automaattisesti syöttämänsä maan päälentokentälle #Pelaaja voisi saapua aina lentokentälle mikä tulee 1. maan listalla vaikkapa order by name asc
+                                                                    #Tämä koska kaikissa maissa ei ole large_airport
 
 import random
 
