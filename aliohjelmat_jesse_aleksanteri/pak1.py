@@ -1,1 +1,1 @@
-asd
+print("testi")
