@@ -14,7 +14,8 @@ from aliohjelmat_jesse_aleksanteri import pack1
 
 case_location = "EGBN"
 #Main gameloop
-##Vihje funktio joka tulostaa maan vihjeen perustuen matkalaukun ICAO sijaintiin (case_location)
 
-pack1.clue(database.database_query(kyselyt.query_country_hint(case_location)))
+##Vihje funktio joka tulostaa maan vihjeen perustuen matkalaukun ICAO sijaintiin (case_location)
+pack1.country_clue(database.database_query(
+    kyselyt.query_country_hint(case_location)))
 
