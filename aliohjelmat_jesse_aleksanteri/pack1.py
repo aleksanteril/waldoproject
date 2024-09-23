@@ -26,6 +26,8 @@ def country_clue(clue):
 
 ################### Tähän alapuolelle JESSEN funktiot, yläpuolelle ALEKSANTERIN
 
+# Funktio ottaa käyttäjän syötteen ja vertaa sitä monikkoon jos,
+# komento löytyy monikosta niin palauttaa syötteen
 def user_command():
     commands = ("vihje", "hae", "matkusta", "tracker", "lämpötila", "maat", "help")
     user_input = None
