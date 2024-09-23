@@ -4,6 +4,7 @@
 #database.py kysyy tietokanta käyttäjän ja salasanan
 import database
 import kyselyt
+from aliohjelmat_jesse_aleksanteri import pack1
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
 
@@ -11,7 +12,7 @@ import kyselyt
 
 
 
+case_location = "EGBN"
 
-print(database.database_query(kyselyt.sql_query_country_hint))
-
+pack1.clue(database.database_query(kyselyt.query_country_hint(case_location)))
 #Main gameloop

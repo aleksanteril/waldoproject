@@ -2,8 +2,9 @@
 
 
 
-def vihje(clue):
-    print(clue)
+def clue(clue):
+    for clue in clue:
+        print(clue[0])
     return
 
 
