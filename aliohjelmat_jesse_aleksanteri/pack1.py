@@ -3,6 +3,44 @@
 
 
 
+#Signaalin vahvuus print, näytölle syötteenä signal_strenght 1 - 5
+def signal_strength_ascii(signal_strength):
+    if signal_strength == 5:
+        print("                     §§§§§§")
+        print("              §§§§§§ §§§§§§")
+        print("       §§§§§§ §§§§§§ §§§§§§")
+        print("§§§§§§ §§§§§§ §§§§§§ §§§§§§")
+        print("§§§§§§ §§§§§§ §§§§§§ §§§§§§")
+    elif signal_strength == 4:
+        print("                    ")
+        print("              §§§§§§")
+        print("       §§§§§§ §§§§§§")
+        print("§§§§§§ §§§§§§ §§§§§§")
+        print("§§§§§§ §§§§§§ §§§§§§ ______")
+    elif signal_strength == 3:
+        print("             ")
+        print("             ")
+        print("       §§§§§§")
+        print("§§§§§§ §§§§§§")
+        print("§§§§§§ §§§§§§ ______ ______")
+    elif signal_strength == 2:
+        print("      ")
+        print("      ")
+        print("      ")
+        print("§§§§§§")
+        print("§§§§§§ ______ ______ ______")
+    elif signal_strength == 1:
+        print("      ")
+        print("      ")
+        print("      ")
+        print("      ")
+        print("______ ______ ______ ______")
+
+def hot_cold_mechanic():
+    print("kesken")
+
+    
+
 
 #Funktio tulostaa vihjeen listasta, joka tulee sql kyselyn kautta
 def country_clue(clue):
@@ -25,6 +63,8 @@ def user_command(commands):
         else:
             print("Tuntematon komento")
     return user_input
+
+
 
 # Funktio tulostaa kaikki saatavilla olevat kohteet
 def user_search(countries):

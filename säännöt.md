@@ -9,9 +9,9 @@
 ### Työnjako
 
 #### Jesse, Aleksanteri
-- Vihje()
+- Vihje() OK, lisätty tietokantaan
 - Komento() OK
-- Kuuma/Kylmä()
+- Kuuma/Kylmä() Vaativa
 - Haku() 
 
 #### Jari, Aleksi

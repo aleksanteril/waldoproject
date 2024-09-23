@@ -12,7 +12,7 @@ from aliohjelmat_jesse_aleksanteri import pack1
 
 #"Yleiset arvot"
 #Määritetään vakio komennot monikkoon
-commands = ("vihje", "kohteet", "matkusta", "tracker", "lämpötila", "help")
+commands = ("vihje", "kohteet", "matkusta", "radio", "help")
 #Matkalaukun sijaintai, mikä pitää arpoa
 case_location = "EFHK"
 #Main gameloop
@@ -20,13 +20,14 @@ case_location = "EFHK"
 #Kysytään käyttäjän input funktiolla
 user_command = pack1.user_command(commands)
 
-##Vihje funktio joka tulostaa maan vihjeen perustuen matkalaukun ICAO sijaintiin (case_location)
+##Vihje funktio,  joka tulostaa maan vihjeen perustuen matkalaukun ICAO sijaintiin (case_location)
 if user_command == commands[0]:
     clue = database.database_query(
         kyselyt.query_country_hint(case_location)
     )
     pack1.country_clue(clue)
 
+#Kohteet funktio,  kohteiden näyttäminen käyttäjälle (tällä hetkellä pelkät maat)
 elif user_command == commands[1]:
     countries = database.database_query(kyselyt.query_countries)
     pack1.user_search(countries)
