@@ -10,7 +10,7 @@
 
 #### Jesse, Aleksanteri
 - Vihje()
-- Komento()
+- Komento() OK
 - Kuuma/Kylmä()
 - Haku() 
 

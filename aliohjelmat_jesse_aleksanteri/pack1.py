@@ -38,8 +38,11 @@ def user_command(commands):
             print("Tuntematon komento")
     return user_input
 
-
-
+# Funktio tulostaa kaikki saatavilla olevat kohteet
+def user_search(countries):
+    print("\n SAATAVILLA OLEVAT KOHTEET")
+    for country in countries:
+        print(country[0])
 
 
 
