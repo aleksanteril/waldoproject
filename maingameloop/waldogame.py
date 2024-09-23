@@ -5,13 +5,15 @@
 import database
 import kyselyt
 from aliohjelmat_jesse_aleksanteri import pack1
+from maingameloop.database import database_query
+
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
 
 
-
+#"Yleiset arvot"
 #Määritetään vakio komennot monikkoon
-commands = ("vihje", "hae", "matkusta", "tracker", "lämpötila", "maat", "help")
+commands = ("vihje", "kohteet", "matkusta", "tracker", "lämpötila", "help")
 case_location = "EGBN"
 #Main gameloop
 
@@ -25,3 +27,6 @@ if user_command == commands[0]:
     )
     pack1.country_clue(clue)
 
+elif user_command == commands[1]:
+    countries = database_query(kyselyt.query_countries)
+    pack1.user_search(countries)

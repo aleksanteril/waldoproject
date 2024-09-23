@@ -8,22 +8,6 @@ def country_clue(clue):
     return
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ################### Tähän alapuolelle JESSEN funktiot, yläpuolelle ALEKSANTERIN
 
 # Funktio ottaa käyttäjän syötteen ja jos syöte löytyy command monikosta palauttaa sen
