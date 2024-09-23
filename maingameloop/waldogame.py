@@ -13,7 +13,8 @@ from aliohjelmat_jesse_aleksanteri import pack1
 #"Yleiset arvot"
 #Määritetään vakio komennot monikkoon
 commands = ("vihje", "kohteet", "matkusta", "tracker", "lämpötila", "help")
-case_location = "EGBN"
+#Matkalaukun sijaintai, mikä pitää arpoa
+case_location = "EFHK"
 #Main gameloop
 
 #Kysytään käyttäjän input funktiolla
@@ -29,3 +30,4 @@ if user_command == commands[0]:
 elif user_command == commands[1]:
     countries = database.database_query(kyselyt.query_countries)
     pack1.user_search(countries)
+

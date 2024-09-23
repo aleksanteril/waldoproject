@@ -1,8 +1,12 @@
 
 
 
+
+
+
 #Funktio tulostaa vihjeen listasta, joka tulee sql kyselyn kautta
 def country_clue(clue):
+    print("\nVIHJE:")
     for clue in clue:
         print(clue[0])
     return
