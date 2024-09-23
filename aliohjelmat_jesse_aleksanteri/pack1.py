@@ -26,6 +26,8 @@ def country_clue(clue):
 
 ################### Tähän alapuolelle JESSEN funktiot, yläpuolelle ALEKSANTERIN
 
+# Funktio ottaa käyttäjän syötteen ja jos syöte löytyy command monikosta palauttaa sen
+# muuten printaan tuntematon komento ja kysytään syötettä uudestaan
 def user_command(commands):
     user_input = None
     while True:
