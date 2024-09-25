@@ -11,8 +11,8 @@
 #### Jesse, Aleksanteri
 - Vihje() OK, lisätty tietokantaan
 - Komento() OK
-- Kuuma/Kylmä() Vaativa
-- Haku() 
+- Kuuma/Kylmä() Vaativa, työn alla
+- Haku() OK, tehty maa tasolle!
 
 #### Jari, Aleksi
 - Matkustus()
