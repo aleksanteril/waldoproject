@@ -26,8 +26,8 @@ def query_country_airports(country):
 def query_distance_from_goal(case_location, game_id):
     sql_query_distance_from_goal = (f"SELECT ST_Distance_Sphere("
                                     f"ST_GeomFromText(("
-                                    f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM airport WHERE ident in(SELECT location FROM game WHERE id = {game_id}))), "
+                                    f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM airport WHERE ident in(SELECT location FROM game WHERE id = {game_id})), 4326), "
                                     f"ST_GeomFromText(("
-                                    f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') from Airport Where ident = '{case_location}')));")
+                                    f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') from Airport Where ident = '{case_location}'), 4326));")
     return sql_query_distance_from_goal
 
