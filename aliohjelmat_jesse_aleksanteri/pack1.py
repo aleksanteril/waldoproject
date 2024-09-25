@@ -36,10 +36,11 @@ def signal_strength_ascii(signal_strength):
         print("      ")
         print("______ ______ ______ ______")
 
-#Kuuma/kylmä mekaniikka joka vertaa edellistä etäisyyttä
-def hot_cold_mechanic(user_distance_to_case):
-    print("kesken")
 
+
+#Kuuma/kylmä mekaniikka joka vertaa edellistä etäisyyttä metreissä
+def hot_cold_mechanic(user_distance_to_case):
+    distance_meters = user_distance_to_case[0]
 
 
 
@@ -50,8 +51,6 @@ def country_clue(clue):
         print(clue[0])
     return
 
-
-################### Tähän alapuolelle JESSEN funktiot, yläpuolelle ALEKSANTERIN
 
 # Funktio ottaa käyttäjän syötteen ja jos syöte löytyy command monikosta palauttaa sen
 # muuten printaan tuntematon komento ja kysytään syötettä uudestaan
