@@ -36,10 +36,11 @@ def signal_strength_ascii(signal_strength):
         print("      ")
         print("______ ______ ______ ______")
 
-def hot_cold_mechanic():
+#Kuuma/kylmä mekaniikka joka vertaa edellistä etäisyyttä
+def hot_cold_mechanic(user_distance_to_case):
     print("kesken")
 
-    
+
 
 
 #Funktio tulostaa vihjeen listasta, joka tulee sql kyselyn kautta
@@ -56,11 +57,9 @@ def country_clue(clue):
 # muuten printaan tuntematon komento ja kysytään syötettä uudestaan
 def user_command(commands):
     user_input = None
-    while True:
+    while user_input not in commands:
         user_input = input("Syötä seuraava liike: ").lower()
-        if user_input in commands:
-            break
-        else:
+        if user_input not in commands:
             print("Tuntematon komento")
     return user_input
 
@@ -71,17 +70,6 @@ def user_search(countries):
     print("\n SAATAVILLA OLEVAT KOHTEET")
     for country in countries:
         print(country[0])
-
-
-
-
-
-
-
-
-
-
-
 
 
 
