@@ -79,8 +79,3 @@ def user_search(countries):
 
 
 
-
-
-
-
-

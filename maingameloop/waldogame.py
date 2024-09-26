@@ -5,7 +5,7 @@
 import database
 import kyselyt
 from aliohjelmat_jesse_aleksanteri import pack1
-from maingameloop.kyselyt import query_distance_from_goal
+from aliohjelmat_aleksi_jari import pack2
 
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
@@ -16,8 +16,21 @@ from maingameloop.kyselyt import query_distance_from_goal
 commands = ("vihje", "kohteet", "matkusta", "radio", "help")
 #Matkalaukun sijaintai, mikä pitää arpoa
 #Tämän hetkiset arvot ovat testausta varten
-case_location = "EFHK"
-game_id = 1
+game_start_location = "EFHK"
+
+
+
+#Arvotaan matkalaukun maa, ja sen jälkeen arvotaan matkalaukun ICAO
+case_country = pack2.case_randomizer(
+    database.database_query(kyselyt.query_countries)
+)
+case_icao_location = pack2.case_randomizer(
+    database.database_query(kyselyt.query_country_airports(case_country))
+)
+
+#Pelin alustus, kysytään käyttäjän nimi ja syötetään se tietokantaan ID, LOCATION vakio 'EFHK'
+username = pack2.start_game()
+database.database_update(kyselyt.query_new_username(username))
 
 
 #Main gameloop
@@ -27,7 +40,7 @@ user_command = pack1.user_command(commands)
 ##Vihje funktio,  joka tulostaa maan vihjeen perustuen matkalaukun ICAO sijaintiin (case_location)
 if user_command == commands[0]:  #VIHJE
     clue = database.database_query(
-        kyselyt.query_country_hint(case_location)
+        kyselyt.query_country_hint(case_icao_location)
     )
     pack1.country_clue(clue)
 
@@ -40,9 +53,13 @@ elif user_command == commands[1]: #KOHTEET
 
 #Matkustus tapahtumat, MAAN VALINTA, SITTEN KUUMA/KYLMÄ LASKENTA
 elif user_command == commands[2]: #MATKUSTUS
-    #matkustus() funktio
+    #matkustus() funktio database.database_query(kyselyt.query_countries)
     #Kuumakylmä laskenta välissä
     distance_goal_meters = database.database_query(
-        kyselyt.query_distance_from_goal(case_location, game_id)
+        kyselyt.query_distance_from_goal(case_icao_location, username)
     )
     pack1.hot_cold_mechanic(distance_goal_meters)
+
+#Help komento, tulostetaan komennot
+elif user_command == commands[4]:
+    pack2.help(commands) #Help-komento
