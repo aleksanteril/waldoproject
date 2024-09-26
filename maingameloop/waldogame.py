@@ -6,7 +6,6 @@ import database
 import kyselyt
 from aliohjelmat_jesse_aleksanteri import pack1
 from aliohjelmat_aleksi_jari import pack2
-from aliohjelmat_jesse_aleksanteri.pack1 import signal_strength
 
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
