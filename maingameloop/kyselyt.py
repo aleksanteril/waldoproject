@@ -23,7 +23,7 @@ def query_country_airports(country):
 
 
 
-#Kysely joka palauttaa käyttäjän etäisyyden matkalaukkuun METREINÄ!
+#Kysely joka palauttaa käyttäjän etäisyyden matkalaukkuun METREINÄ! #identtinen
 def query_distance_from_goal(case_location, game_id):
     sql_query_distance_from_goal = (f"SELECT ST_Distance_Sphere("
                                     f"ST_GeomFromText(("
@@ -32,7 +32,7 @@ def query_distance_from_goal(case_location, game_id):
                                     f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM airport WHERE ident = '{case_location}'), 4326));")
     return sql_query_distance_from_goal
 
-#Kysely jolla saadaan etäisyys pelaajan ja jonkun toisen paikan välillä
+#Kysely jolla saadaan etäisyys pelaajan ja jonkun toisen paikan välillä #identtinen
 def query_distance_between_locations(playername, icao2):
     sql_query_distance_from_goal = (f"SELECT ST_Distance_Sphere("
                                     f"ST_GeomFromText(("
@@ -65,6 +65,7 @@ def query_check_country(country_name):
     sql_query_check_usernames = (f"SELECT LOWER(name) FROM country WHERE name = '{country_name}';")
     return sql_query_check_usernames
 
+#Kysely jolla saadaan käyttäjän maa LOWERcasena
 def query_check_user_country(username):
     sql_query_check_user_country = (f"SELECT LOWER(name) FROM country WHERE iso_country in("
                                     f"SELECT iso_country FROM airport WHERE ident in("

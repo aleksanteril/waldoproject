@@ -107,11 +107,11 @@ def signal_strength(user_distance_from_case):
 #Matkustus funktio, palauttaa matkustusmaan joka ei ole suomi!
 def travel(country_list, user_country):
     while True:
-        player_input = input("\nWaldo is excited! Where do you want to travel?: ").lower()
+        player_input = input("Waldo is excited! Where do you want to travel?: ").lower()
         if player_input == user_country:
-            print("\nWaldo is confused, we are here already! what do you mean?")
+            print("Waldo is confused, we are here already! what do you mean?")
         elif player_input not in country_list:
-            print("\nWaldo is confused, what do you mean?")
+            print("Waldo is confused, what do you mean?")
         else:
             break
     return player_input
