@@ -13,7 +13,7 @@ from aliohjelmat_aleksi_jari import pack2
 
 #"Yleiset arvot"
 #Määritetään vakio komennot monikkoon
-commands = ("vihje", "kohteet", "matkusta", "radio", "help")
+commands = ("clue", "destinations", "travel", "radio", "help")
 
 
 
@@ -29,10 +29,17 @@ case_icao_location = pack2.case_randomizer(
 )
 
 print(case_icao_location, case_country)
-print("PRINT TAUSTATARINA TJPS")
-# print("PRINT TARKOITUS esim. Löydä matkalaukku niin ja näin.")
-# print("PRINT OHJEISTUS MITEN MATKUSTAA / SIIRTYY / komennot")
-# print("PRINT KIRJOITA sana ICAO -> Kirjoita maan -> saat vastauksena sen pääkentän ICAO:n ")
+print("\n")
+print('''You've arrived at Helsinki-Vantaa airport, where you meet your good friend Waldo.
+
+Waldo is a world-famous adventurer known for his red & white striped shirt and blue hat. 
+He has travelled all over the world, but his valuable suitcase mysteriously disappeared. 
+The suitcase contained Waldo's most important discoveries and notes, but fortunately, Waldo has installed a radio-transmitter in it.
+
+Now Waldo needs your help to find his suitcase. Together, you set off around the world, using the radio-transmitter in the suitcase. 
+
+Safe travels!''')
+print("\n")
 
 #Pelin alustus, kysytään käyttäjän nimi ja syötetään se tietokantaan ID, LOCATION vakio 'EFHK'
 username_exist = True
@@ -40,7 +47,7 @@ while username_exist:
     username = pack2.start_game()
     username_exist = database.database_query(kyselyt.query_check_username(username))
     if username_exist:
-        print("Käyttäjänimi varattu")
+        print("Waldo doesn't believe you!")
 
 #Pelin alustus, kysytään käyttäjän nimi ja syötetään se tietokantaan ID, LOCATION vakio 'EFHK'
 database.database_update(kyselyt.query_new_username(username))

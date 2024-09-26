@@ -10,14 +10,14 @@ def case_randomizer(list):
 
 #pelinalustus + Jesse kirjoita tarina
 def start_game():
-    username = input("Syötä pelaajan nimi: ").lower()
+    username = input("Waldo greets you! Hello my friend: ").lower()
     return username
 
 
 #tulostaa komennot käyttäjälle
 def help():
-    print("Komennolla 'help' komennolla avaat tämän valikon.")
-    print("Komennolla 'vihje' saat käytettyä saadun vihjeen.")
+    print("Command 'help' prompt opens the this window.")
+    print("Command 'clue' saat käytettyä saadun vihjeen.")
     print("Komennolla 'kohteet' tulostaa matkustettavat maat.")
     print("Komennolla 'matkusta' kommennolla matkustat valitsemaasi maahan.")
     print("Komennolla 'radio' näyttää signaalin vahvuuden laukkuun")
