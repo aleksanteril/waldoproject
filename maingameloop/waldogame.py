@@ -77,7 +77,8 @@ elif user_command == commands[2]: #MATKUSTUS
 
 # radio komento signaalin vahvuuden
 elif user_command == commands[3]: #RADIO
-    print('kesken')
+    pack1.signal_strength(database.database_query(kyselyt.query_distance_from_goal(case_icao_location, username)))
+
 
 
 #Help komento, tulostetaan komennot

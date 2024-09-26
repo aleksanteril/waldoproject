@@ -79,7 +79,19 @@ def user_search(countries):
 
 
 
-
+def signal_strength(user_distance_from_case):
+    distance = user_distance_from_case[0]
+    if distance[0] < 400000:
+        signal_strength_ascii(5)
+    elif distance[0] < 800000:
+        signal_strength_ascii(4)
+    elif distance[0] < 120000:
+        signal_strength_ascii(3)
+    elif distance[0] < 160000:
+        signal_strength_ascii(2)
+    elif distance[0] <2000000 or distance[0] > 2000000:
+        signal_strength_ascii(1)
+        return
 
 
 
