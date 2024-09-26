@@ -62,6 +62,7 @@ elif user_command == commands[2]: #MATKUSTUS
 
 # radio komento signaalin vahvuuden
 elif user_command == commands[3]: #RADIO
+    print('kesken')
 
 
 #Help komento, tulostetaan komennot
