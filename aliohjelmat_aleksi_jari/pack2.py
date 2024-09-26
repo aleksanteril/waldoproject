@@ -10,12 +10,9 @@ def case_randomizer(list):
 
 #pelinalustus + Jesse kirjoita tarina
 def start_game():
-    print("PRINT TAUSTATARINA TJPS")
-    #print("PRINT TARKOITUS esim. Löydä matkalaukku niin ja näin.")
-    #print("PRINT OHJEISTUS MITEN MATKUSTAA / SIIRTYY / komennot")
-    #print("PRINT KIRJOITA sana ICAO -> Kirjoita maan -> saat vastauksena sen pääkentän ICAO:n ")
-    username = input("SYÖTÄ PELAAJAN NIMI: ")
+    username = input("Syötä pelaajan nimi: ").lower()
     return username
+
 
 #tulostaa komennot käyttäjälle
 def help(commands):

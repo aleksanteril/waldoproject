@@ -23,3 +23,12 @@ def database_update(query):
     kursori = yhteys.cursor()
     kursori.execute(query)
     return
+
+def database_check_query(query):
+    kursori = yhteys.cursor()
+    kursori.execute(query)
+    tulos = kursori.fetchall()
+    if kursori.rowcount > 0:
+        return True
+    else:
+        return False

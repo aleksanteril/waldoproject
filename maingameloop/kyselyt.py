@@ -37,3 +37,8 @@ def query_new_username(username):
     sql_query_new_username = (f"INSERT INTO game (id, location) VALUES ('{username}', 'EFHK');")
     return sql_query_new_username
 
+
+def query_check_username(username):
+    sql_query_check_usernames = (f"SELECT id FROM game WHERE id = '{username}';")
+    return sql_query_check_usernames
+

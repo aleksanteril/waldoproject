@@ -14,9 +14,7 @@ from aliohjelmat_aleksi_jari import pack2
 #"Yleiset arvot"
 #Määritetään vakio komennot monikkoon
 commands = ("vihje", "kohteet", "matkusta", "radio", "help")
-#Matkalaukun sijaintai, mikä pitää arpoa
-#Tämän hetkiset arvot ovat testausta varten
-game_start_location = "EFHK"
+
 
 
 
@@ -28,8 +26,18 @@ case_icao_location = pack2.case_randomizer(
     database.database_query(kyselyt.query_country_airports(case_country))
 )
 
+print("PRINT TAUSTATARINA TJPS")
+# print("PRINT TARKOITUS esim. Löydä matkalaukku niin ja näin.")
+# print("PRINT OHJEISTUS MITEN MATKUSTAA / SIIRTYY / komennot")
+# print("PRINT KIRJOITA sana ICAO -> Kirjoita maan -> saat vastauksena sen pääkentän ICAO:n ")
+
 #Pelin alustus, kysytään käyttäjän nimi ja syötetään se tietokantaan ID, LOCATION vakio 'EFHK'
-username = pack2.start_game()
+username_exist = True
+while username_exist:
+    username = pack2.start_game()
+    username_exist = database.database_query(kyselyt.query_check_username(username))
+
+#Pelin alustus, kysytään käyttäjän nimi ja syötetään se tietokantaan ID, LOCATION vakio 'EFHK'
 database.database_update(kyselyt.query_new_username(username))
 
 
