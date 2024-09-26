@@ -67,4 +67,4 @@ elif user_command == commands[3]: #RADIO
 
 #Help komento, tulostetaan komennot
 elif user_command == commands[4]:
-    pack2.help(commands) #Help-komento
+    pack2.help() #Help-komento
