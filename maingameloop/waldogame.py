@@ -36,10 +36,15 @@ username_exist = True
 while username_exist:
     username = pack2.start_game()
     username_exist = database.database_query(kyselyt.query_check_username(username))
+    if username_exist:
+        print("Käyttäjänimi varattu")
 
 #Pelin alustus, kysytään käyttäjän nimi ja syötetään se tietokantaan ID, LOCATION vakio 'EFHK'
 database.database_update(kyselyt.query_new_username(username))
 
+#Lasketaan alku sijainti, ja asetetaan se base etäisyydeksi kuuma kylmää varten
+distance = database.database_query(kyselyt.query_distance_from_goal(case_icao_location, username))
+previous_distance_to_case = distance[0]
 
 #Main gameloop
 #Kysytään käyttäjän input funktiolla
