@@ -8,9 +8,9 @@ def case_randomizer(list):
     return random_str[0]
 
 
-#pelinalustus + Jesse kirjoita tarina
-def start_game():
-    username = input("Waldo greets you! Hello my friend: ").lower()
+#Kysytään käyttäjän nimi, ja palautetaan se tarkistuksia varten
+def input_username():
+    username = input("\nWaldo greets you! Hello my friend: ").lower()
     return username
 
 

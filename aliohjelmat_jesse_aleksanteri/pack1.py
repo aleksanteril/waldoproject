@@ -5,8 +5,9 @@
 
 #Signaalin vahvuus print, näytölle syötteenä signal_strenght 1 - 5
 def signal_strength_ascii(signal_strength):
+    #ÄLÄ KOSKE TÄHÄN TÄMÄ ON TARKOITUKSELLA NÄIN KOSKA PRINT FUNKTIO PUSKEE SEN MUUTEN VÄÄRIN
     if signal_strength == 5:
-        print('''            §§§§§§
+        print('''                             §§§§§§   
                       §§§§§§ §§§§§§
                §§§§§§ §§§§§§ §§§§§§
         §§§§§§ §§§§§§ §§§§§§ §§§§§§
@@ -47,10 +48,13 @@ def signal_strength_ascii(signal_strength):
 def hot_cold_mechanic(distance_to_case, previous_distance_to_case):
     if previous_distance_to_case > distance_to_case[0]:
         print("\nThe signal got stronger!")
+        print("I think we are getting closer!, Waldo says")
     elif previous_distance_to_case < distance_to_case[0]:
         print("\nThe signal has weakened!")
+        print("Mmm... bad luck, Waldo says sadly")
     else:
         print("\nThe signal hasn't budged!")
+        print("Same as before, Waldo says ")
     return
 
 
@@ -71,6 +75,7 @@ def user_command(commands):
         user_input = input("\nWaldo asks: What do you wish to do next?: ").lower()
         if user_input not in commands:
             print("\nWaldo didn't understand that")
+            print("If you need help type 'help'")
     return user_input
 
 
@@ -79,29 +84,44 @@ def user_command(commands):
 def user_search(countries):
     print("\nAVAILABLE DESTINATIONS")
     for country in countries:
-        print(country[0])
+        print(country)
     return
 
 
-
+#Funktio vertaa käyttäjän etäisyyttä laukkuun ja palauttaa sen mukaisen kuvan
 def signal_strength(user_distance_from_case):
     distance = user_distance_from_case[0]
     if distance[0] < 400000:
         signal_strength_ascii(5)
     elif distance[0] < 800000:
         signal_strength_ascii(4)
-    elif distance[0] < 120000:
+    elif distance[0] < 1200000:
         signal_strength_ascii(3)
-    elif distance[0] < 160000:
+    elif distance[0] < 1600000:
         signal_strength_ascii(2)
     elif distance[0] <2000000 or distance[0] > 2000000:
         signal_strength_ascii(1)
         return
 
+#Matkustus funktio, palauttaa matkustusmaan joka ei ole suomi!
+def travel(country_list):
+    while True:
+        player_input = input("\nWaldo is excited! Where do you want to travel?: ").lower()
+        if player_input == 'finland':
+            print("\nWaldo is confused, we started there! what do you mean?")
+        elif player_input not in country_list:
+            print("\nWaldo is confused, what do you mean?")
+        else:
+            break
+    return player_input
 
-
-
-
-
-
+#Pelin aloitus kysely
+def start_game():
+    while True:
+        player_input = input("Start the game? yes/no: ").lower()
+        if player_input != 'yes':
+            print("\nWaldo looks at you with crying eyes, you need to help me!")
+        else:
+            break
+    return
 

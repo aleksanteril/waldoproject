@@ -4,9 +4,9 @@ import mysql.connector
 yhteys = mysql.connector.connect(
         host='127.0.0.1',
         port=3306,
-        database=input("Database NAME: "),
-        user= input("Database USER: "),
-        password= input("Database PASSWORD: "),
+        database='waldo_game',
+        user='aleksanteri',
+        password='m4ks4',
         autocommit=True
         )
 
@@ -24,6 +24,15 @@ def database_update(query):
     kursori.execute(query)
     return
 
+#Kyselyä varten, mutta haluamme vain ensimmäisen arvon tulokseen EI TOIMI ÄLÄ KÄYTÄ, CURSORI PITÄISI TYHJENTÄÄ JÄLKEEN
+#def database_query_fetchone(query):
+    #kursori = yhteys.cursor()
+    #kursori.execute(query)
+    #tulos = kursori.fetchone()
+    #return tulos
+
+
+#Kyselyä varten jos tarvitsee tarkistaa löytyykö tieto esim.
 def database_check_query(query):
     kursori = yhteys.cursor()
     kursori.execute(query)

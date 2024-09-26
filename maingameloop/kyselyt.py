@@ -32,6 +32,16 @@ def query_distance_from_goal(case_location, game_id):
                                     f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM airport WHERE ident = '{case_location}'), 4326));")
     return sql_query_distance_from_goal
 
+#Kysely jolla saadaan etäisyys pelaajan ja jonkun toisen paikan välillä
+def query_distance_between_locations(playername, icao2):
+    sql_query_distance_from_goal = (f"SELECT ST_Distance_Sphere("
+                                    f"ST_GeomFromText(("
+                                    f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM airport WHERE ident in(SELECT location FROM game WHERE id = '{playername}')), 4326), "
+                                    f"ST_GeomFromText(("
+                                    f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM airport WHERE ident = '{icao2}'), 4326));")
+    return sql_query_distance_from_goal
+
+
 
 #Kysely jolla päivitetään uusi käyttäjä tietokantaan
 def query_new_username(username):
@@ -47,5 +57,10 @@ def query_check_username(username):
 
 #Kysely jolla päivitetään pelaajan sijainti tietokantaan
 def query_insert_location(location, username):
-    sql_query_insert_location = (f"INSERT INTO game (location) VALUES ('{location}' WHERE id = '{username}';")
+    sql_query_insert_location = (f"UPDATE game SET location = ('{location}') WHERE id = '{username}';")
     return sql_query_insert_location
+
+#Kysely jolla tarkistetaan löytyykö maa pelin maista
+def query_check_country(country_name):
+    sql_query_check_usernames = (f"SELECT LOWER(name) FROM country WHERE name = '{country_name}';")
+    return sql_query_check_usernames
