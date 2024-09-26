@@ -6,35 +6,35 @@
 #Signaalin vahvuus print, näytölle syötteenä signal_strenght 1 - 5
 def signal_strength_ascii(signal_strength):
     if signal_strength == 5:
-        print("                     §§§§§§")
-        print("              §§§§§§ §§§§§§")
-        print("       §§§§§§ §§§§§§ §§§§§§")
-        print("§§§§§§ §§§§§§ §§§§§§ §§§§§§")
-        print("§§§§§§ §§§§§§ §§§§§§ §§§§§§")
+        print('''            §§§§§§
+                      §§§§§§ §§§§§§
+               §§§§§§ §§§§§§ §§§§§§
+        §§§§§§ §§§§§§ §§§§§§ §§§§§§
+        §§§§§§ §§§§§§ §§§§§§ §§§§§§''')
     elif signal_strength == 4:
-        print("                    ")
-        print("              §§§§§§")
-        print("       §§§§§§ §§§§§§")
-        print("§§§§§§ §§§§§§ §§§§§§")
-        print("§§§§§§ §§§§§§ §§§§§§ ______")
+        print('''            
+                      §§§§§§ 
+               §§§§§§ §§§§§§ 
+        §§§§§§ §§§§§§ §§§§§§ 
+        §§§§§§ §§§§§§ §§§§§§ ______''')
     elif signal_strength == 3:
-        print("             ")
-        print("             ")
-        print("       §§§§§§")
-        print("§§§§§§ §§§§§§")
-        print("§§§§§§ §§§§§§ ______ ______")
+        print('''           
+                      
+               §§§§§§ 
+        §§§§§§ §§§§§§ 
+        §§§§§§ §§§§§§ ______ ______''')
     elif signal_strength == 2:
-        print("      ")
-        print("      ")
-        print("      ")
-        print("§§§§§§")
-        print("§§§§§§ ______ ______ ______")
+        print('''            
+                
+               
+        §§§§§§ 
+        §§§§§§ ______ ______ ______''')
     elif signal_strength == 1:
-        print("      ")
-        print("      ")
-        print("      ")
-        print("      ")
-        print("______ ______ ______ ______")
+        print('''                  
+                                   
+                                   
+        
+        ______ ______ ______ ______''')
 
 
 

@@ -8,6 +8,7 @@
 
 ### Työnjako
 
+
 #### Jesse, Aleksanteri
 - Vihje() OK, lisätty tietokantaan
 - Komento() OK
@@ -16,7 +17,7 @@
 
 #### Jari, Aleksi
 - Matkustus()
-- Ilmansuunta() 
-- Tracker() 
+- Ilmansuunta() /Mietitään vielä
 - Help() OK
 - Pelin alustus() OK
+- CO2 laskuri()

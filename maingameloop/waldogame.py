@@ -83,7 +83,6 @@ elif user_command == commands[3]: #RADIO
     pack1.signal_strength(database.database_query(kyselyt.query_distance_from_goal(case_icao_location, username)))
 
 
-
 #Help komento, tulostetaan komennot
 elif user_command == commands[4]:
     pack2.help() #Help-komento

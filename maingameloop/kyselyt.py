@@ -29,7 +29,7 @@ def query_distance_from_goal(case_location, game_id):
                                     f"ST_GeomFromText(("
                                     f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM airport WHERE ident in(SELECT location FROM game WHERE id = '{game_id}')), 4326), "
                                     f"ST_GeomFromText(("
-                                    f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM Airport WHERE ident = '{case_location}'), 4326));")
+                                    f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM airport WHERE ident = '{case_location}'), 4326));")
     return sql_query_distance_from_goal
 
 #Kysely jolla päivitetään uusi käyttäjä tietokantaan
@@ -37,11 +37,12 @@ def query_new_username(username):
     sql_query_new_username = (f"INSERT INTO game (id, location) VALUES ('{username}', 'EFHK');")
     return sql_query_new_username
 
-
+#Kysely jolla tarkastetaan löytyykö nimi jo pelin tietokannasta
 def query_check_username(username):
     sql_query_check_usernames = (f"SELECT id FROM game WHERE id = '{username}';")
     return sql_query_check_usernames
 
+#Kysely jolla päivitetään pelaajan sijainti tietokantaan
 def query_insert_location(location, username):
     sql_query_insert_location = (f"INSERT INTO game (location) VALUES ('{location}' WHERE id = '{username}';")
     return sql_query_insert_location
