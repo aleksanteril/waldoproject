@@ -126,3 +126,28 @@ def start_game():
             break
     return
 
+#Funktio jolla piirretään pilvet ja ilmoitetaan saapumisesta
+def travel_ascii(country):
+    print('''
+              .
+               					
+              |					
+     .               /				
+      \       I     				
+                  /
+        \  ,g88R_
+          d888(`  ).                   _
+ -  --==  888(     ).=--           .+(`  )`.
+)         Y8P(       '`.          :(   .    )
+        .+(`(      .   )     .--  `.  (    ) )
+       ((    (..__.:'-'   .=(   )   ` _`  ) )
+`.     `(       ) )       (   .  )     (   )  ._
+  )      ` __.:'   )     (   (   ))     `-'.:(`  )
+)  )  ( )       --'       `- __.'         :(      ))
+.-'  (_.'          .')                    `(    )  ))
+                  (_  )                     ` __.:'
+                                        	
+--..,___.--,--'`,---..-.--+--.,,-,,..._.--..-._.-a:f--.''')
+    print(f"You have arrived in {country.upper()} with Waldo!")
+    return
+

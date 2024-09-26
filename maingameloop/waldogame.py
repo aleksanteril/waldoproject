@@ -54,7 +54,8 @@ case_icao_location = pack2.case_randomizer(
 print(case_icao_location, case_country) #TÄMÄ ON DEVAUSTA VARTEN MUISTA KOMMENTOIDA POIS!
 
 #Pelin alustus, kysytään käyttäjän nimi ja tarkistetaan onko se uniikki
-print("\nWell let's get going!, says Waldo")
+pack2.help()
+print("\nWell let's get going!")
 username_exist = True
 while username_exist:
     username = pack2.input_username()
@@ -88,7 +89,7 @@ while user_command != 'exit':
             )
             pack1.country_clue(clue)
         else:
-            print("Waldo's memory is still hazy, maybe later")
+            print("Waldo's memory is still a bit hazy, maybe later")
 
     #Kohteet funktio,  kohteiden näyttäminen käyttäjälle (tällä hetkellä pelkät maat)
     elif user_command == commands[1]: #KOHTEET
@@ -107,7 +108,7 @@ while user_command != 'exit':
 
         #LOCATION PÄIVITTÄMINEN PELAAJALLE TIETOKANTAAN, JA PRINTTAUS MATKUSTUKSESTA
         database.database_update(kyselyt.query_insert_location(country_icao[0], username))
-        print(f"You have arrived in {travel_country.upper()} with Waldo!")
+        pack1.travel_ascii(travel_country) #Grafiikan piirtoa, pilvet ja maan nimi ilmoitetaan
         travel_counter += 1
 
         #KUUMA/KYLMÄ MEKANIIKKA
