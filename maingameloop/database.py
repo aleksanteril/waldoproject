@@ -4,9 +4,9 @@ import mysql.connector
 yhteys = mysql.connector.connect(
         host='127.0.0.1',
         port=3306,
-        database='waldo_game',
-        user='aleksanteri',
-        password='m4ks4',
+        database=input("Database: "),
+        user=input("User: "),
+        password=input("Password: "),
         autocommit=True
         )
 
