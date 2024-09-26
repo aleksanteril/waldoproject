@@ -7,40 +7,41 @@
 def signal_strength_ascii(signal_strength):
     #ÄLÄ KOSKE TÄHÄN TÄMÄ ON TARKOITUKSELLA NÄIN KOSKA PRINT FUNKTIO PUSKEE SEN MUUTEN VÄÄRIN
     if signal_strength == 5:
-        print('''                             §§§§§§   
-                      §§§§§§ §§§§§§
-               §§§§§§ §§§§§§ §§§§§§
-        §§§§§§ §§§§§§ §§§§§§ §§§§§§
-        §§§§§§ §§§§§§ §§§§§§ §§§§§§
-        Signal strength is excellent    ''')
+        print('''
+                     §§§§§§   
+              §§§§§§ §§§§§§
+       §§§§§§ §§§§§§ §§§§§§
+§§§§§§ §§§§§§ §§§§§§ §§§§§§
+§§§§§§ §§§§§§ §§§§§§ §§§§§§
+Signal strength is excellent    ''')
     elif signal_strength == 4:
         print('''            
-                      §§§§§§ 
-               §§§§§§ §§§§§§ 
-        §§§§§§ §§§§§§ §§§§§§ 
-        §§§§§§ §§§§§§ §§§§§§ ______
-        Signal strength is strong    ''')
+              §§§§§§ 
+       §§§§§§ §§§§§§ 
+§§§§§§ §§§§§§ §§§§§§ 
+§§§§§§ §§§§§§ §§§§§§ ______
+Signal strength is strong    ''')
     elif signal_strength == 3:
         print('''           
                       
-               §§§§§§ 
-        §§§§§§ §§§§§§ 
-        §§§§§§ §§§§§§ ______ ______
-        Signal strength is medium    ''')
+       §§§§§§ 
+§§§§§§ §§§§§§ 
+§§§§§§ §§§§§§ ______ ______
+Signal strength is medium    ''')
     elif signal_strength == 2:
         print('''            
                 
                
-        §§§§§§ 
-        §§§§§§ ______ ______ ______
-        Signal strength is low    ''')
+§§§§§§ 
+§§§§§§ ______ ______ ______
+Signal strength is low    ''')
     elif signal_strength == 1:
         print('''                  
                                    
                                    
         
-        ______ ______ ______ ______
-        Signal strength is weak    ''')
+______ ______ ______ ______
+Signal strength is weak    ''')
 
 
 
@@ -104,11 +105,11 @@ def signal_strength(user_distance_from_case):
         return
 
 #Matkustus funktio, palauttaa matkustusmaan joka ei ole suomi!
-def travel(country_list):
+def travel(country_list, user_country):
     while True:
         player_input = input("\nWaldo is excited! Where do you want to travel?: ").lower()
-        if player_input == 'finland':
-            print("\nWaldo is confused, we started there! what do you mean?")
+        if player_input == user_country:
+            print("\nWaldo is confused, we are here already! what do you mean?")
         elif player_input not in country_list:
             print("\nWaldo is confused, what do you mean?")
         else:

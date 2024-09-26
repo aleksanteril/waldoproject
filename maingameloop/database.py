@@ -24,12 +24,12 @@ def database_update(query):
     kursori.execute(query)
     return
 
-#Kyselyä varten, mutta haluamme vain ensimmäisen arvon tulokseen EI TOIMI ÄLÄ KÄYTÄ, CURSORI PITÄISI TYHJENTÄÄ JÄLKEEN
-#def database_query_fetchone(query):
-    #kursori = yhteys.cursor()
-    #kursori.execute(query)
-    #tulos = kursori.fetchone()
-    #return tulos
+#Kyselyä varten, mutta haluamme vain ensimmäisen arvon tulokseen KÄYTÄ VAIN JOS TIEDÄT ETTÄ TULEE 1 ARVO
+def database_query_fetchone(query):
+    kursori = yhteys.cursor()
+    kursori.execute(query)
+    tulos = kursori.fetchone()
+    return tulos
 
 
 #Kyselyä varten jos tarvitsee tarkistaa löytyykö tieto esim.

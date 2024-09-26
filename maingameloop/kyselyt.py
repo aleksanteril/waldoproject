@@ -64,3 +64,9 @@ def query_insert_location(location, username):
 def query_check_country(country_name):
     sql_query_check_usernames = (f"SELECT LOWER(name) FROM country WHERE name = '{country_name}';")
     return sql_query_check_usernames
+
+def query_check_user_country(username):
+    sql_query_check_user_country = (f"SELECT LOWER(name) FROM country WHERE iso_country in("
+                                    f"SELECT iso_country FROM airport WHERE ident in("
+                                    f"SELECT location FROM game WHERE id = '{username}'));")
+    return sql_query_check_user_country
