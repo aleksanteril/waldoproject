@@ -32,15 +32,18 @@ def query_distance_from_goal(case_location, game_id):
                                     f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM airport WHERE ident = '{case_location}'), 4326));")
     return sql_query_distance_from_goal
 
+
 #Kysely jolla päivitetään uusi käyttäjä tietokantaan
 def query_new_username(username):
     sql_query_new_username = (f"INSERT INTO game (id, location) VALUES ('{username}', 'EFHK');")
     return sql_query_new_username
 
+
 #Kysely jolla tarkastetaan löytyykö nimi jo pelin tietokannasta
 def query_check_username(username):
     sql_query_check_usernames = (f"SELECT id FROM game WHERE id = '{username}';")
     return sql_query_check_usernames
+
 
 #Kysely jolla päivitetään pelaajan sijainti tietokantaan
 def query_insert_location(location, username):

@@ -10,49 +10,54 @@ def signal_strength_ascii(signal_strength):
                       §§§§§§ §§§§§§
                §§§§§§ §§§§§§ §§§§§§
         §§§§§§ §§§§§§ §§§§§§ §§§§§§
-        §§§§§§ §§§§§§ §§§§§§ §§§§§§''')
+        §§§§§§ §§§§§§ §§§§§§ §§§§§§
+        Signal strength is excellent    ''')
     elif signal_strength == 4:
         print('''            
                       §§§§§§ 
                §§§§§§ §§§§§§ 
         §§§§§§ §§§§§§ §§§§§§ 
-        §§§§§§ §§§§§§ §§§§§§ ______''')
+        §§§§§§ §§§§§§ §§§§§§ ______
+        Signal strength is strong    ''')
     elif signal_strength == 3:
         print('''           
                       
                §§§§§§ 
         §§§§§§ §§§§§§ 
-        §§§§§§ §§§§§§ ______ ______''')
+        §§§§§§ §§§§§§ ______ ______
+        Signal strength is medium    ''')
     elif signal_strength == 2:
         print('''            
                 
                
         §§§§§§ 
-        §§§§§§ ______ ______ ______''')
+        §§§§§§ ______ ______ ______
+        Signal strength is low    ''')
     elif signal_strength == 1:
         print('''                  
                                    
                                    
         
-        ______ ______ ______ ______''')
+        ______ ______ ______ ______
+        Signal strength is weak    ''')
 
 
 
 #Kuuma/kylmä mekaniikka joka vertaa edellistä etäisyyttä, nykyiseen etäisyyteen metreissä
 def hot_cold_mechanic(distance_to_case, previous_distance_to_case):
     if previous_distance_to_case > distance_to_case[0]:
-        print("\nSignaali vahveni!")
+        print("\nThe signal got stronger!")
     elif previous_distance_to_case < distance_to_case[0]:
-        print("\nSignaali heikkeni!")
+        print("\nThe signal has weakened!")
     else:
-        print("\nSignaali ei muuttunut")
+        print("\nThe signal hasn't budged!")
     return
 
 
 
 #Funktio tulostaa vihjeen listasta, joka tulee sql kyselyn kautta
 def country_clue(clue):
-    print("\nVIHJE:")
+    print("\nCLUE:")
     for clue in clue:
         print(clue[0])
     return
@@ -63,16 +68,16 @@ def country_clue(clue):
 def user_command(commands):
     user_input = None
     while user_input not in commands:
-        user_input = input("Mitä haluat tehdä?: ").lower()
+        user_input = input("Waldo asks: What do you wish to do next?: ").lower()
         if user_input not in commands:
-            print("Tuntematon komento")
+            print("Waldo didn't understand that")
     return user_input
 
 
 
 # Funktio tulostaa kaikki saatavilla olevat kohteet
 def user_search(countries):
-    print("\n SAATAVILLA OLEVAT KOHTEET")
+    print("\n AVAILABLE DESTINATIONS")
     for country in countries:
         print(country[0])
     return
