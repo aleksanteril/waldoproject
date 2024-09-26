@@ -16,10 +16,10 @@ def start_game():
 
 #tulostaa komennot käyttäjälle
 def help():
-    print("Command 'help' prompt opens the this window.")
-    print("Command 'clue' saat käytettyä saadun vihjeen.")
-    print("Komennolla 'kohteet' tulostaa matkustettavat maat.")
-    print("Komennolla 'matkusta' kommennolla matkustat valitsemaasi maahan.")
-    print("Komennolla 'radio' näyttää signaalin vahvuuden laukkuun")
+    print("Using command 'help' opens the help window.")
+    print("Using command 'clue' gives you a clue.")
+    print("Using command 'destinations' prints the country's you can travel to.")
+    print("Using command 'travel' travels you to your country of choosing.")
+    print("Using command 'radio' displays signal strength for the location of Waldo's case")
     return
 
