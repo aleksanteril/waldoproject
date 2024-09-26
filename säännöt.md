@@ -18,5 +18,5 @@
 - Matkustus()
 - Ilmansuunta()
 - Tracker()
-- Help() ok
+- Help() OK
 - Pelin alustus() OK

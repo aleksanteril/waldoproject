@@ -15,6 +15,11 @@ def start_game():
 
 
 #tulostaa komennot käyttäjälle
-def help(commands):
-    print(commands)
+def help():
+    print("Komennolla 'help' komennolla avaat tämän valikon.")
+    print("Komennolla 'vihje' saat käytettyä saadun vihjeen.")
+    print("Komennolla 'kohteet' tulostaa matkustettavat maat.")
+    print("Komennolla 'matkusta' kommennolla matkustat valitsemaasi maahan.")
+    print("Komennolla 'radio' näyttää signaalin vahvuuden laukkuun")
     return
+
