@@ -13,7 +13,7 @@ from aliohjelmat_aleksi_jari import pack2
 
 #"Yleiset arvot"
 #Määritetään vakio komennot monikkoon
-commands = ("clue", "destinations", "travel", "radio", "help")
+commands = ("clue", "destinations", "travel", "radio", "help", "exit")
 
 
 
@@ -57,39 +57,40 @@ distance = database.database_query(kyselyt.query_distance_from_goal(case_icao_lo
 #Laukun sijainti pelaajaan, monikossa indeksi 0
 previous_distance_to_case = distance[0]
 
+user_command = None
+while user_command != 'exit':
+    #Main gameloop
+    #Kysytään käyttäjän input funktiolla
+    user_command = pack1.user_command(commands)
 
-#Main gameloop
-#Kysytään käyttäjän input funktiolla
-user_command = pack1.user_command(commands)
+    ##Vihje funktio,  joka tulostaa maan vihjeen perustuen matkalaukun ICAO sijaintiin (case_location)
+    if user_command == commands[0]:  #VIHJE
+        clue = database.database_query(
+            kyselyt.query_country_hint(case_icao_location)
+        )
+        pack1.country_clue(clue)
 
-##Vihje funktio,  joka tulostaa maan vihjeen perustuen matkalaukun ICAO sijaintiin (case_location)
-if user_command == commands[0]:  #VIHJE
-    clue = database.database_query(
-        kyselyt.query_country_hint(case_icao_location)
-    )
-    pack1.country_clue(clue)
+    #Kohteet funktio,  kohteiden näyttäminen käyttäjälle (tällä hetkellä pelkät maat)
+    elif user_command == commands[1]: #KOHTEET
+        countries = database.database_query(
+            kyselyt.query_countries
+        )
+        pack1.user_search(countries)
 
-#Kohteet funktio,  kohteiden näyttäminen käyttäjälle (tällä hetkellä pelkät maat)
-elif user_command == commands[1]: #KOHTEET
-    countries = database.database_query(
-        kyselyt.query_countries
-    )
-    pack1.user_search(countries)
+    #Matkustus tapahtumat, MAAN VALINTA, SITTEN KUUMA/KYLMÄ LASKENTA
+    elif user_command == commands[2]: #MATKUSTUS
+        #matkustus() funktio database.database_query(kyselyt.query_countries)
+        #Kuumakylmä laskenta välissä
+        distance_goal_meters = database.database_query(
+            kyselyt.query_distance_from_goal(case_icao_location, username)
+        )
+        pack1.hot_cold_mechanic(distance_goal_meters[0], previous_distance_to_case[0])
 
-#Matkustus tapahtumat, MAAN VALINTA, SITTEN KUUMA/KYLMÄ LASKENTA
-elif user_command == commands[2]: #MATKUSTUS
-    #matkustus() funktio database.database_query(kyselyt.query_countries)
-    #Kuumakylmä laskenta välissä
-    distance_goal_meters = database.database_query(
-        kyselyt.query_distance_from_goal(case_icao_location, username)
-    )
-    pack1.hot_cold_mechanic(distance_goal_meters[0], previous_distance_to_case[0])
-
-#Radio komento signaalin vahvuuden tulostamiseen
-elif user_command == commands[3]: #RADIO
-    pack1.signal_strength(database.database_query(kyselyt.query_distance_from_goal(case_icao_location, username)))
+    #Radio komento signaalin vahvuuden tulostamiseen
+    elif user_command == commands[3]: #RADIO
+        pack1.signal_strength(database.database_query(kyselyt.query_distance_from_goal(case_icao_location, username)))
 
 
-#Help komento, tulostetaan komennot
-elif user_command == commands[4]:
-    pack2.help() #Help-komento
+    #Help komento, tulostetaan komennot
+    elif user_command == commands[4]:
+        pack2.help() #Help-komento

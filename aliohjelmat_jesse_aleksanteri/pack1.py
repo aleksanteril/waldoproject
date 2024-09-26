@@ -68,16 +68,16 @@ def country_clue(clue):
 def user_command(commands):
     user_input = None
     while user_input not in commands:
-        user_input = input("Waldo asks: What do you wish to do next?: ").lower()
+        user_input = input("\nWaldo asks: What do you wish to do next?: ").lower()
         if user_input not in commands:
-            print("Waldo didn't understand that")
+            print("\nWaldo didn't understand that")
     return user_input
 
 
 
 # Funktio tulostaa kaikki saatavilla olevat kohteet
 def user_search(countries):
-    print("\n AVAILABLE DESTINATIONS")
+    print("\nAVAILABLE DESTINATIONS")
     for country in countries:
         print(country[0])
     return
