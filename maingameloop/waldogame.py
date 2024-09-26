@@ -19,13 +19,16 @@ commands = ("vihje", "kohteet", "matkusta", "radio", "help")
 
 
 #Arvotaan matkalaukun maa, ja sen jälkeen arvotaan matkalaukun ICAO
-case_country = pack2.case_randomizer(
-    database.database_query(kyselyt.query_countries)
-)
+case_country = 'Finland'
+while case_country == 'Finland':
+    case_country = pack2.case_randomizer(
+        database.database_query(kyselyt.query_countries)
+    )
 case_icao_location = pack2.case_randomizer(
     database.database_query(kyselyt.query_country_airports(case_country))
 )
 
+print(case_icao_location, case_country)
 print("PRINT TAUSTATARINA TJPS")
 # print("PRINT TARKOITUS esim. Löydä matkalaukku niin ja näin.")
 # print("PRINT OHJEISTUS MITEN MATKUSTAA / SIIRTYY / komennot")
@@ -75,7 +78,7 @@ elif user_command == commands[2]: #MATKUSTUS
     )
     pack1.hot_cold_mechanic(distance_goal_meters[0], previous_distance_to_case[0])
 
-# radio komento signaalin vahvuuden
+#Radio komento signaalin vahvuuden tulostamiseen
 elif user_command == commands[3]: #RADIO
     pack1.signal_strength(database.database_query(kyselyt.query_distance_from_goal(case_icao_location, username)))
 

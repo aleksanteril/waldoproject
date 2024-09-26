@@ -63,7 +63,7 @@ def country_clue(clue):
 def user_command(commands):
     user_input = None
     while user_input not in commands:
-        user_input = input("Syötä seuraava liike: ").lower()
+        user_input = input("Mitä haluat tehdä?: ").lower()
         if user_input not in commands:
             print("Tuntematon komento")
     return user_input
