@@ -44,7 +44,9 @@ database.database_update(kyselyt.query_new_username(username))
 
 #Lasketaan alku sijainti, ja asetetaan se base etäisyydeksi kuuma kylmää varten
 distance = database.database_query(kyselyt.query_distance_from_goal(case_icao_location, username))
+#Laukun sijainti pelaajaan, monikossa indeksi 0
 previous_distance_to_case = distance[0]
+
 
 #Main gameloop
 #Kysytään käyttäjän input funktiolla
@@ -71,7 +73,7 @@ elif user_command == commands[2]: #MATKUSTUS
     distance_goal_meters = database.database_query(
         kyselyt.query_distance_from_goal(case_icao_location, username)
     )
-    pack1.hot_cold_mechanic(distance_goal_meters)
+    pack1.hot_cold_mechanic(distance_goal_meters[0], previous_distance_to_case[0])
 
 # radio komento signaalin vahvuuden
 elif user_command == commands[3]: #RADIO

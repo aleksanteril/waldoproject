@@ -38,10 +38,15 @@ def signal_strength_ascii(signal_strength):
 
 
 
-#Kuuma/kylmä mekaniikka joka vertaa edellistä etäisyyttä metreissä
+#Kuuma/kylmä mekaniikka joka vertaa edellistä etäisyyttä, nykyiseen etäisyyteen metreissä
 def hot_cold_mechanic(distance_to_case, previous_distance_to_case):
-    distance_meters = distance_to_case[0]
-    print(distance_meters[0])
+    if previous_distance_to_case > distance_to_case[0]:
+        print("\nSignaali vahveni!")
+    elif previous_distance_to_case < distance_to_case[0]:
+        print("\nSignaali heikkeni!")
+    else:
+        print("\nSignaali ei muuttunut")
+    return
 
 
 
@@ -70,6 +75,10 @@ def user_search(countries):
     print("\n SAATAVILLA OLEVAT KOHTEET")
     for country in countries:
         print(country[0])
+    return
+
+
+
 
 
 

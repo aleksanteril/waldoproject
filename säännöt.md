@@ -16,7 +16,7 @@
 
 #### Jari, Aleksi
 - Matkustus()
-- Ilmansuunta()
-- Tracker()
+- Ilmansuunta() 
+- Tracker() 
 - Help() OK
 - Pelin alustus() OK
