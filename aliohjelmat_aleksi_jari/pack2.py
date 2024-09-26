@@ -7,6 +7,10 @@ def case_randomizer(list):
     random_str = list[random_index]
     return random_str[0]
 
+def random_int(minimum, maximum):
+    random_integer = random.randint(minimum, maximum)
+    return random_integer
+
 
 #Kysytään käyttäjän nimi, ja palautetaan se tarkistuksia varten
 def input_username():

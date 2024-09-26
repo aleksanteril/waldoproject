@@ -13,7 +13,7 @@ from aliohjelmat_aleksi_jari import pack2
 
 #"Yleiset arvot"
 #Määritetään vakio komennot monikkoon
-commands = ("clue", "destinations", "travel", "radio", "help", "exit")
+commands = ("clue", "destinations", "travel", "radio", "help", "bye")
 #case_country, case_icao_location, username, user_command, travel_country
 
 
@@ -73,7 +73,7 @@ previous_distance_to_case = distance[0]
 
 #PELI ALKAA MAIN GAME LOOP TÄSSÄ
 user_command = None
-while user_command != 'exit':
+while user_command != 'bye':
     #Jos käyttäjä on matkustanut tarpeeksi askelia ilmoitetaan vihjeen saatavuudesta
     if travel_counter == travel_counter_limit:
         print("\nWaldo looks at you and says, I guess i remember a little riddle from the country")
@@ -108,7 +108,8 @@ while user_command != 'exit':
 
         #LOCATION PÄIVITTÄMINEN PELAAJALLE TIETOKANTAAN, JA PRINTTAUS MATKUSTUKSESTA
         database.database_update(kyselyt.query_insert_location(country_icao[0], username))
-        pack1.travel_ascii(travel_country) #Grafiikan piirtoa, pilvet ja maan nimi ilmoitetaan
+
+        pack1.travel_ascii(travel_country,pack2.random_int(1,4)) #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
         travel_counter += 1
 
         #KUUMA/KYLMÄ MEKANIIKKA
