@@ -12,10 +12,11 @@ def query_country_hint(case_location):
 query_countries = f"SELECT name FROM country WHERE continent = 'EU';"
 
 
-#Kysely jolla saadaan parametri country avulla kyseisen maan lentokenttien ICAOT
+#Kysely jolla saadaan parametri country avulla kyseisen maan lentokenttien ICAOT järjestyksessä large tyypistä alaspäin
 def query_country_airports(country):
     sql_query_airports = (f"SELECT ident FROM airport, country "
-                      f"WHERE airport.iso_country = country.iso_country and country.name ='{country}';")
+                      f"WHERE airport.iso_country = country.iso_country and country.name ='{country}'"
+                          f" ORDER BY CASE WHEN type = 'large_airport' THEN 1 WHEN type = 'medium_airport' THEN 2 WHEN type = 'small_airport' THEN 3 ELSE 4 END;")
     return sql_query_airports
 
 

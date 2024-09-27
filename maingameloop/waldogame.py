@@ -282,9 +282,8 @@ commands = ("clue", "destinations", "travel", "radio", "help", "bye")
 #Lista pelin maista joihin helppo verrata, listassa on eroteltu suomi pois 'lähtömaa'
 countries_list = []
 for country in database.database_query(kyselyt.query_countries):
-    if country[0] != 'Finland':
+    if country[0] != 'Finland' and country[0] != 'Russia':
         countries_list.append(country[0].lower())
-
 
 print('\n'*50)
 print('''You've arrived at Helsinki-Vantaa airport, where you meet your good friend Waldo.
@@ -302,13 +301,14 @@ start_game()
 #Asetetaan Vakioarvot pelin alussa
 clue_reminder_given_bool = False
 total_kilometers = 0
-country_icao = ('EFHK',)
+country_icao_tuple = ('EFHK',)
 travel_counter = 0
 travel_counter_limit = 5
 
 #Arvotaan matkalaukun maa, ja sen jälkeen arvotaan matkalaukun ICAO
+
 case_country = 'Finland'
-while case_country == 'Finland':
+while case_country == 'Finland' or case_country == 'Russia':
     case_country = case_randomizer(
         database.database_query(kyselyt.query_countries)
     )
@@ -357,15 +357,15 @@ while user_command != 'bye':
     #Matkustus tapahtumat, MAAN VALINTA, SITTEN, PÄIVITYS TIETOKANTAAN, +1 TRAVEL JA KUUMA/KYLMÄ LASKENTA
     elif user_command == commands[2]: #MATKUSTUS
         #Otetaan talteen maa mistä lähdetään, myöhempää laskentaa varten
-        previous_country_icao = country_icao[0]
+        previous_country_icao = country_icao_tuple[0]
         #Kutsutaan matkustus funktiota ja otetaan matkustus maa talteen paluuna
         travel_country = travel(username, countries_list)
 
-        country_icaos = database.database_query(kyselyt.query_country_airports(travel_country))  #Icaot tulevaisuutta ajatellen jos laajenee lentokenttiin
-        country_icao = country_icaos[0] #Maan ICAO - tarvitaan seuraavaa päivityskyselyä varten
+        country_icaos_list = database.database_query(kyselyt.query_country_airports(travel_country))  #Icaot tulevaisuutta ajatellen jos laajenee lentokenttiin
+        country_icao_tuple = country_icaos_list[0] #Maan ICAO - tarvitaan seuraavaa päivityskyselyä varten
 
         #LOCATION PÄIVITTÄMINEN PELAAJALLE TIETOKANTAAN, JA PRINTTAUS MATKUSTUKSESTA
-        database.database_update(kyselyt.query_update_location(country_icao[0], username))
+        database.database_update(kyselyt.query_update_location(country_icao_tuple[0], username))
         print('\n'*50)
         travel_ascii_art(random.randint(1,4)) #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
         print(f"You have arrived in {travel_country.upper()} with Waldo!")
