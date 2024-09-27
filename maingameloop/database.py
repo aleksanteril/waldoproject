@@ -41,3 +41,17 @@ def database_check_query(query):
         return True
     else:
         return False
+
+
+# funktio tarkistaa onko käyttäjän syöttämä maa euroopassa
+def travel_to_next(next_destination):
+    query = "SELECT name FROM country WHERE name = %s AND continent = 'EU'"
+    kursori = yhteys.cursor()
+    kursori.execute(query, (next_destination,))
+    tulos = kursori.fetchone()
+    if tulos:
+        print(f"Matkustat maahan: {next_destination}")
+    else:
+        print(f"Maata {next_destination} ei löytynyt Euroopasta.")
+
+    return next_destination
