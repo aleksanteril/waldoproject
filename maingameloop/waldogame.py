@@ -284,18 +284,18 @@ for country in database.database_query(kyselyt.query_countries):
 print("\n")
 print('''You've arrived at Helsinki-Vantaa airport, where you meet your good friend Waldo.
 
-Waldo is a world-famous adventurer known for his red & white striped shirt and blue hat. 
-He has travelled all over the world, but his valuable suitcase mysteriously disappeared. 
+Waldo is a world-famous adventurer known for his red & white striped shirt and blue hat. He has travelled all over the european continent, but his valuable suitcase mysteriously disappeared. 
 The suitcase contained Waldo's most important discoveries and notes, but fortunately, Waldo has installed a radio-transmitter in it.
 
-Now Waldo needs your help to find his suitcase. Together, you set off around the world, using the radio-transmitter in the suitcase. 
+Now Waldo needs your help to find his suitcase. Together, you set off around europe, using the radio-transmitter in the suitcase. 
 
 Safe travels!''')
 
 #Haluatko aloittaa pelin funktio
 start_game()
 
-#Asetetaan matkustus lukumäärä 0 pelin alkaessa
+#Asetetaan Vakioarvot pelin alussa
+clue_reminder_given_bool = False
 total_kilometers = 0
 country_icao = ('EFHK',)
 travel_counter = 0
@@ -329,8 +329,10 @@ print("\nWell let's get going!")
 user_command = None
 while user_command != 'bye':
     #Jos käyttäjä on matkustanut tarpeeksi askelia ilmoitetaan vihjeen saatavuudesta
-    if travel_counter == travel_counter_limit:
+    if travel_counter >= travel_counter_limit and not clue_reminder_given_bool:
+        print("Hey!!!! WAIT A MINUTE!")
         print("\nWaldo looks at you and says, I guess i remember a little riddle from the country")
+        clue_reminder_given_bool = True
 
     user_command = user_input_command(commands)   #Kysytään käyttäjän input funktiolla
 
@@ -373,7 +375,8 @@ while user_command != 'bye':
             previous_distance_to_case_tuple = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case_tuple[0])
         else:
             print("VOITTOKUVIO")
-            print(total_kilometers)
+            print(f"Kuljettu kilometrimäärä: {total_kilometers:.0f}")
+            print(f"CO2 - päästösi ovat: {total_kilometers*8:.0f}")
             break
 
     #Radio komento signaalin vahvuuden tulostamiseen
