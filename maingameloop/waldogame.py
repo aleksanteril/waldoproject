@@ -150,12 +150,16 @@ def signal_strength(case_icao_location, username):
     distance_kilometers = distance_tuple[0] / 1000
     if distance_kilometers < 400:
         signal_strength_ascii(5)
+        print("The case must be under a 400km radius")
     elif distance_kilometers < 800:
         signal_strength_ascii(4)
+        print("The case must be under a 800km radius")
     elif distance_kilometers < 1200:
         signal_strength_ascii(3)
+        print("The case must be under a 1200km radius")
     elif distance_kilometers < 1600:
         signal_strength_ascii(2)
+        print("The case must be under a 1600km radius")
     elif distance_kilometers < 2000 or distance_kilometers > 2000:
         signal_strength_ascii(1)
         return
@@ -341,7 +345,7 @@ while user_command != 'bye':
 
     ##Vihje funktio,  joka tulostaa maan vihjeen perustuen matkalaukun ICAO sijaintiin (case_location)
     if user_command == commands[0]:  #VIHJE
-        if travel_counter == travel_counter_limit:
+        if travel_counter >= travel_counter_limit:
             country_clue(case_icao_location)
         else:
             print("Waldo's memory is still a bit hazy, maybe later")
