@@ -19,7 +19,7 @@ yhteys = mysql.connector.connect(
          autocommit=True
          )
 
-
+# funktio tarkistaa että käyttäjän syöttämä maa on euroopassa
 def travel_to_next(next_destination):
     query = "SELECT name FROM country WHERE name = %s AND continent = 'EU'"
 
