@@ -17,7 +17,8 @@
 - check()
 - exit lisäys waldo suuttuu koska luovutit
 Bye! (WHAT!?! ARE YOU LEAVING ME AFTER ALL THIS TIME, I'M NEVER TALKING TO YOU EVER AGAIN!)
-
+Destinations pitää laittaa aakkosjärjestykseen
+Vihjeisiin pitää lisätä maan alkukirjain
 
 #### Jari, Aleksi
 - Matkustus()
