@@ -1,14 +1,22 @@
 import mysql.connector
 
 #Yhteyden luonti
-yhteys = mysql.connector.connect(
-        host='127.0.0.1',
-        port=3306,
-        database=input("Database: "),
-        user=input("User: "),
-        password=input("Password: "),
-        autocommit=True
-        )
+connection = False
+while not connection:
+    try:
+        yhteys = mysql.connector.connect(
+                host='127.0.0.1',
+                port=3306,
+                database=input("Database: "),
+                user=input("User: "),
+                password=input("Password: "),
+                autocommit=True
+                )
+        connection = True
+    except:
+        print("\nERR: TARKISTA SYÖTETYT ARVOT")
+        connection = False
+
 
 
 #Yleisiä kyselyita varten, palauttaa arvon !listana jossa alkiot monikkoja!
@@ -41,17 +49,3 @@ def database_check_query(query):
         return True
     else:
         return False
-
-
-# funktio tarkistaa onko käyttäjän syöttämä maa euroopassa
-def travel_to_next(next_destination):
-    query = "SELECT name FROM country WHERE name = %s AND continent = 'EU'"
-    kursori = yhteys.cursor()
-    kursori.execute(query, (next_destination,))
-    tulos = kursori.fetchone()
-    if tulos:
-        print(f"Matkustat maahan: {next_destination}")
-    else:
-        print(f"Maata {next_destination} ei löytynyt Euroopasta.")
-
-    return next_destination
