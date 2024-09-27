@@ -162,13 +162,15 @@ def signal_strength(case_icao_location, username):
 
 
 # Matkustus funktio, palauttaa matkustusmaan joka ei ole suomi!
-def travel(username):
+def travel(username,country_list):
     valid_country_bool = False
     user_country = database.database_query_fetchone(kyselyt.query_fetch_user_country(username))
     while not valid_country_bool:
-        player_input = input("Waldo is excited! Where do you want to travel?: ").lower()
+        player_input = input("\nWaldo is excited! Where do you want to travel?: ").lower()
         valid_country_bool = database.database_check_query(kyselyt.query_check_country(player_input))
-        if player_input == user_country[0]:
+        if player_input == "destinations":
+            user_search(country_list)
+        elif player_input == user_country[0]:
             valid_country_bool = False
             print("Waldo is confused, we are here already! what do you mean?")
         elif not valid_country_bool:
@@ -330,8 +332,8 @@ user_command = None
 while user_command != 'bye':
     #Jos käyttäjä on matkustanut tarpeeksi askelia ilmoitetaan vihjeen saatavuudesta
     if travel_counter >= travel_counter_limit and not clue_reminder_given_bool:
-        print("Hey!!!! WAIT A MINUTE!")
-        print("\nWaldo looks at you and says, I guess i remember a little riddle from the country")
+        print("\nHey!!!! WAIT A MINUTE!")
+        print("Waldo looks at you and says, I guess i remember a little riddle from the country")
         clue_reminder_given_bool = True
 
     user_command = user_input_command(commands)   #Kysytään käyttäjän input funktiolla
@@ -352,7 +354,7 @@ while user_command != 'bye':
     elif user_command == commands[2]: #MATKUSTUS
         previous_country_icao = country_icao[0]
         #Kutsutaan matkustus funktiota ja otetaan matkustus maa talteen paluuna
-        travel_country = travel(username)
+        travel_country = travel(username, countries_list)
 
         country_icaos = database.database_query(kyselyt.query_country_airports(travel_country))  #Icaot tulevaisuutta ajatellen jos laajenee lentokenttiin
         country_icao = country_icaos[0] #Maan ICAO - tarvitaan seuraavaa päivityskyselyä varten
@@ -374,7 +376,7 @@ while user_command != 'bye':
         if not goal_reached_bool:
             previous_distance_to_case_tuple = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case_tuple[0])
         else:
-            print("VOITTOKUVIO")
+            print("\nVOITTOKUVIO")
             print(f"Kuljettu kilometrimäärä: {total_kilometers:.0f}")
             print(f"CO2 - päästösi ovat: {total_kilometers*8:.0f}")
             break
