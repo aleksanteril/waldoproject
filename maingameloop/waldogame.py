@@ -166,19 +166,17 @@ def signal_strength(case_icao_location, username):
 
 
 # Matkustus funktio, palauttaa matkustusmaan joka ei ole suomi!
-def travel(username,country_list):
-    valid_country_bool = False
+def travel(username, country_list):
     user_country = database.database_query_fetchone(kyselyt.query_fetch_user_country(username))
-    while not valid_country_bool:
+    while True:
         player_input = input("\nWaldo is excited! Where do you want to travel?: ").lower()
-        valid_country_bool = database.database_check_query(kyselyt.query_check_country(player_input))
         if player_input == "destinations":
             user_search(country_list)
         elif player_input == user_country[0]:
-            valid_country_bool = False
             print("Waldo is confused, we are here already! what do you mean?")
-        elif not valid_country_bool:
+        elif player_input not in country_list:
             print("Waldo is confused, what do you mean?")
+            print("Type 'destinations' to see waldo's list of countries.")
         else:
             break
     return player_input
@@ -287,7 +285,7 @@ for country in database.database_query(kyselyt.query_countries):
         countries_list.append(country[0].lower())
 
 
-print("\n")
+print('\n'*50)
 print('''You've arrived at Helsinki-Vantaa airport, where you meet your good friend Waldo.
 
 Waldo is a world-famous adventurer known for his red & white striped shirt and blue hat. He has travelled all over the european continent, but his valuable suitcase mysteriously disappeared. 
@@ -295,7 +293,7 @@ The suitcase contained Waldo's most important discoveries and notes, but fortuna
 
 Now Waldo needs your help to find his suitcase. Together, you set off around europe, using the radio-transmitter in the suitcase. 
 
-Safe travels!''')
+Safe travels!\n''')
 
 #Haluatko aloittaa pelin funktio
 start_game()
@@ -324,6 +322,7 @@ case_icao_location = case_randomizer(
 #Syötetään käyttäjänimi tietokantaan ID, LOCATION vakio 'EFHK' game taulu
 username = input_username()
 #Kutsutaan help alkuun pelaajalle, ohjeistukseen liittyen
+print('\n'*50)
 help()
 
 #Lasketaan alkusijainti, ja asetetaan se base-etäisyydeksi kuuma/kylmää varten, asetetaan se muuttujaan
@@ -365,7 +364,7 @@ while user_command != 'bye':
 
         #LOCATION PÄIVITTÄMINEN PELAAJALLE TIETOKANTAAN, JA PRINTTAUS MATKUSTUKSESTA
         database.database_update(kyselyt.query_insert_location(country_icao[0], username))
-
+        print('\n'*50)
         travel_ascii_art(random.randint(1,4)) #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
         print(f"You have arrived in {travel_country.upper()} with Waldo!")
         travel_counter += 1  #Matkustus laskuriin lisätään 1 kerta
@@ -381,8 +380,8 @@ while user_command != 'bye':
             previous_distance_to_case_tuple = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case_tuple[0])
         else:
             print("\nVOITTOKUVIO")
-            print(f"Kuljettu kilometrimäärä: {total_kilometers:.0f}")
-            print(f"CO2 - päästösi ovat: {total_kilometers*8:.0f}")
+            print(f"Kuljettu kilometrimäärä: {total_kilometers:.0f}km")
+            print(f"CO2 - päästösi ovat: {total_kilometers*8:.0f}kg MIETIPPÄ SITÄ!")
             break
 
     #Radio komento signaalin vahvuuden tulostamiseen
