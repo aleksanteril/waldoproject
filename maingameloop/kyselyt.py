@@ -43,6 +43,10 @@ def query_new_username(username):
     sql_query_new_username = (f"INSERT INTO game (id, location) VALUES ('{username}', 'EFHK');")
     return sql_query_new_username
 
+#Kysely jolla päivitetään tietyn pelaajan co2_total
+def query_update_co2_total_player(username, co2_total):
+    sql_query_insert_co2_total = (f"UPDATE game SET co2_consumed = {co2_total} WHERE id = '{username}';")
+    return sql_query_insert_co2_total
 
 #Kysely jolla tarkastetaan löytyykö nimi jo pelin tietokannasta
 def query_check_username(username):
@@ -51,7 +55,7 @@ def query_check_username(username):
 
 
 #Kysely jolla päivitetään pelaajan sijainti tietokantaan
-def query_insert_location(location, username):
+def query_update_location(location, username):
     sql_query_insert_location = (f"UPDATE game SET location = ('{location}') WHERE id = '{username}';")
     return sql_query_insert_location
 

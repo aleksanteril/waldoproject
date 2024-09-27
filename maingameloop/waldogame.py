@@ -37,6 +37,7 @@ def input_username():
     database.database_update(kyselyt.query_new_username(username))
     return username
 
+#Kilometrilaskuri laskee edellisen icaon ja uuden paikan välin kilometrit kyselyn avulla
 def kilometer_counter(username, previous_icao):
     meters = database.database_query_fetchone(kyselyt.query_distance_between_locations(username,previous_icao))
     kilometers = meters[0] / 1000
@@ -355,6 +356,7 @@ while user_command != 'bye':
 
     #Matkustus tapahtumat, MAAN VALINTA, SITTEN, PÄIVITYS TIETOKANTAAN, +1 TRAVEL JA KUUMA/KYLMÄ LASKENTA
     elif user_command == commands[2]: #MATKUSTUS
+        #Otetaan talteen maa mistä lähdetään, myöhempää laskentaa varten
         previous_country_icao = country_icao[0]
         #Kutsutaan matkustus funktiota ja otetaan matkustus maa talteen paluuna
         travel_country = travel(username, countries_list)
@@ -363,14 +365,14 @@ while user_command != 'bye':
         country_icao = country_icaos[0] #Maan ICAO - tarvitaan seuraavaa päivityskyselyä varten
 
         #LOCATION PÄIVITTÄMINEN PELAAJALLE TIETOKANTAAN, JA PRINTTAUS MATKUSTUKSESTA
-        database.database_update(kyselyt.query_insert_location(country_icao[0], username))
+        database.database_update(kyselyt.query_update_location(country_icao[0], username))
         print('\n'*50)
         travel_ascii_art(random.randint(1,4)) #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
         print(f"You have arrived in {travel_country.upper()} with Waldo!")
         travel_counter += 1  #Matkustus laskuriin lisätään 1 kerta
 
         kilometers = kilometer_counter(username, previous_country_icao) #Kilometrien laskenta
-        total_kilometers = total_kilometers + kilometers
+        total_kilometers = total_kilometers + kilometers #total counter
 
 
         #TÄHÄN TARKISTUS ONKO PELAAJA SAAPUNUT SAMAAN MAAHAN KUIN MATKALAUKKU
@@ -379,6 +381,8 @@ while user_command != 'bye':
         if not goal_reached_bool:
             previous_distance_to_case_tuple = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case_tuple[0])
         else:
+            #Asetetaan tietokantaan pelaajan käyttämä co2
+            database.database_query(kyselyt.query_update_co2_total_player(username, int(total_kilometers*8)))
             print("\nVOITTOKUVIO")
             print(f"Kuljettu kilometrimäärä: {total_kilometers:.0f}km")
             print(f"CO2 - päästösi ovat: {total_kilometers*8:.0f}kg MIETIPPÄ SITÄ!")
