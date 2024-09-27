@@ -57,7 +57,7 @@ def query_insert_location(location, username):
 
 #Kysely jolla tarkistetaan löytyykö maa pelin maista
 def query_check_country(country_name):
-    sql_query_check_usernames = (f"SELECT LOWER(name) FROM country WHERE name = '{country_name}';")
+    sql_query_check_usernames = (f"SELECT LOWER(name) FROM country WHERE name = '{country_name}' and continent = 'EU' and not name = 'Finland';")
     return sql_query_check_usernames
 
 #Kysely jolla saadaan käyttäjän maa LOWERcasena

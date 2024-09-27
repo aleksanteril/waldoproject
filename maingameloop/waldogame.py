@@ -37,6 +37,11 @@ def input_username():
     database.database_update(kyselyt.query_new_username(username))
     return username
 
+def kilometer_counter(username, previous_icao):
+    meters = database.database_query_fetchone(kyselyt.query_distance_between_locations(username,previous_icao))
+    kilometers = meters[0] / 1000
+    return kilometers
+
 
 #tulostaa komennot käyttäjälle
 def help():
@@ -128,6 +133,8 @@ def user_input_command(commands):
     return user_input
 
 
+
+
 # Funktio tulostaa kaikki saatavilla olevat kohteet
 def user_search(countries):
     print("\nAVAILABLE DESTINATIONS")
@@ -162,6 +169,7 @@ def travel(username):
         player_input = input("Waldo is excited! Where do you want to travel?: ").lower()
         valid_country_bool = database.database_check_query(kyselyt.query_check_country(player_input))
         if player_input == user_country[0]:
+            valid_country_bool = False
             print("Waldo is confused, we are here already! what do you mean?")
         elif not valid_country_bool:
             print("Waldo is confused, what do you mean?")
@@ -288,6 +296,8 @@ Safe travels!''')
 start_game()
 
 #Asetetaan matkustus lukumäärä 0 pelin alkaessa
+total_kilometers = 0
+country_icao = ('EFHK',)
 travel_counter = 0
 travel_counter_limit = 5
 
@@ -338,6 +348,7 @@ while user_command != 'bye':
 
     #Matkustus tapahtumat, MAAN VALINTA, SITTEN, PÄIVITYS TIETOKANTAAN, +1 TRAVEL JA KUUMA/KYLMÄ LASKENTA
     elif user_command == commands[2]: #MATKUSTUS
+        previous_country_icao = country_icao[0]
         #Kutsutaan matkustus funktiota ja otetaan matkustus maa talteen paluuna
         travel_country = travel(username)
 
@@ -350,6 +361,11 @@ while user_command != 'bye':
         travel_ascii_art(random.randint(1,4)) #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
         print(f"You have arrived in {travel_country.upper()} with Waldo!")
         travel_counter += 1  #Matkustus laskuriin lisätään 1 kerta
+
+        kilometers = kilometer_counter(username, previous_country_icao) #Kilometrien laskenta
+        total_kilometers = total_kilometers + kilometers
+
+
         #TÄHÄN TARKISTUS ONKO PELAAJA SAAPUNUT SAMAAN MAAHAN KUIN MATKALAUKKU
         goal_reached_bool = goal_check(username, case_country.lower())  #PALAUTTAA TRUE JOS PELAAJA ON LAUKUN MAASSA MUUTEN FALSE
         #KUUMA/KYLMÄ MEKANIIKKA
@@ -357,6 +373,7 @@ while user_command != 'bye':
             previous_distance_to_case_tuple = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case_tuple[0])
         else:
             print("VOITTOKUVIO")
+            print(total_kilometers)
             break
 
     #Radio komento signaalin vahvuuden tulostamiseen
