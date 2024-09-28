@@ -77,6 +77,6 @@ def waldo_animated():
 
     for waldo in art:
         print(waldo)
-        time.sleep(0.2)
+        time.sleep(0.3)
 
 waldo_animated()
