@@ -6,6 +6,8 @@
 import database
 import kyselyt
 import random
+import time
+
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
 
@@ -25,9 +27,11 @@ def case_randomizer(list):
     random_str = list[random_index]
     return random_str[0]
 
-
+from maingameloop.game_art import waldo_animated
 #Kysytään käyttäjän nimi, ja palautetaan jos se on uniikki, päivitetään se tietokantaan
 def input_username():
+    waldo_animated()
+
     username_exist = True
     while username_exist:
         username = input("\nWaldo greets you! Hello my friend: ").lower()
