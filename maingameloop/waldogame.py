@@ -6,9 +6,12 @@
 import database
 import kyselyt
 import random
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> main
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
 
