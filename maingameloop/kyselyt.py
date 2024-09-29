@@ -20,23 +20,15 @@ def query_country_airports(country):
     return sql_query_airports
 
 
-#Kysely joka palauttaa käyttäjän etäisyyden matkalaukkuun METREINÄ! #identtinen
-def query_distance_from_goal(case_location, game_id):
-    sql_query_distance_from_goal = (f"SELECT ST_Distance_Sphere("
-                                    f"ST_GeomFromText(("
-                                    f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM airport WHERE ident in(SELECT location FROM game WHERE id = '{game_id}')), 4326), "
-                                    f"ST_GeomFromText(("
-                                    f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM airport WHERE ident = '{case_location}'), 4326));")
-    return sql_query_distance_from_goal
 
-#Kysely jolla saadaan etäisyys pelaajan ja jonkun toisen paikan välillä #identtinen
+#Kysely jolla saadaan etäisyys pelaajan ja jonkun toisen paikan välillä, float metreissä!
 def query_distance_between_locations(playername, icao2):
-    sql_query_distance_from_goal = (f"SELECT ST_Distance_Sphere("
+    sql_query_distance = (f"SELECT ST_Distance_Sphere("
                                     f"ST_GeomFromText(("
                                     f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM airport WHERE ident in(SELECT location FROM game WHERE id = '{playername}')), 4326), "
                                     f"ST_GeomFromText(("
                                     f"SELECT CONCAT('POINT (',longitude_deg, ' ',latitude_deg,')') FROM airport WHERE ident = '{icao2}'), 4326));")
-    return sql_query_distance_from_goal
+    return sql_query_distance
 
 
 #Kysely jolla päivitetään uusi käyttäjä tietokantaan
@@ -60,14 +52,14 @@ def query_update_location(location, username):
     sql_query_insert_location = (f"UPDATE game SET location = ('{location}') WHERE id = '{username}';")
     return sql_query_insert_location
 
-#Kysely jolla tarkistetaan löytyykö maa pelin maista
-def query_check_country(country_name):
-    sql_query_check_usernames = (f"SELECT LOWER(name) FROM country WHERE name = '{country_name}' and continent = 'EU' and not name = 'Finland';")
-    return sql_query_check_usernames
+#Kysely jolla tarkistetaan löytyykö maa pelin maista, turha mutta jätetään varmuudeksi
+#def query_check_country(country_name):
+   #sql_query_check_country = (f"SELECT LOWER(name) FROM country WHERE name = '{country_name}' and continent = 'EU' and not name = 'Finland';")
+   #return sql_query_check_country
 
 #Kysely jolla saadaan käyttäjän maa LOWERcasena
 def query_fetch_user_country(username):
-    sql_query_check_user_country = (f"SELECT LOWER(name) FROM country WHERE iso_country in("
+    sql_query_fetch_user_country = (f"SELECT LOWER(name) FROM country WHERE iso_country in("
                                     f"SELECT iso_country FROM airport WHERE ident in("
                                     f"SELECT location FROM game WHERE id = '{username}'));")
-    return sql_query_check_user_country
+    return sql_query_fetch_user_country

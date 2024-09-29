@@ -97,8 +97,8 @@ Signal strength is weak    ''')
 
 # Kuuma/kylmä mekaniikka joka vertaa edellistä etäisyyttä, nykyiseen etäisyyteen metreissä
 def hot_cold_mechanic(case_icao_location, username, previous_distance_to_case):
-    new_distance_list = database.database_query(
-        kyselyt.query_distance_from_goal(case_icao_location, username)
+    new_distance_list = database.database_query_fetchone(
+        kyselyt.query_distance_between_locations(username, case_icao_location)
     )
     distance_to_case = new_distance_list[0]
     if previous_distance_to_case > distance_to_case[0]:
@@ -115,7 +115,7 @@ def hot_cold_mechanic(case_icao_location, username, previous_distance_to_case):
 
 # Funktio tulostaa vihjeen listasta, joka tulee sql kyselyn kautta
 def country_clue(case_icao_location):
-    clue = database.database_query(kyselyt.query_country_hint(case_icao_location))
+    clue = database.database_query_fetchone(kyselyt.query_country_hint(case_icao_location))
     print("\nCLUE:")
     for clue in clue:
         print(clue[0])
@@ -146,7 +146,7 @@ def user_search(countries):
 
 # Funktio vertaa käyttäjän etäisyyttä laukkuun ja palauttaa sen mukaisen kuvan
 def signal_strength(case_icao_location, username):
-    distance_list = database.database_query(kyselyt.query_distance_from_goal(case_icao_location, username))
+    distance_list = database.database_query_fetchone(kyselyt.query_distance_between_locations(username, case_icao_location))
     distance_tuple = distance_list[0]
     distance_kilometers = distance_tuple[0] / 1000
     if distance_kilometers < 400:
@@ -327,7 +327,7 @@ print('\n'*50)
 help()
 
 #Lasketaan alkusijainti, ja asetetaan se base-etäisyydeksi kuuma/kylmää varten, asetetaan se muuttujaan
-distance_list = database.database_query(kyselyt.query_distance_from_goal(case_icao_location, username))
+distance_list = database.database_query_fetchone(kyselyt.query_distance_between_locations(username, case_icao_location))
 previous_distance_to_case_tuple = distance_list[0]
 
 #PELI ALKAA MAIN GAME LOOP TÄSSÄ
