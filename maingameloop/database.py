@@ -39,7 +39,6 @@ def database_query_fetchone(query):
     tulos = kursori.fetchone()
     return tulos
 
-
 #Kyselyä varten jos tarvitsee tarkistaa löytyykö tieto esim.
 def database_check_query(query):
     kursori = yhteys.cursor()

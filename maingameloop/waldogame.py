@@ -6,6 +6,9 @@
 import database
 import kyselyt
 import random
+import game_intro_animation
+import travel_animation
+
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
 
@@ -190,6 +193,7 @@ def travel(username, country_list):
 # Pelin aloitus kysely
 def start_game():
     while True:
+
         player_input = input("Start the game? yes/no: ").lower()
         if player_input != 'yes':
             print("\nWaldo looks at you with crying eyes, you need to help me!")
@@ -301,6 +305,8 @@ Safe travels!\n''')
 
 #Haluatko aloittaa pelin funktio
 start_game()
+print('\n'*50)
+game_intro_animation.waldo_animated()
 
 #Asetetaan Vakioarvot pelin alussa
 clue_reminder_given_bool = False
@@ -372,6 +378,10 @@ while user_command != 'bye':
             #LOCATION PÄIVITTÄMINEN PELAAJALLE TIETOKANTAAN, JA PRINTTAUS MATKUSTUKSESTA
             database.database_update(kyselyt.query_update_location(country_icao_tuple[0], username))
             print('\n'*50)
+
+            #Matkustus animaatio!
+            travel_animation.start_travel_animation(travel_country)
+
             travel_ascii_art(random.randint(1,4)) #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
             print(f"You have arrived in {travel_country.upper()} with Waldo!")
             travel_counter += 1  #Matkustus laskuriin lisätään 1 kerta
