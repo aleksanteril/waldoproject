@@ -1,6 +1,6 @@
 import os
 import time
-import pyfiglet  # TÄMÄ KIRJASTO LISÄTTÄVÄ
+import pyfiglet
 import mysql.connector
 
 # VÄLIAIKAISESTI KOODISSA
@@ -14,28 +14,33 @@ yhteys = mysql.connector.connect(
 )
 
 
-# ALEKSANTERIN KOODI
-def travel(username, country_list):
-    user_country = "finland"
+#   VAIHTOEHDOT HAKEE % PALAUTTAA
+def eu_countries():
+    query_eu = "SELECT name FROM country WHERE continent = 'EU';"
+    cursor = yhteys.cursor()
+    cursor.execute(query_eu)
+    eu_countries = cursor.fetchall()
+    eu_countries = [row[0] for row in eu_countries]
+    return eu_countries
+
+# VALINTA
+def country():
+    eu_lista= eu_countries()
+    print ("(EU countries)")
+    print(",".join(eu_lista))
     while True:
-        player_input = input("\nWaldo is excited! Where do you want to travel?: ").lower()
-        if player_input == "destinations":
-            print(country_list)
-        elif player_input == user_country:
-            print("Waldo is confused, we are here already! What do you mean?")
-        elif player_input not in country_list:
-            print("Waldo is confused, what do you mean?")
-            print("Type 'destinations' to see Waldo's list of countries.")
+        valinta = input("Where would you like to travel?: ").capitalize()
+        if valinta in eu_lista:
+            return valinta
         else:
-            break
-    return player_input
+            print("Virhe tai ei ole EU maa. ")
 
 
-# PRINTTAA SAAPUMISMAAN
-def display_ascii_welcome(city_name):
-    ascii_text = pyfiglet.figlet_format(f"Welcome to {city_name}")
-    return ascii_text
-
+# VIESTI
+def message(country_prittified):
+    ascii_art = pyfiglet.figlet_format(f"ARRIVING TO: {country_prittified}... .. .")
+    print(ascii_art)
+    time.sleep(5)
 
 # funktiopäivittää ruutua
 def clear_screen():
@@ -43,7 +48,7 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def takingoff():
+def travel():
     frames = [
         """
         """,
@@ -109,7 +114,7 @@ def takingoff():
     for frame in frames:
         clear_screen()
         print(frame)
-        time.sleep(0.6)
+        time.sleep(0.9)
 
 
 def flying():
@@ -154,84 +159,67 @@ def flying():
                                                          .@@         .@@@                                  
                                                         ##         .@@%                                                                                                                      
         """,
+
+
     ]
     for frame in frames:
         clear_screen()
         print(frame)
-        time.sleep(2.0)
+        time.sleep(3.0)
 
 
-def landing(city_name):
-    welcome_message = display_ascii_welcome(city_name)
+def landing():
     frames = [
         """
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+                
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+                                                                               --@--@--
         """,
         """
+                                                                             --@--@--
         """,
-        f"""
-       {welcome_message}
-       """,
-
-        """ 
+        """                                                                                            
+                                                                           --@--@--
         """,
-        """                                                                                                      --@--@--
- 
-        """,
-        """                                                                                           --@--@--
- 
-        """,
-        """ 
-                                                                                          --@--@--
-        """,
-        """
+        """                                                                                           
                                                                           --@--@--
         """,
         """
-                                                       --@--@--
+                                                                         --@--@--
         """,
         """
-                                      --@--@--
+                                                                     --@--@--
         """,
         """
-                    --@--@--
+                                                                  --@--@--
         """,
         """
-     --@--@--
+                                                               --@--@--
         """,
+        """
+                                                          --@--@--
+        """
     ]
     for frame in frames:
         clear_screen()
         print(frame)
-        time.sleep(0.4)
+        time.sleep(0.7)
 
 
 def runway():
@@ -242,6 +230,16 @@ def runway():
                                                          |   |
                                                          |   |
                                                          |   |
+                                                         |___|
+        """,
+        """
+
+             ✈
+
+
+                                                          ___
+                                                         |   |
+                                                         |   |
                                                          |   |
                                                          |   |
                                                          |___|
@@ -256,8 +254,6 @@ def runway():
                                                          |   |
                                                          |   |
                                                          |   |
-                                                         |   |
-                                                         |   |
                                                          |___|
         """,
         """
@@ -266,22 +262,6 @@ def runway():
 
 
                                                           ___
-                                                         |   |
-                                                         |   |
-                                                         |   |
-                                                         |   |
-                                                         |   |
-                                                         |   |
-                                                         |___|
-        """,
-        """
-
-             ✈
-
-
-                                                          ___
-                                                         |   |
-                                                         |   |
                                                          |   |
                                                          |   |
                                                          |   |
@@ -297,8 +277,6 @@ def runway():
                                                          |   |
                                                          |   |
                                                          |   |
-                                                         |   |
-                                                         |   |
                                                          |__ |
         """,
         """
@@ -306,8 +284,6 @@ def runway():
 
 
                                                           ___
-                                                         |   |
-                                                         |   |
                                                          |   |
                                                          |   |
                                                          |   |
@@ -320,24 +296,24 @@ def runway():
     for frame in frames:
         clear_screen()
         print(frame)
-        time.sleep(0.4)
+        time.sleep(0.8)
 
 
-def main_game(username, country_list):
-    destination = travel(username, country_list)
-
-    takingoff()
-    flying()
-
-    clear_screen()
-
-    landing(destination)
-
-    clear_screen()
-    time.sleep(0.5)
-    runway()
 
 
-country_list = ["germany", "france", "italy", "spain"]
 
-main_game("waldo", country_list)
+
+eu_maa_lista = eu_countries()
+selected_country = country()
+
+travel()
+clear_screen()
+flying()
+
+clear_screen()
+message(selected_country)
+
+landing()
+clear_screen()
+runway()
+
