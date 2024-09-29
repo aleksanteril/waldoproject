@@ -40,8 +40,8 @@ def input_username():
 
 #Kilometrilaskuri laskee edellisen icaon ja uuden paikan välin kilometrit kyselyn avulla
 def kilometer_counter(username, previous_icao):
-    meters = database.database_query_fetchone(kyselyt.query_distance_between_locations(username,previous_icao))
-    kilometers = meters[0] / 1000
+    meters_tuple = database.database_query_fetchone(kyselyt.query_distance_between_locations(username,previous_icao))
+    kilometers = meters_tuple[0] / 1000
     return kilometers
 
 
@@ -98,14 +98,14 @@ Signal strength is weak    ''')
 
 # Kuuma/kylmä mekaniikka joka vertaa edellistä etäisyyttä, nykyiseen etäisyyteen metreissä
 def hot_cold_mechanic(case_icao_location, username, previous_distance_to_case):
-    new_distance_list = database.database_query_fetchone(
+    new_distance_tuple = database.database_query_fetchone(
         kyselyt.query_distance_between_locations(username, case_icao_location)
     )
-    distance_to_case = new_distance_list[0]
-    if previous_distance_to_case > distance_to_case[0]:
+    distance_to_case = new_distance_tuple[0]
+    if previous_distance_to_case > distance_to_case:
         print("\nThe signal got stronger!")
         print("I think we are getting closer!, Waldo says")
-    elif previous_distance_to_case < distance_to_case[0]:
+    elif previous_distance_to_case < distance_to_case:
         print("\nThe signal has weakened!")
         print("Mmm... bad luck, Waldo says sadly")
     else:
@@ -116,7 +116,7 @@ def hot_cold_mechanic(case_icao_location, username, previous_distance_to_case):
 
 # Funktio tulostaa vihjeen listasta, joka tulee sql kyselyn kautta
 def country_clue(case_icao_location):
-    clue = database.database_query_fetchone(kyselyt.query_country_hint(case_icao_location))
+    clue = database.database_query(kyselyt.query_country_hint(case_icao_location))
     print("\nCLUE:")
     for clue in clue:
         print(clue[0])
@@ -147,9 +147,9 @@ def user_search(countries):
 
 # Funktio vertaa käyttäjän etäisyyttä laukkuun ja palauttaa sen mukaisen kuvan
 def signal_strength(case_icao_location, username):
-    distance_list = database.database_query_fetchone(kyselyt.query_distance_between_locations(username, case_icao_location))
-    distance_tuple = distance_list[0]
-    distance_kilometers = distance_tuple[0] / 1000
+    distance_tuple = database.database_query_fetchone(kyselyt.query_distance_between_locations(username, case_icao_location))
+    distance = distance_tuple[0]
+    distance_kilometers = distance / 1000
     if distance_kilometers < 400:
         signal_strength_ascii(5)
         print("The case must be under a 400km radius")
@@ -167,18 +167,22 @@ def signal_strength(case_icao_location, username):
         return
 
 
-# Matkustus funktio, palauttaa matkustusmaan joka ei ole suomi!
+# Matkustus funktio, palauttaa matkustusmaan joka ei ole suomi, tai back palaa takaisin!
 def travel(username, country_list):
     user_country = database.database_query_fetchone(kyselyt.query_fetch_user_country(username))
     while True:
         player_input = input("\nWaldo is excited! Where do you want to travel?: ").lower()
-        if player_input == "destinations":
+        if player_input == 'back':
+            break
+        elif player_input == "destinations":
             user_search(country_list)
         elif player_input == user_country[0]:
             print("Waldo is confused, we are here already! what do you mean?")
+            print("Type 'back' to go to previous menu.")
         elif player_input not in country_list:
             print("Waldo is confused, what do you mean?")
             print("Type 'destinations' to see waldo's list of countries.")
+            print("Type 'back' to go to previous menu.")
         else:
             break
     return player_input
@@ -305,7 +309,7 @@ clue_reminder_given_bool = False
 total_kilometers = 0
 country_icao_tuple = ('EFHK',)
 travel_counter = 0
-travel_counter_limit = 5
+travel_counter_limit = random.randint(4,6)
 
 #Arvotaan matkalaukun maa, ja sen jälkeen arvotaan matkalaukun ICAO
 
@@ -321,7 +325,6 @@ case_icao_location = case_randomizer(
 #print(case_icao_location, case_country) #TÄMÄ ON DEVAUSTA VARTEN MUISTA KOMMENTOIDA POIS!
 
 #Pelin alustus, kysytään käyttäjän nimi ja tarkistetaan onko se uniikki
-#Kysytään käyttäjän käyttäjänimi, kutsutaan input_username funktiota
 #Syötetään käyttäjänimi tietokantaan ID, LOCATION vakio 'EFHK' game taulu
 username = input_username()
 #Kutsutaan help alkuun pelaajalle, ohjeistukseen liittyen
@@ -329,8 +332,8 @@ print('\n'*50)
 help()
 
 #Lasketaan alkusijainti, ja asetetaan se base-etäisyydeksi kuuma/kylmää varten, asetetaan se muuttujaan
-distance_list = database.database_query_fetchone(kyselyt.query_distance_between_locations(username, case_icao_location))
-previous_distance_to_case_tuple = distance_list[0]
+distance_tuple = database.database_query_fetchone(kyselyt.query_distance_between_locations(username, case_icao_location))
+previous_distance_to_case = distance_tuple[0]
 
 #PELI ALKAA MAIN GAME LOOP TÄSSÄ
 print("\nWell let's get going!")
@@ -358,37 +361,39 @@ while user_command != 'bye':
 
     #Matkustus tapahtumat, MAAN VALINTA, SITTEN, PÄIVITYS TIETOKANTAAN, +1 TRAVEL JA KUUMA/KYLMÄ LASKENTA
     elif user_command == commands[2]: #MATKUSTUS
-        #Otetaan talteen maa mistä lähdetään, myöhempää laskentaa varten
-        previous_country_icao = country_icao_tuple[0]
+
         #Kutsutaan matkustus funktiota ja otetaan matkustus maa talteen paluuna
         travel_country = travel(username, countries_list)
+        if travel_country != 'back':
 
-        country_icaos_list = database.database_query(kyselyt.query_country_airports(travel_country))  #Icaot tulevaisuutta ajatellen jos laajenee lentokenttiin
-        country_icao_tuple = country_icaos_list[0] #Maan ICAO - tarvitaan seuraavaa päivityskyselyä varten
+            #Otetaan talteen maa mistä lähdetään, myöhempää laskentaa varten
+            previous_country_icao = country_icao_tuple[0]
+            country_icaos_list = database.database_query(kyselyt.query_country_airports(travel_country))  #Icaot tulevaisuutta ajatellen jos laajenee lentokenttiin
+            country_icao_tuple = country_icaos_list[0] #Maan ICAO - tarvitaan seuraavaa päivityskyselyä varten
 
-        #LOCATION PÄIVITTÄMINEN PELAAJALLE TIETOKANTAAN, JA PRINTTAUS MATKUSTUKSESTA
-        database.database_update(kyselyt.query_update_location(country_icao_tuple[0], username))
-        print('\n'*50)
-        travel_ascii_art(random.randint(1,4)) #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
-        print(f"You have arrived in {travel_country.upper()} with Waldo!")
-        travel_counter += 1  #Matkustus laskuriin lisätään 1 kerta
+            #LOCATION PÄIVITTÄMINEN PELAAJALLE TIETOKANTAAN, JA PRINTTAUS MATKUSTUKSESTA
+            database.database_update(kyselyt.query_update_location(country_icao_tuple[0], username))
+            print('\n'*50)
+            travel_ascii_art(random.randint(1,4)) #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
+            print(f"You have arrived in {travel_country.upper()} with Waldo!")
+            travel_counter += 1  #Matkustus laskuriin lisätään 1 kerta
 
-        kilometers = kilometer_counter(username, previous_country_icao) #Kilometrien laskenta
-        total_kilometers = total_kilometers + kilometers #total counter
+            kilometers = kilometer_counter(username, previous_country_icao) #Kilometrien laskenta
+            total_kilometers = total_kilometers + kilometers #total counter
 
 
-        #TÄHÄN TARKISTUS ONKO PELAAJA SAAPUNUT SAMAAN MAAHAN KUIN MATKALAUKKU
-        goal_reached_bool = goal_check(username, case_country.lower())  #PALAUTTAA TRUE JOS PELAAJA ON LAUKUN MAASSA MUUTEN FALSE
-        #KUUMA/KYLMÄ MEKANIIKKA
-        if not goal_reached_bool:
-            previous_distance_to_case_tuple = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case_tuple[0])
-        else:
-            #Asetetaan tietokantaan pelaajan käyttämä co2
-            database.database_query(kyselyt.query_update_co2_total_player(username, int(total_kilometers*8)))
-            print("\nVOITTOKUVIO")
-            print(f"Kuljettu kilometrimäärä: {total_kilometers:.0f}km")
-            print(f"CO2 - päästösi ovat: {total_kilometers*8:.0f}kg MIETIPPÄ SITÄ!")
-            break
+            #TÄHÄN TARKISTUS ONKO PELAAJA SAAPUNUT SAMAAN MAAHAN KUIN MATKALAUKKU
+            goal_reached_bool = goal_check(username, case_country.lower())  #PALAUTTAA TRUE JOS PELAAJA ON LAUKUN MAASSA MUUTEN FALSE
+            #KUUMA/KYLMÄ MEKANIIKKA
+            if not goal_reached_bool:
+                previous_distance_to_case = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case)
+            else:
+                #Asetetaan tietokantaan pelaajan käyttämä co2
+                database.database_query(kyselyt.query_update_co2_total_player(username, int(total_kilometers*8)))
+                print("\nVOITTOKUVIO")
+                print(f"Kuljettu kilometrimäärä: {total_kilometers:.0f}km, matkojen määrä: {travel_counter}")
+                print(f"CO2 - päästösi ovat: {total_kilometers*8:.0f}kg MIETIPPÄ SITÄ!")
+                break
 
     #Radio komento signaalin vahvuuden tulostamiseen
     elif user_command == commands[3]: #RADIO
