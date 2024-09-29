@@ -31,7 +31,6 @@ def case_randomizer(list):
 def input_username():
     username_exist = True
     while username_exist:
-        from maingameloop.game_art import waldo_animated
         username = input("\nWaldo greets you! Hello my friend: ").lower()
         username_exist = database.database_check_query(kyselyt.query_check_username(username))
         if username_exist:
