@@ -1,4 +1,4 @@
-#GAME INTRO
+##GAME INTRO
 import time
 
 def waldo_animated():
@@ -79,4 +79,3 @@ def waldo_animated():
         print(waldo)
         time.sleep(0.1)
 
-waldo_animated()

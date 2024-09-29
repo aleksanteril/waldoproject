@@ -8,7 +8,7 @@ import pyfiglet
 def message(country_prittified):
     ascii_art = pyfiglet.figlet_format(f"ARRIVING TO: {country_prittified}... .. .")
     print(ascii_art)
-    time.sleep(5)
+    time.sleep(2)
 
 # funktiopäivittää ruutua
 def clear_screen():
@@ -82,7 +82,7 @@ def travel():
     for frame in frames:
         clear_screen()
         print(frame)
-        time.sleep(0.9)
+        time.sleep(0.5)
 
 
 def flying():
@@ -133,7 +133,7 @@ def flying():
     for frame in frames:
         clear_screen()
         print(frame)
-        time.sleep(3.0)
+        time.sleep(1.0)
 
 
 def landing():
@@ -270,8 +270,8 @@ def runway():
 
 
 
-
-def travel_animation(country_name):
+#Animaatio kutsu, koko animaation sykli
+def start_travel_animation(country_name):
     travel()
     clear_screen()
     flying()
@@ -279,7 +279,7 @@ def travel_animation(country_name):
     clear_screen()
     message(country_name)
 
-    landing()
+    #landing()
     clear_screen()
-    runway()
+    #runway()
     return
