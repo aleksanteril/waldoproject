@@ -62,6 +62,6 @@ def play_waldo_sound(sound_num):
     return
 
 
-play_waldo_sound(1)
+play_waldo_sound(2)
 
 
