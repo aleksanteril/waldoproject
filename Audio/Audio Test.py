@@ -29,6 +29,7 @@ def play_game_sound(sound_num):
 print("kgfkjgfjkgkfjkdsksfd")
 play_game_sound(2)
 
+# Erillinen funktio waldon äänille
 def play_waldo_sound(sound_num):
     if sound_num == 1:
         playsound(".mp3")
