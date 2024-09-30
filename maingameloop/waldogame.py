@@ -49,7 +49,7 @@ def kilometer_counter(username, previous_icao):
 
 #tulostaa komennot käyttäjälle
 def help():
-    print("\nUsing command 'help' opens the help window.")
+    print("\nUsing command 'help' opens this window.")
     print("Using command 'clue' gives you a clue.")
     print("Using command 'destinations' prints the country's you can travel to.")
     print("Using command 'travel' travels you to your country of choosing.")
@@ -106,13 +106,13 @@ def hot_cold_mechanic(case_icao_location, username, previous_distance_to_case):
     distance_to_case = new_distance_tuple[0]
     if previous_distance_to_case > distance_to_case:
         print("\nThe signal got stronger!")
-        print("I think we are getting closer!, Waldo says")
+        print("I think we're getting closer!, Waldo says")
     elif previous_distance_to_case < distance_to_case:
         print("\nThe signal has weakened!")
         print("Mmm... bad luck, Waldo says sadly")
     else:
         print("\nThe signal hasn't budged!")
-        print("Same as before, Waldo says ")
+        print("Signal's the same, Waldo says ")
     return distance_to_case
 
 
@@ -142,8 +142,10 @@ def user_input_command(commands):
 # Funktio tulostaa kaikki saatavilla olevat kohteet
 def user_search(countries):
     print("\nAVAILABLE DESTINATIONS")
-    for country in countries:
-        print(country)
+    for i in range(0,len(countries_list)-1,4):
+        if i >= len(countries_list)-1:
+            print(f"{countries_list[i]:20}")
+        print(f" {countries_list[i]:20}{countries_list[i+1]:20}{countries_list[i+2]:20}{countries_list[i+3]:20}")
     return
 
 
@@ -179,7 +181,7 @@ def travel(username, country_list):
         elif player_input == "destinations":
             user_search(country_list)
         elif player_input == user_country[0]:
-            print("Waldo is confused, we are here already! what do you mean?")
+            print("Waldo is confused, we're here already! what do you mean?")
             print("Type 'back' to go to previous menu.")
         elif player_input not in country_list:
             print("Waldo is confused, what do you mean?")
@@ -366,6 +368,9 @@ while user_command != 'bye':
     #Matkustus tapahtumat, MAAN VALINTA, SITTEN, PÄIVITYS TIETOKANTAAN, +1 TRAVEL JA KUUMA/KYLMÄ LASKENTA
     elif user_command == commands[2]: #MATKUSTUS
 
+        #Näytetään käyttäjälle kohteet minne matkustaa
+        user_search(countries_list)
+
         #Kutsutaan matkustus funktiota ja otetaan matkustus maa talteen paluuna
         travel_country = travel(username, countries_list)
         if travel_country != 'back':
@@ -395,6 +400,7 @@ while user_command != 'bye':
             #KUUMA/KYLMÄ MEKANIIKKA
             if not goal_reached_bool:
                 previous_distance_to_case = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case)
+                signal_strength(case_icao_location, username)
             else:
                 #Asetetaan tietokantaan pelaajan käyttämä co2
                 database.database_query(kyselyt.query_update_co2_total_player(username, int(total_kilometers*8)))
