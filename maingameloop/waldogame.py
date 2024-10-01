@@ -1,13 +1,14 @@
 #Peliä varten täytyy asentaa mysql-connector-python 8.0.29!!!
-#Peliä varten täytyy asentaa playsound
+#Peliä varten täytyy asentaa playsound, ja pyfiglet
 
 #Yhteyden luonti tietokantaan erillisessä filessä
-#Importataan kyselyt.py ja database.py ja random
+#Importataan kyselyt.py ja database.py ja random, audio ja animations
 import database
 import kyselyt
 import random
-import game_intro_animation
-import travel_animation
+import animations
+import audio
+
 
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
@@ -308,9 +309,11 @@ Safe travels!\n''')
 #Haluatko aloittaa pelin funktio
 start_game()
 print('\n'*50)
-game_intro_animation.waldo_animated()
+#Intro animaatio
+animations.game_intro_animation.waldo_animated()
 
 #Asetetaan Vakioarvot pelin alussa
+goal_reached_bool = False
 clue_reminder_given_bool = False
 total_kilometers = 0
 country_icao_tuple = ('EFHK',)
@@ -318,7 +321,6 @@ travel_counter = 0
 travel_counter_limit = random.randint(4,6)
 
 #Arvotaan matkalaukun maa, ja sen jälkeen arvotaan matkalaukun ICAO
-
 case_country = 'Finland'
 while case_country == 'Finland' or case_country == 'Russia':
     case_country = case_randomizer(
@@ -385,7 +387,7 @@ while user_command != 'bye':
             print('\n'*50)
 
             #Matkustus animaatio!
-            travel_animation.start_travel_animation(travel_country)
+            animations.travel_animation.start_travel_animation(travel_country)
 
             travel_ascii_art(random.randint(1,4)) #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
             print(f"You have arrived in {travel_country.upper()} with Waldo!")
@@ -416,3 +418,7 @@ while user_command != 'bye':
     #Help komento, tulostetaan help print
     elif user_command == commands[4]:
         help() #Help-komento
+
+#Waldo suuttuu jos lähdet kesken pelin!
+if not goal_reached_bool:
+    print("WHY ARE YOU LEAVING ME!")
