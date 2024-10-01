@@ -5,16 +5,12 @@ from playsound import playsound
 def play_game_sound(sound_num):
     if sound_num == 1:
         playsound("clue_sound.mp3")
-        print("TOIMIIKO")
     elif sound_num == 2:
         playsound("help_command.mp3")
-        print("perkele")
     elif sound_num == 3:
         playsound("radio_sound.mp3")
-        print("asdasda")
     elif sound_num == 4:
         playsound("right_country.mp3")
-        print("Asdasd")
     elif sound_num == 5:
         playsound("travel_sound.mp3")
     elif sound_num == 6:
@@ -26,7 +22,7 @@ def play_game_sound(sound_num):
     return
 
 # Kutsuu funktiota parametrilla
-print("kgfkjgfjkgkfjkdsksfd")
+print("Moi")
 play_game_sound(2)
 
 # Erillinen funktio waldon äänille
