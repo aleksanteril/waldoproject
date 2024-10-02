@@ -70,7 +70,7 @@ def waldo_animated():
         "\033[31m                        *%((((##%(((((((((               \033[0m          ",
         "\033[31m                    . ((((((/&(/#((((/((((#              \033[0m",
 
-        "\033[33m                                                                                  \033[0m",
+        "\033[94m                                                                                  ",
         "                                                                                           ",
         "                                                                                       ",
 
@@ -80,7 +80,21 @@ def waldo_animated():
         print(waldo)
         time.sleep(0.1)
 
-
+        #   •   Green: \033[32m
+        #   •   Yellow: \033[33m
+        #   •   Blue: \033[34m
+        #   •   Magenta: \033[35m
+        #   •   Cyan: \033[36m
+        #   •   White: \033[37m
+        #   •   Reset (to go back to the normal color): \033[0m
+        #	•	90: Bright Black (gray)
+        #	•	91: Bright Red
+        #	•	92: Bright Green
+        #	•	93: Bright Yellow
+        #	•	94: Bright Blue
+        #	•	95: Bright Magenta
+        #	•	96: Bright Cyan
+        #	•	97: Bright White
 # VIESTI
 def message(country_prittified):
     ascii_art = pyfiglet.figlet_format(f"ARRIVING TO: {country_prittified}... .. .")

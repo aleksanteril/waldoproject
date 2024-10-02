@@ -240,7 +240,7 @@ def travel_ascii_art(ascii_num):
         ⢎⡝⢦⡙⢦⠛⡴⣋⡜⣲⠿⠧⣴⠲⡖⢷⠲⣔⣺⠒⠋BELGIUM ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                ⠀⠀⠀⠀⠀⠀⠀⠀⠀ UKRAINE      ⡝⢮⡱   
         ⢮⡜⣣⠝⣪⣙⠲⡥⢚⡥⢚(Guernsay)⣎⣵⠂⠋ ⠀⠀   ⠀GERMANY⠀⠀⠀               ⠀⠀⠀⠀⠀       ⠀    ⠀⠀⠀       ⡸⢇⡸ ⠀ ⠀⠀
         ⢦⡙⢦⡛⡴⣡⢛⠼⡡⢞⣿⡉⠙⠻⠓⠀⠀⠀⠀⠀⠀⠀⠀⠀         ⠀⠀   CZECH REPUBLIC⠀⠀SLOVAKIA⠀     MOLDOVA ⠀      ⡹⢬⡑    
-        ⢖⡹⢦⡙⡖⣥(Jersey)⡜⡹⢷⡀⠀⠀⠀⠀  ⠀LUXEMBURG⠀⠀     ⠀⠀⠀       ⠀⠀⠀     ⠀   ⠈⠉⠙⠒⠛⠁⣠⣒⣒⠫⣉⠛     ⣒⢕⡣⡝ 
+        ⢖⡹⢦⡙⡖⣥(Jersey)⡜⡹⢷⡀⠀⠀⠀⠀  ⠀LUXEMBOURG⠀⠀     ⠀⠀⠀       ⠀⠀⠀     ⠀   ⠈⠉⠙⠒⠛⠁⣠⣒⣒⠫⣉⠛     ⣒⢕⡣⡝ 
         ⢋⡼⣡⢏⡜⢦⡙⠼⡱⣍⢲⡑⡫⢦⡀⠀⠀FRANCE⠀(Liechtenstein) AUSTRIA⠀ ⠀   HUNGARY            ⠱⣎⡝⢦⢣    ⢕⡣⡝ 
         ⣭⢲⡱⢎⡜⢦⡙⡥⠳⣌⠧⣜⠱⣪⢧⠀⠀⠀⠀⠀⠀SWITZERLAND⠀     SLOVENIA                                  ⢪⠕⣎          
         ⢴⢣⡜⠒⠛⠦⠧⣍⠳⡌⠶⣌⠳⡟⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣻⡽⣷⣷⡄  CROATIA⠀⠀⠀⠀⠀⠀⠀⠀⠀        ROMANIA      ⢎⡝⢦  
