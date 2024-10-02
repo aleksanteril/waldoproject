@@ -16,6 +16,28 @@ import pyfiglet
 
 #ALIOHJELMAT LÖYTYVÄT TÄSTÄ
 
+# Tulostaa voitto tekstin
+def print_congratulations(message):
+    for letter in message:
+        print(letter, end='', flush=True)
+        time.sleep(0.1)
+    print()
+
+
+# Tulostaa loppuun statsit hienommin (pyfligtet)
+def display_results(total_kilometers, travel_counter):
+    ascii_art = pyfiglet.figlet_format("RESULTS")
+    print(ascii_art)
+    border = "=" * 50
+    print(border)
+
+    print(f"{'Kuljettu kilometrimäärä:':<30} {total_kilometers:.0f} km")
+    print(f"{'Matkojen määrä:':<30} {travel_counter}")
+    print(f"{'CO2 - päästösi ovat:':<30} {total_kilometers * 8:.0f} kg  🌱")
+    print(border)
+    print()
+
+
 #Funktio jolla tarkastetaan onko pelaaja löytänyt matkalaukun maan
 def goal_check(username, case_location):
     user_country = database.database_query_fetchone(kyselyt.query_fetch_user_country(username))
@@ -38,7 +60,7 @@ def input_username():
         username = input("\nWaldo greets you! Enter new player name: ").lower()
         username_exist = database.database_check_query(kyselyt.query_check_username(username))
         if username_exist:
-            print("\nName takes, enter new new player name.!")
+            print("\nName taken, enter new new player name.!")
     database.database_update(kyselyt.query_new_username(username))
     return username
 
@@ -374,6 +396,7 @@ previous_distance_to_case = distance_tuple[0]
 print("\nWell let's get going!")
 user_command = None
 while user_command != 'bye':
+
     #Jos käyttäjä on matkustanut tarpeeksi askelia ilmoitetaan vihjeen saatavuudesta
     if travel_counter >= travel_counter_limit and not clue_reminder_given_bool:
         print("\nHey!!!! WAIT A MINUTE!")
@@ -420,32 +443,11 @@ while user_command != 'bye':
             print(f"You have arrived in {travel_country.upper()} with Waldo!")
             travel_counter += 1  #Matkustus laskuriin lisätään 1 kerta
 
+            #Lasketaan kilometrit matkalta ja otetaan ylös
             kilometers = kilometer_counter(username, previous_country_icao) #Kilometrien laskenta
             total_kilometers = total_kilometers + kilometers #total counter
 
-            # Tulostaa voitto tekstin
-            def print_congratulations(message):
-                for letter in message:
-                    print(letter, end='', flush=True)
-                    time.sleep(0.1)
-                print()
-
-
-            # Tulostaa loppuun statsit hienommin (pyfligtet)
-            def display_results(total_kilometers, travel_counter):
-                ascii_art = pyfiglet.figlet_format("RESULTS")
-                print(ascii_art)
-                border = "=" * 50
-                print(border)
-
-                print(f"{'Kuljettu kilometrimäärä:':<30} {total_kilometers:.0f} km")
-                print(f"{'Matkojen määrä:':<30} {travel_counter}")
-                print(f"{'CO2 - päästösi ovat:':<30} {total_kilometers * 8:.0f} kg  🌱")
-                print(border)
-                print()
-
-
-
+            #Tarkistetaan onko pelaaja saavuttanut päämäärää
             goal_reached_bool = goal_check(username, case_country.lower())
             if not goal_reached_bool:
                 travel_ascii_art(5)
@@ -456,7 +458,6 @@ while user_command != 'bye':
                 database.database_query(kyselyt.query_update_co2_total_player(username, int(total_kilometers * 8)))
                 print_congratulations("CONGRATULATIONS!!! You've found Waldo's suitcase.")
                 display_results(total_kilometers, travel_counter)
-
                 break
 
     #Radio komento signaalin vahvuuden tulostamiseen
