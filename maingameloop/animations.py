@@ -368,13 +368,13 @@ def print_congratulations(message):
 
 # Tulostaa loppuun statsit hienommin (pyfligtet)
 def display_results(total_kilometers, travel_counter):
-    ascii_art = pyfiglet.figlet_format("RESULTS")
+    ascii_art = pyfiglet.figlet_format("GAME RESULTS")
     print(ascii_art)
     border = "=" * 50
     print(border)
 
-    print(f"{'Kuljettu kilometrimäärä:':<30} {total_kilometers:.0f} km")
-    print(f"{'Matkojen määrä:':<30} {travel_counter}")
-    print(f"{'CO2 - päästösi ovat:':<30} {total_kilometers * 8:.0f} kg  🌱")
+    print(f"{'Kilometers travelled:':<30} {total_kilometers:.0f} km")
+    print(f"{'Flights taken:':<30} {travel_counter}")
+    print(f"{'Your CO2 footprint:':<30} {total_kilometers * 8:.0f} kg  🌱")
     print(border)
     print()
