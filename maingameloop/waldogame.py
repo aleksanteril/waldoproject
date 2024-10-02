@@ -7,7 +7,7 @@ import database
 import kyselyt
 import random
 import audio
-import animations
+from animations import game_intro_animation, travel_animation
 import time
 import pyfiglet
 
@@ -168,8 +168,8 @@ def user_search(countries):
     print("\nAVAILABLE DESTINATIONS")
     for i in range(0,len(countries_list)-1,4):
         if i >= len(countries_list)-1:
-            print(f"{countries_list[i]:20}")
-        print(f" {countries_list[i]:20}{countries_list[i+1]:20}{countries_list[i+2]:20}{countries_list[i+3]:20}")
+            print(f"{countries_list[i]:25}")
+        print(f" {countries_list[i]:25}{countries_list[i+1]:25}{countries_list[i+2]:25}{countries_list[i+3]:25}")
     return
 
 
@@ -359,7 +359,7 @@ Safe travels!\n''')
 #Haluatko aloittaa pelin funktio
 start_game()
 print('\n'*50)
-animations.game_intro_animation.waldo_animated()
+game_intro_animation.waldo_animated()
 
 #Asetetaan Vakioarvot pelin alussa
 goal_reached_bool = False
@@ -437,7 +437,7 @@ while user_command != 'bye':
             print('\n'*50)
 
             #Matkustus animaatio!
-            animations.travel_animation.start_travel_animation(travel_country)
+            travel_animation.start_travel_animation(travel_country)
 
             #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
             print(f"You have arrived in {travel_country.upper()} with Waldo!")
