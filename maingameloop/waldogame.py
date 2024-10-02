@@ -6,36 +6,13 @@
 import database
 import kyselyt
 import random
-import audio
-from animations import game_intro_animation, travel_animation
-import time
-import pyfiglet
+import animations
+from audio import audio_library
 
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
 
 #ALIOHJELMAT LÖYTYVÄT TÄSTÄ
-
-# Tulostaa voitto tekstin
-def print_congratulations(message):
-    for letter in message:
-        print(letter, end='', flush=True)
-        time.sleep(0.1)
-    print()
-
-
-# Tulostaa loppuun statsit hienommin (pyfligtet)
-def display_results(total_kilometers, travel_counter):
-    ascii_art = pyfiglet.figlet_format("RESULTS")
-    print(ascii_art)
-    border = "=" * 50
-    print(border)
-
-    print(f"{'Kuljettu kilometrimäärä:':<30} {total_kilometers:.0f} km")
-    print(f"{'Matkojen määrä:':<30} {travel_counter}")
-    print(f"{'CO2 - päästösi ovat:':<30} {total_kilometers * 8:.0f} kg  🌱")
-    print(border)
-    print()
 
 
 #Funktio jolla tarkastetaan onko pelaaja löytänyt matkalaukun maan
@@ -358,8 +335,9 @@ Safe travels!\n''')
 
 #Haluatko aloittaa pelin funktio
 start_game()
+audio_library.play_game_sound(6) #Start game ääni
 print('\n'*50)
-game_intro_animation.waldo_animated()
+animations.waldo_animated() #Intro animaatio
 
 #Asetetaan Vakioarvot pelin alussa
 goal_reached_bool = False
@@ -402,6 +380,7 @@ while user_command != 'bye':
         print("\nHey!!!! WAIT A MINUTE!")
         print("Waldo looks at you and says, I guess i remember a little riddle from the country")
         clue_reminder_given_bool = True
+        audio_library.play_game_sound(1)
 
     user_command = user_input_command(commands)   #Kysytään käyttäjän input funktiolla
 
@@ -437,7 +416,8 @@ while user_command != 'bye':
             print('\n'*50)
 
             #Matkustus animaatio!
-            travel_animation.start_travel_animation(travel_country)
+            animations.start_travel_animation(travel_country)
+            audio_library.play_game_sound(5) #Matkustus ääni
 
             #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
             print(f"You have arrived in {travel_country.upper()} with Waldo!")
@@ -456,17 +436,20 @@ while user_command != 'bye':
             else:
                 travel_ascii_art(4)
                 database.database_query(kyselyt.query_update_co2_total_player(username, int(total_kilometers * 8)))
-                print_congratulations("CONGRATULATIONS!!! You've found Waldo's suitcase.")
-                display_results(total_kilometers, travel_counter)
+                animations.print_congratulations("CONGRATULATIONS!!! You've found Waldo's suitcase.")
+                animations.display_results(total_kilometers, travel_counter)
+                audio_library.play_game_sound(8)
                 break
 
     #Radio komento signaalin vahvuuden tulostamiseen
     elif user_command == commands[3]: #RADIO
         signal_strength(case_icao_location, username)
+        audio_library.play_game_sound(3) #Radio ääni
 
     #Help komento, tulostetaan help print
     elif user_command == commands[4]:
         help() #Help-komento
+        audio_library.play_game_sound(2) #Help ääni
 
 if not goal_reached_bool:
     print("WALDO SUUTTUU")
