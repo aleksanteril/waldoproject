@@ -35,6 +35,7 @@ def case_randomizer(list):
 def input_username():
     username_exist = True
     while username_exist:
+        audio_library.play_waldo_sound(10)
         username = input("\nWaldo greets you! Enter new player name: ").lower()
         username_exist = database.database_check_query(kyselyt.query_check_username(username))
         if username_exist:
@@ -109,12 +110,15 @@ def hot_cold_mechanic(case_icao_location, username, previous_distance_to_case):
     if previous_distance_to_case > distance_to_case:
         print("\nThe signal got stronger!")
         print("I think we're getting closer!, Waldo says")
+        audio_library.play_waldo_sound(11)
     elif previous_distance_to_case < distance_to_case:
         print("\nThe signal has weakened!")
         print("Mmm... bad luck, Waldo says sadly")
+        audio_library.play_waldo_sound(6)
     else:
         print("\nThe signal hasn't budged!")
         print("Signal's the same, Waldo says ")
+        audio_library.play_waldo_sound(8)
     return distance_to_case
 
 
@@ -136,6 +140,7 @@ def user_input_command(commands):
         if user_input not in commands:
             print("\nWaldo didn't understand that")
             print("If you need help type 'help'")
+            audio_library.play_waldo_sound(3)
     return user_input
 
 
@@ -176,19 +181,23 @@ def signal_strength(case_icao_location, username):
 # Matkustus funktio, palauttaa matkustusmaan joka ei ole suomi, tai back palaa takaisin!
 def travel(username, country_list):
     user_country = database.database_query_fetchone(kyselyt.query_fetch_user_country(username))
+    audio_library.play_waldo_sound(13)
     while True:
         player_input = input("\nWaldo is excited! Where do you want to travel?: ").lower()
         if player_input == 'back':
             break
         elif player_input == "destinations":
             user_search(country_list)
+            audio_library.play_waldo_sound(5)
         elif player_input == user_country[0]:
             print("Waldo is confused, we're here already! what do you mean?")
             print("Type 'back' to go to previous menu.")
+            audio_library.play_waldo_sound(3)
         elif player_input not in country_list:
             print("Waldo is confused, what do you mean?")
             print("Type 'destinations' to see waldo's list of countries.")
             print("Type 'back' to go to previous menu.")
+            audio_library.play_waldo_sound(3)
         else:
             break
     return player_input
@@ -201,6 +210,7 @@ def start_game():
         player_input = input("Start the game? yes/no: ").lower()
         if player_input != 'yes':
             print("\nWaldo looks at you with crying eyes, you need to help me!")
+            audio_library.play_waldo_sound(2)
         else:
             break
     return
@@ -373,15 +383,18 @@ previous_distance_to_case = distance_tuple[0]
 
 #PELI ALKAA MAIN GAME LOOP TÄSSÄ
 print("\nWell let's get going!")
+audio_library.play_waldo_sound(4)
 user_command = None
 while user_command != 'bye':
 
     #Jos käyttäjä on matkustanut tarpeeksi askelia ilmoitetaan vihjeen saatavuudesta
     if travel_counter >= travel_counter_limit and not clue_reminder_given_bool:
         print("\nHey!!!! WAIT A MINUTE!")
-        print("Waldo looks at you and says, I guess i remember a little riddle from the country")
-        clue_reminder_given_bool = True
         audio_library.play_game_sound(1)
+        print("Waldo looks at you and says, I guess i remember a little riddle from the country")
+        audio_library.play_waldo_sound(7)
+        clue_reminder_given_bool = True
+
 
     user_command = user_input_command(commands)   #Kysytään käyttäjän input funktiolla
 
@@ -392,15 +405,18 @@ while user_command != 'bye':
             country_clue(case_icao_location)
         else:
             print("Waldo's memory is still a bit hazy, maybe later")
+            audio_library.play_waldo_sound(3)
 
     #Kohteet funktio,  kohteiden näyttäminen käyttäjälle (tällä hetkellä pelkät maat)
     elif user_command == commands[1]: #KOHTEET
         user_search(countries_list)
+        audio_library.play_waldo_sound(5)
 
     #Matkustus tapahtumat, MAAN VALINTA, SITTEN, PÄIVITYS TIETOKANTAAN, +1 TRAVEL JA KUUMA/KYLMÄ LASKENTA
     elif user_command == commands[2]: #MATKUSTUS
 
         #Näytetään käyttäjälle kohteet minne matkustaa
+        travel_ascii_art(5)
         user_search(countries_list)
 
         #Kutsutaan matkustus funktiota ja otetaan matkustus maa talteen paluuna
@@ -418,7 +434,7 @@ while user_command != 'bye':
 
             #Matkustus animaatio!
             animations.start_travel_animation(travel_country)
-            audio_library.play_game_sound(5) #Matkustus ääni
+            audio_library.play_game_sound(5)
 
             #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
             print(f"You have arrived in {travel_country.upper()} with Waldo!")
@@ -453,4 +469,5 @@ while user_command != 'bye':
         audio_library.play_game_sound(2) #Help ääni
 
 if not goal_reached_bool:
-    print("WALDO SUUTTUU")
+    print("\nWALDO SUUTTUU")
+    audio_library.play_waldo_sound(12)
