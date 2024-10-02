@@ -21,7 +21,6 @@ def play_game_sound(sound_num):
         playsound("simply_the_best.mp3")
     return
 
-
 # Erillinen funktio waldon äänille
 def play_waldo_sound(sound_num):
     if sound_num == 1:
