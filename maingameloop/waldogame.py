@@ -148,6 +148,7 @@ def user_input_command(commands):
 
 # Funktio tulostaa kaikki saatavilla olevat kohteet
 def user_search(countries):
+    #travel_ascii_art(5)
     print("\nAVAILABLE DESTINATIONS")
     for i in range(0,len(countries_list)-1,4):
         if i >= len(countries_list)-1:
@@ -417,7 +418,6 @@ while user_command != 'bye':
 
         #Näytetään käyttäjälle kohteet minne matkustaa
         travel_ascii_art(5)
-        user_search(countries_list)
 
         #Kutsutaan matkustus funktiota ja otetaan matkustus maa talteen paluuna
         travel_country = travel(username, countries_list)
@@ -436,8 +436,6 @@ while user_command != 'bye':
             animations.start_travel_animation(travel_country)
             audio_library.play_game_sound(5)
 
-            #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
-            print(f"You have arrived in {travel_country.upper()} with Waldo!")
             travel_counter += 1  #Matkustus laskuriin lisätään 1 kerta
 
             #Lasketaan kilometrit matkalta ja otetaan ylös
@@ -448,12 +446,13 @@ while user_command != 'bye':
             goal_reached_bool = goal_check(username, case_country.lower())
             if not goal_reached_bool:
                 travel_ascii_art(5)
+                print(f"You have arrived in {travel_country.upper()} with Waldo!")
                 previous_distance_to_case = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case)
                 signal_strength(case_icao_location, username)
             else:
                 travel_ascii_art(4)
                 database.database_query(kyselyt.query_update_co2_total_player(username, int(total_kilometers * 8)))
-                animations.print_congratulations("CONGRATULATIONS!!! You've found Waldo's suitcase.")
+                animations.print_congratulations(f"CONGRATULATIONS!!! You've found Waldo's suitcase in {travel_country.upper()}.")
                 animations.display_results(total_kilometers, travel_counter)
                 audio_library.play_game_sound(8)
                 break
