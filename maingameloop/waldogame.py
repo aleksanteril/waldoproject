@@ -137,7 +137,7 @@ def hot_cold_mechanic(case_icao_location, username, previous_distance_to_case):
 #    return
 
 
-# "UUSI" Funktio tulostaa vihjeen listasta sekä vastaavan maan asciin joka tulee sql kyselyn kautta
+# "UUSI" Funktio tulostaa vihjeen sekä vastaavan maan asciin joka tulee sql kyselyn kautta
 def country_clue(case_icao_location):
     # hakee molemmat vihjeet, sql haku muokattu, katso kyselyt kansio
     result = database.database_query(kyselyt.query_country_hint_and_name(case_icao_location))
@@ -148,7 +148,6 @@ def country_clue(case_icao_location):
 
         # Printtaa maan nimen perusteella asciin ensin sitten
         ascii_countries.country_art(country_name.lower()) #lowercase lisätty toimivuuden kannalta
-
         print("\nCLUE:")
         print(clue_text)
 
