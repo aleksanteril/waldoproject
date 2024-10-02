@@ -7,7 +7,8 @@ import database
 import kyselyt
 import random
 import animations
-from audio import audio_library
+import audio_library
+
 
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
