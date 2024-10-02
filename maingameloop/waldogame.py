@@ -382,9 +382,8 @@ case_icao_location = case_randomizer(
 audio_library.play_waldo_sound(10)
 username = input_username()
 
-#Kutsutaan help alkuun pelaajalle, ohjeistukseen liittyen
+#Päivitetään ruutu
 clear_screen()
-#help()
 
 #Lasketaan alkusijainti, ja asetetaan se base-etäisyydeksi kuuma/kylmää varten, asetetaan se muuttujaan
 distance_tuple = database.database_query_fetchone(kyselyt.query_distance_between_locations(username, case_icao_location))
@@ -421,16 +420,11 @@ while user_command != 'bye':
 
     #Kohteet funktio,  kohteiden näyttäminen käyttäjälle (tällä hetkellä pelkät maat)
     elif user_command == commands[1]: #KOHTEET
-        travel_ascii_art(5)
         user_search(countries_list)
         audio_library.play_waldo_sound(5)
 
     #Matkustus tapahtumat, MAAN VALINTA, SITTEN, PÄIVITYS TIETOKANTAAN, +1 TRAVEL JA KUUMA/KYLMÄ LASKENTA
     elif user_command == commands[2]: #MATKUSTUS
-
-        #Näytetään käyttäjälle kohteet minne matkustaa
-        #clear_screen()
-        #travel_ascii_art(5)
 
         #Kutsutaan matkustus funktiota ja otetaan matkustus maa talteen paluuna
         travel_country = travel(username, countries_list)
@@ -461,9 +455,9 @@ while user_command != 'bye':
 
             #Kuuma/kylmä mekaniikka jos ei ole saavuttanut tavoitetta
             if not goal_reached_bool:
-                travel_ascii_art(5)
+                travel_ascii_art(5) #Kartan printtaus
                 previous_distance_to_case = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case)
-                signal_strength(case_icao_location, username)
+                signal_strength(case_icao_location, username) #Signaalin printtaus
             else:
                 break #Siirrytään loopista ulos voittoprinttiin
 
