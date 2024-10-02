@@ -468,7 +468,7 @@ while user_command != 'bye':
 
 #Jos pelaaja lähtee kesken pelin!
 if not goal_reached_bool:
-    print("\nWALDO SUUTTUU")
+    print("\nWaldo is furious!!")
     audio_library.play_waldo_sound(12)
 
 #Voittoprintti tähän!
