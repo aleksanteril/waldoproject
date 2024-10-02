@@ -17,8 +17,8 @@
 - check() ok, vielä pitää lisätä voittokuviot
 - exit lisäys waldo suuttuu koska luovutit
 Bye! (WHAT!?! ARE YOU LEAVING ME AFTER ALL THIS TIME, I'M NEVER TALKING TO YOU EVER AGAIN!)
-Destinations pitää laittaa aakkosjärjestykseen
-Vihjeisiin pitää lisätä maan alkukirjain
+Destinations pitää laittaa aakkosjärjestykseen /ok 2.10 aleksanteri
+Vihjeisiin pitää lisätä maan alkukirjain /keskustellaan tästä
 
 #### Jari, Aleksi
 - Matkustus() ok

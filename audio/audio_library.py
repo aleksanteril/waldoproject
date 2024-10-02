@@ -21,9 +21,6 @@ def play_game_sound(sound_num):
         playsound("simply_the_best.mp3")
     return
 
-# Kutsuu funktiota parametrilla
-print("Moi")
-play_game_sound(1)
 
 # Erillinen funktio waldon äänille
 def play_waldo_sound(sound_num):
@@ -57,8 +54,5 @@ def play_waldo_sound(sound_num):
         playsound("w_youre_hysterical.mp3")
     return
 
-
-
-play_waldo_sound(13)
 
 
