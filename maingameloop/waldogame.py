@@ -432,9 +432,10 @@ while user_command != 'bye':
             database.database_update(kyselyt.query_update_location(country_icao_tuple[0], username))
             print('\n'*50)
 
-            #Matkustus animaatio!
+            #Matkustus animaatio ja ääni!
             animations.start_travel_animation(travel_country)
             audio_library.play_game_sound(5)
+            print('\n' * 50)
 
             travel_counter += 1  #Matkustus laskuriin lisätään 1 kerta
 
@@ -471,6 +472,8 @@ if not goal_reached_bool:
     print("\nWaldo is furious!!")
     audio_library.play_waldo_sound(12)
 
+
+print('\n'*50)
 #Voittoprintti tähän!
 travel_ascii_art(4)
 #Lisätään tietokantaan pelaajan co2 määrä

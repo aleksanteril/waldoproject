@@ -85,7 +85,6 @@ def waldo_animated():
 def message(country_prittified):
     ascii_art = pyfiglet.figlet_format(f"ARRIVING TO: {country_prittified}... .. .")
     print(ascii_art)
-    time.sleep(2)
 
 
 # funktiopäivittää ruutua
@@ -352,10 +351,6 @@ def start_travel_animation(country_name):
 
     clear_screen()
     message(country_name)
-
-    # landing()
-    clear_screen()
-    # runway()
     return
 
 # Tulostaa voitto tekstin
