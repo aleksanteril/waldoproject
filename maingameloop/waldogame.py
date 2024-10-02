@@ -1,19 +1,42 @@
 #Peliä varten täytyy asentaa mysql-connector-python 8.0.29!!!
-#Peliä varten täytyy asentaa playsound, ja pyfiglet
+#Peliä varten täytyy asentaa playsound
 
 #Yhteyden luonti tietokantaan erillisessä filessä
-#Importataan kyselyt.py ja database.py ja random, audio ja animations
+#Importataan kyselyt.py ja database.py ja random
 import database
 import kyselyt
 import random
-import animations
-import audio
-
+import game_intro_animation
+import travel_animation
+import time
+import pyfiglet
 
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
 
 #ALIOHJELMAT LÖYTYVÄT TÄSTÄ
+
+# Tulostaa voitto tekstin
+def print_congratulations(message):
+    for letter in message:
+        print(letter, end='', flush=True)
+        time.sleep(0.1)
+    print()
+
+
+# Tulostaa loppuun statsit hienommin (pyfligtet)
+def display_results(total_kilometers, travel_counter):
+    ascii_art = pyfiglet.figlet_format("RESULTS")
+    print(ascii_art)
+    border = "=" * 50
+    print(border)
+
+    print(f"{'Kuljettu kilometrimäärä:':<30} {total_kilometers:.0f} km")
+    print(f"{'Matkojen määrä:':<30} {travel_counter}")
+    print(f"{'CO2 - päästösi ovat:':<30} {total_kilometers * 8:.0f} kg  🌱")
+    print(border)
+    print()
+
 
 #Funktio jolla tarkastetaan onko pelaaja löytänyt matkalaukun maan
 def goal_check(username, case_location):
@@ -34,10 +57,10 @@ def case_randomizer(list):
 def input_username():
     username_exist = True
     while username_exist:
-        username = input("\nWaldo greets you! Hello my friend: ").lower()
+        username = input("\nWaldo greets you! Enter new player name: ").lower()
         username_exist = database.database_check_query(kyselyt.query_check_username(username))
         if username_exist:
-            print("\nWaldo doesn't believe you!")
+            print("\nName taken, enter new new player name.!")
     database.database_update(kyselyt.query_new_username(username))
     return username
 
@@ -207,6 +230,33 @@ def start_game():
 
 # Funktio jolla piirretään pilvet ja ilmoitetaan saapumisesta
 def travel_ascii_art(ascii_num):
+    if ascii_num == 5:
+        print('''  
+                                      *** MAP⠀***⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        ⡜⢎⣼⣰⡗⣖⡋⢦⡙⢎⡱⢿⣷⠒⠛⣶⡿⣟⣧⡏⢯⣿⣦ NORWAY⠀⠀⠀ ⠀⠀⠀⠀⠀⠀   FINALAND ⠳⡜⣊⠶⢫⢫⣴⣿⣿⠙⣻⠗⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        ICELAND⢥⠳⡜⣊⠶⢫⢫⣴⣿⣿⠙⣻⠟⣌⠳⢣⡙⢦⡹⢌⡿⠗⠀⠀  SWEDEN⠀⠀⠀            ⠀⠀⠀⠀⠀⠀⠀⠀   ⣋⠼⣱ ⠀ 
+        ⢚⡜⣣⢕⡫⢴ (Faroe Island)⢻⣌⡓⡣⢝⡢⢇⡫⡜⡶⣦⡶     ⡪⣾⠥⣋⡟⠲⣽⠆     ESTONIA⠀⠀⠀⠀⠀⠀⠀⠀ ⣋⠼⣱     ⠀⠀⠀
+        ⣋⠼⣱⢪⡕⢣⡹⢰⢍⣓⡎⠝⣟⣿⣿⡂⡴⡏⢦⡓⡍⠶⣉⠶⡡⢇⢳⢢⣵⡟⣽⢟⣧⠀⠀⠀⢠⣏⢷⡋⣖⣹ ⠀  LATVIA⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣋⠼⣱ ⠀⠀⠀⠀⠀⠀⠀
+        ⡝⢮⡱⢦⡙⢦⣵⢏⡾⠿⠛Isle of Man⢷⢣⡱⢊⡗⣩⠖⣍⢮⢱⢺⡟⢁⣿⣷⣞⡏⢠⡶⢾⡙⢦⢱⢢⡱ LITHUANIA⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣋⠼⣱ ⠀⠀
+        ⡸⢇⡸⣆⠹⣶⣏⡀⠀⠀    ⠸⣆⠷⡉⣶⠱⡾⡈⢾  DENMARK  ⢿⠹⣿⣆⠹⣆⢷⣶⣿ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀BELARUS⠀⠀⠀    ⠀⣋⠼⣱ ⠀
+        ⡹⢬⡑⡎⢵⣢IRELAND⣺     ⠀⠠⢼⡧⢱⡂⢟⡰⡙⢦⡑⢎⣽⠂⠛⣿⠽⠛⢿⣴⠜⠋⠀    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀        ⠀⠀⠀⠀⠀⠀⣋⠼⣱ 
+        ⢕⡣⡝⡜⣩⠿⣤⠦⡖⢶⣋⣷ UNITED ⠐⠓⢧⡙⢦⢱⣿⡛⠛⠉  ⠀⠀⠀    ⠀⠀  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀    ⠀⠀  ⣋⠼⣱ 
+        ⢪⠕⣎⠵⣃⠞⡤⢛⡌⢧⡘⢭⡷ KINGDOM ⣴⢯⡘⢦NETHERLANDS   ⠀⠀  POLAND⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⠀⠀   ⠀⠀⠀   ⣋⠼⣱  
+        ⢎⡝⢦⡙⢦⠛⡴⣋⡜⣲⠿⠧⣴⠲⡖⢷⠲⣔⣺⠒⠋BELGIUM ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                ⠀⠀⠀⠀⠀⠀⠀⠀⠀ UKRAINE      ⡝⢮⡱   
+        ⢮⡜⣣⠝⣪⣙⠲⡥⢚⡥⢚(Guernsay)⣎⣵⠂⠋ ⠀⠀   ⠀GERMANY⠀⠀⠀               ⠀⠀⠀⠀⠀       ⠀    ⠀⠀⠀       ⡸⢇⡸ ⠀ ⠀⠀
+        ⢦⡙⢦⡛⡴⣡⢛⠼⡡⢞⣿⡉⠙⠻⠓⠀⠀⠀⠀⠀⠀⠀⠀⠀         ⠀⠀   CZECH REPUBLIC⠀⠀SLOVAKIA⠀     MOLDOVA ⠀      ⡹⢬⡑    
+        ⢖⡹⢦⡙⡖⣥(Jersey)⡜⡹⢷⡀⠀⠀⠀⠀  ⠀LUXEMBURG⠀⠀     ⠀⠀⠀       ⠀⠀⠀     ⠀   ⠈⠉⠙⠒⠛⠁⣠⣒⣒⠫⣉⠛     ⣒⢕⡣⡝ 
+        ⢋⡼⣡⢏⡜⢦⡙⠼⡱⣍⢲⡑⡫⢦⡀⠀⠀FRANCE⠀(Liechtenstein) AUSTRIA⠀ ⠀   HUNGARY            ⠱⣎⡝⢦⢣    ⢕⡣⡝ 
+        ⣭⢲⡱⢎⡜⢦⡙⡥⠳⣌⠧⣜⠱⣪⢧⠀⠀⠀⠀⠀⠀SWITZERLAND⠀     SLOVENIA                                  ⢪⠕⣎          
+        ⢴⢣⡜⠒⠛⠦⠧⣍⠳⡌⠶⣌⠳⡟⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣻⡽⣷⣷⡄  CROATIA⠀⠀⠀⠀⠀⠀⠀⠀⠀        ROMANIA      ⢎⡝⢦  
+        ⢮⢱⡟⠀⠀⠀⠀⠀⠈⠉⠙⠒⠛⠁⠀⠀⠀⠀ANDORRA⠀ ⣴⡛⠶⡄⠀⠀⠉⢷⡌⡽⢫⣆⣀⠀⠀⠀⠀⠀⠀CROATIA⠀ ⠀SERBIA                ⢮⡜⣣         
+        ⠦⣻⠁⠀⠀SPAIN⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾(Monaco)⢾⠱⣬⡷⢽⣆⠀⠀⠱⡜⡥⢚⡟⢿⠦⣄⡀MONTE-NEGRO   KOSOVO            ⢦⡙⢦     
+        ⣸⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⡤⢟⡡⢏⢎⠳⡙⣎⠹⡇(San Marino)⠓⣎⠧⣚⠴⡹⠂⠀BOSNIA       MACEDONIA       ⢖⡹⢦    
+        ⠁        ⠀⠀⠀⠀⠀⠀⣠⠞⣇⠳⡸⡌⢵⢊⠮⣱⠙⣆⣯⠟⢹⡆⣓⠦ ITALY⠀⠀⣩⣚⢶⣙⣄⠀⠀⠀⠘⠷⠿⡓        ⠀      BULGARIA  ⢋⡼⣡     
+        PORTUGAL⠀⠀⠀  ⠀⠀⢸⣡⠫⡔⣷⢟⡞⢿⢊⡵⢊⡽⣠⢻⠀⢸⡜⢢(Vatican City)⣓⡱⢍⡲⠀⠼⣷⢽⡢⢣⢯ALBANIA            ⣭⢲⡱        
+        ⢆⡤   ⠀⠀⠀⠀⠀⠀⠀⣠⡖⢇⡣⢭⡙⢧⡙⢆⡫⢔⠫⣔⢣ MALTA ⠭⡜⢎⣼⣰⡗⣖⡋⢦⡙⢎⡱⢿⣷⠒⠛⣶⡿⣟⣧⡏⢯⣿⣦⣤       GREECE  ⢴⢣⡜      
+        ⣕(Gibraltar)⣝⡪⣚⣄⣃⣢⣄⣘⣉⣲⣦⣉⣆⣩⣂⣅⣇⣜⣠⣌⣪⣝⣆⣣⣍⣷⣼⣜⣰⣃⣞⣢⣝⣦⣙⣙⣆⣛⣌⣞⣤⣓⣜⣫⣙⣬⣓⣜⣆⣳⣥⣛⣔⣫⣱⣌⣳⣉⣎
+                ''')
     if ascii_num == 4:
         print('''
   ` : | | | |:  ||  :     `  :  |  |+|: | : : :|   .        `              .
@@ -309,11 +359,9 @@ Safe travels!\n''')
 #Haluatko aloittaa pelin funktio
 start_game()
 print('\n'*50)
-#Intro animaatio
-animations.game_intro_animation.waldo_animated()
+game_intro_animation.waldo_animated()
 
 #Asetetaan Vakioarvot pelin alussa
-goal_reached_bool = False
 clue_reminder_given_bool = False
 total_kilometers = 0
 country_icao_tuple = ('EFHK',)
@@ -321,6 +369,7 @@ travel_counter = 0
 travel_counter_limit = random.randint(4,6)
 
 #Arvotaan matkalaukun maa, ja sen jälkeen arvotaan matkalaukun ICAO
+
 case_country = 'Finland'
 while case_country == 'Finland' or case_country == 'Russia':
     case_country = case_randomizer(
@@ -347,6 +396,7 @@ previous_distance_to_case = distance_tuple[0]
 print("\nWell let's get going!")
 user_command = None
 while user_command != 'bye':
+
     #Jos käyttäjä on matkustanut tarpeeksi askelia ilmoitetaan vihjeen saatavuudesta
     if travel_counter >= travel_counter_limit and not clue_reminder_given_bool:
         print("\nHey!!!! WAIT A MINUTE!")
@@ -387,28 +437,27 @@ while user_command != 'bye':
             print('\n'*50)
 
             #Matkustus animaatio!
-            animations.travel_animation.start_travel_animation(travel_country)
+            travel_animation.start_travel_animation(travel_country)
 
-            travel_ascii_art(random.randint(1,4)) #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
+            #Grafiikan piirtoa, grafiikan id ja maan nimi ilmoitetaan
             print(f"You have arrived in {travel_country.upper()} with Waldo!")
             travel_counter += 1  #Matkustus laskuriin lisätään 1 kerta
 
+            #Lasketaan kilometrit matkalta ja otetaan ylös
             kilometers = kilometer_counter(username, previous_country_icao) #Kilometrien laskenta
             total_kilometers = total_kilometers + kilometers #total counter
 
-
-            #TÄHÄN TARKISTUS ONKO PELAAJA SAAPUNUT SAMAAN MAAHAN KUIN MATKALAUKKU
-            goal_reached_bool = goal_check(username, case_country.lower())  #PALAUTTAA TRUE JOS PELAAJA ON LAUKUN MAASSA MUUTEN FALSE
-            #KUUMA/KYLMÄ MEKANIIKKA
+            #Tarkistetaan onko pelaaja saavuttanut päämäärää
+            goal_reached_bool = goal_check(username, case_country.lower())
             if not goal_reached_bool:
+                travel_ascii_art(5)
                 previous_distance_to_case = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case)
                 signal_strength(case_icao_location, username)
             else:
-                #Asetetaan tietokantaan pelaajan käyttämä co2
-                database.database_query(kyselyt.query_update_co2_total_player(username, int(total_kilometers*8)))
-                print("\nVOITTOKUVIO")
-                print(f"Kuljettu kilometrimäärä: {total_kilometers:.0f}km, matkojen määrä: {travel_counter}")
-                print(f"CO2 - päästösi ovat: {total_kilometers*8:.0f}kg MIETIPPÄ SITÄ!")
+                travel_ascii_art(4)
+                database.database_query(kyselyt.query_update_co2_total_player(username, int(total_kilometers * 8)))
+                print_congratulations("CONGRATULATIONS!!! You've found Waldo's suitcase.")
+                display_results(total_kilometers, travel_counter)
                 break
 
     #Radio komento signaalin vahvuuden tulostamiseen
@@ -418,7 +467,3 @@ while user_command != 'bye':
     #Help komento, tulostetaan help print
     elif user_command == commands[4]:
         help() #Help-komento
-
-#Waldo suuttuu jos lähdet kesken pelin!
-if not goal_reached_bool:
-    print("WHY ARE YOU LEAVING ME!")
