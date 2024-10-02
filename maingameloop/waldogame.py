@@ -459,7 +459,21 @@ while user_command != 'bye':
                 previous_distance_to_case = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case)
                 signal_strength(case_icao_location, username) #Signaalin printtaus
             else:
-                break #Siirrytään loopista ulos voittoprinttiin
+                clear_screen()
+                # Voittoprintti tähän!
+                travel_ascii_art(4)
+                audio_library.play_game_sound(1)
+
+                # Lisätään tietokantaan pelaajan co2 määrä
+                database.database_query(kyselyt.query_update_co2_total_player(username, int(total_kilometers * 8)))
+
+
+                #Onnittelu teksti
+                animations.print_congratulations(
+                    f"CONGRATULATIONS!!! You've found Waldo's suitcase in {travel_country.upper()}.")
+                animations.display_results(total_kilometers, travel_counter)  # Voittoruutu
+                audio_library.play_game_sound(8)  # You're the best!
+                break #Siirrytään pelistä ulos
 
     #Radio komento signaalin vahvuuden tulostamiseen
     elif user_command == commands[3]: #RADIO
@@ -473,18 +487,9 @@ while user_command != 'bye':
 
 
 
+
 #Jos pelaaja lähtee kesken pelin!
 if not goal_reached_bool:
     print("\nWaldo is furious!!")
     audio_library.play_waldo_sound(12)
 
-
-clear_screen()
-#Voittoprintti tähän!
-travel_ascii_art(4)
-#Lisätään tietokantaan pelaajan co2 määrä
-database.database_query(kyselyt.query_update_co2_total_player(username, int(total_kilometers * 8)))
-audio_library.play_game_sound(1)   
-animations.print_congratulations(f"CONGRATULATIONS!!! You've found Waldo's suitcase in {travel_country.upper()}.")
-animations.display_results(total_kilometers, travel_counter) #Voittoruutu
-audio_library.play_game_sound(8) #You're the best!
