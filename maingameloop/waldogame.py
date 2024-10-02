@@ -442,20 +442,17 @@ while user_command != 'bye':
             kilometers = kilometer_counter(username, previous_country_icao) #Kilometrien laskenta
             total_kilometers = total_kilometers + kilometers #total counter
 
-            #Tarkistetaan onko pelaaja saavuttanut päämäärää
+            #Tarkistetaan onko pelaaja saavuttanut tavoitetta eli sama maa kun laukku
             goal_reached_bool = goal_check(username, case_country.lower())
+
+            #Kuuma/kylmä mekaniikka jos ei ole saavuttanut tavoitetta
             if not goal_reached_bool:
                 travel_ascii_art(5)
                 print(f"You have arrived in {travel_country.upper()} with Waldo!")
                 previous_distance_to_case = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case)
                 signal_strength(case_icao_location, username)
             else:
-                travel_ascii_art(4)
-                database.database_query(kyselyt.query_update_co2_total_player(username, int(total_kilometers * 8)))
-                animations.print_congratulations(f"CONGRATULATIONS!!! You've found Waldo's suitcase in {travel_country.upper()}.")
-                animations.display_results(total_kilometers, travel_counter)
-                audio_library.play_game_sound(8)
-                break
+                break #Siirrytään loopista ulos voittoprinttiin
 
     #Radio komento signaalin vahvuuden tulostamiseen
     elif user_command == commands[3]: #RADIO
@@ -467,6 +464,17 @@ while user_command != 'bye':
         help() #Help-komento
         audio_library.play_game_sound(2) #Help ääni
 
+
+
+#Jos pelaaja lähtee kesken pelin!
 if not goal_reached_bool:
     print("\nWALDO SUUTTUU")
     audio_library.play_waldo_sound(12)
+
+#Voittoprintti tähän!
+travel_ascii_art(4)
+#Lisätään tietokantaan pelaajan co2 määrä
+database.database_query(kyselyt.query_update_co2_total_player(username, int(total_kilometers * 8)))
+animations.print_congratulations(f"CONGRATULATIONS!!! You've found Waldo's suitcase in {travel_country.upper()}.")
+animations.display_results(total_kilometers, travel_counter)
+audio_library.play_game_sound(8)
