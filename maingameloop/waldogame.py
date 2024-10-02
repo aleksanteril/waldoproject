@@ -8,7 +8,7 @@ import kyselyt
 import random
 import animations
 import audio_library
-
+import ascii_countries # lisätty clueta varte
 
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
@@ -129,11 +129,31 @@ def hot_cold_mechanic(case_icao_location, username, previous_distance_to_case):
 
 
 # Funktio tulostaa vihjeen listasta, joka tulee sql kyselyn kautta
+#def country_clue(case_icao_location):
+#    clue = database.database_query(kyselyt.query_country_hint(case_icao_location))
+#    print("\nCLUE:")
+#    for clue in clue:
+#        print(clue[0])
+#    return
+
+
+# "UUSI" Funktio tulostaa vihjeen listasta sekä vastaavan maan asciin joka tulee sql kyselyn kautta
 def country_clue(case_icao_location):
-    clue = database.database_query(kyselyt.query_country_hint(case_icao_location))
-    print("\nCLUE:")
-    for clue in clue:
-        print(clue[0])
+    # hakee molemmat vihjeet, sql haku muokattu, katso kyselyt kansio
+    result = database.database_query(kyselyt.query_country_hint_and_name(case_icao_location))
+
+    if result:
+        country_name = result[0][0]  # ensimmäisen kyselyn tulos maan nimi
+        clue_text = result[0][1]  # toinen tulos
+
+        # Printtaa maan nimen perusteella asciin ensin sitten
+        ascii_countries.country_art(country_name.lower()) #lowercase lisätty toimivuuden kannalta
+
+        print("\nCLUE:")
+        print(clue_text)
+
+    else:
+        print("Virhe tai maalle ei löydy vihjettä.")
     return
 
 

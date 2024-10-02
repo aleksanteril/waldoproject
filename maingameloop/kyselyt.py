@@ -2,10 +2,16 @@
 
 
 #Kysely jolla saadaan maan vihje jossa matkalaukku sijaitsee ICAO
-def query_country_hint(case_location):
-    sql_query_country_hint = (f"SELECT hint FROM country WHERE iso_country in("
-                          f"SELECT iso_country FROM airport WHERE ident = '{case_location}');")
-    return sql_query_country_hint
+#def query_country_hint(case_location):
+#    sql_query_country_hint = (f"SELECT hint FROM country WHERE iso_country in("
+#                          f"SELECT iso_country FROM airport WHERE ident = '{case_location}');")
+#    return sql_query_country_hint
+
+#UUSI kysely jolla saadaan vihje + ascii missä maassa matkalaukku sijaitsee
+def query_country_hint_and_name(case_location):
+    sql_query = (f"SELECT country.name, country.hint FROM country WHERE iso_country in ("
+                 f"SELECT iso_country FROM airport WHERE ident = '{case_location}');")
+    return sql_query
 
 
 #Vakio kysely joka palauttaa maat, aakkosjärjestyksessä
