@@ -558,7 +558,6 @@ while game_on:
                     database.database_update(kyselyt.query_reset_game_state(username))  # Resetataan peli pelaajan osalta ja lisätään tilastoihin 1 matkalaukku löydetty
                     case_country, case_icao_location = case_randomizer() #Asetetaan uusi matkalaukku myös seuraavaa pelikertaa varten
                     database.database_update(kyselyt.query_update_suitcase_location(case_icao_location, username))
-                    goal_reached_bool = False
 
                     #Onnittelu teksti
                     animations.print_congratulations(
