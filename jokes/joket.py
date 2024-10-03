@@ -33,5 +33,3 @@ def joke_for_waldo(num):
         \t- Because it was two-tired.''')
 
     return
-
-joke_for_waldo(5)
