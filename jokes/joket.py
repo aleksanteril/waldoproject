@@ -1,6 +1,8 @@
 # Funktio joka tulostaa random vitsin 1-10 väliltä
 
 def joke_for_waldo(num):
+    print('\n')
+    edellinen = num
     if num == 1:
         print('''Why don't scientists trust atoms?
         \t- Because they make up everything.''')
@@ -31,5 +33,4 @@ def joke_for_waldo(num):
     elif num == 10:
         print('''Why did the bicycle fall over?
         \t- Because it was two-tired.''')
-
-    return
+    return edellinen

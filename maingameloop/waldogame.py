@@ -9,6 +9,7 @@ import random
 import animations
 import audio_library
 import ascii_countries # lisätty clueta varte
+from jokes import joket
 
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
@@ -347,7 +348,7 @@ def travel_ascii_art(ascii_num):
 
 #"Yleiset arvot"
 #Määritetään vakio komennot monikkoon
-commands = ("clue", "destinations", "travel", "radio", "help", "bye")
+commands = ("clue", "destinations", "travel", "radio", "help", "bye", "joke")
 #case_country, case_icao_location, username, user_command, travel_country
 
 
@@ -375,11 +376,10 @@ clear_screen()
 animations.waldo_animated() #Intro animaatio
 
 #Asetetaan Vakioarvot pelin alussa
+last_joke = joke_int = travel_counter = total_kilometers = 0
 goal_reached_bool = False
 clue_reminder_given_bool = False
-total_kilometers = 0
 country_icao_tuple = ('EFHK',)
-travel_counter = 0
 travel_counter_limit = random.randint(4,6)
 
 #Arvotaan matkalaukun maa, ja sen jälkeen arvotaan matkalaukun ICAO
@@ -432,7 +432,8 @@ while user_command != 'bye':
         if travel_counter >= travel_counter_limit:
             country_clue(case_icao_location)
         else:
-            print("Waldo's memory is still a bit hazy, maybe later")
+            print("\nWaldo's memory is still a bit hazy, maybe later")
+            print("Maybe a 'joke' could refresh his mind up!")
             audio_library.play_waldo_sound(3)
 
     #Kohteet funktio,  kohteiden näyttäminen käyttäjälle (tällä hetkellä pelkät maat)
@@ -501,6 +502,13 @@ while user_command != 'bye':
     elif user_command == commands[4]:
         help() #Help-komento
         audio_library.play_game_sound(2) #Help ääni
+
+    #Joke komento, pieni hauskuus
+    elif user_command == commands[6]:
+        while last_joke == joke_int:
+            joke_int = random.randint(1, 10)
+        last_joke = joket.joke_for_waldo(joke_int)
+        audio_library.play_waldo_sound(14)
 
 
 
