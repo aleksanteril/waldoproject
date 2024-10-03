@@ -7,7 +7,6 @@ def query_country_hint(case_location):
                           f"SELECT iso_country FROM airport WHERE ident = '{case_location}');")
     return sql_query_country_hint
 
-
 #Vakio kysely joka palauttaa maat, aakkosjärjestyksessä
 query_countries = f"SELECT name FROM country WHERE continent = 'EU' ORDER BY name;"
 
