@@ -8,7 +8,7 @@ import kyselyt
 import random
 import animations
 import audio_library
-
+import ascii_countries # lisätty clueta varte
 
 #Importataan tähän eri aliohjelmat ja kyselyaliohjelmat yms
 #Liimaillaan parhaamme mukaan ja tsemppiä :)
@@ -128,9 +128,10 @@ def hot_cold_mechanic(case_icao_location, username, previous_distance_to_case):
     return distance_to_case
 
 
-# Funktio tulostaa vihjeen listasta, joka tulee sql kyselyn kautta
+# Funktio tulostaa vihjeen sekä vastaavan maan asciin listasta, joka tulee sql kyselyn kautta
 def country_clue(case_icao_location):
     clue = database.database_query(kyselyt.query_country_hint(case_icao_location))
+    ascii_countries.country_art(case_country.lower())
     print("\nCLUE:")
     for clue in clue:
         print(clue[0])
@@ -239,7 +240,7 @@ def travel_ascii_art(ascii_num):
         ⢎⡝⢦⡙⢦⠛⡴⣋⡜⣲⠿⠧⣴⠲⡖⢷⠲⣔⣺⠒⠋BELGIUM ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                ⠀⠀⠀⠀⠀⠀⠀⠀⠀ UKRAINE      ⡝⢮⡱   
         ⢮⡜⣣⠝⣪⣙⠲⡥⢚⡥⢚(Guernsay)⣎⣵⠂⠋ ⠀⠀   ⠀GERMANY⠀⠀⠀               ⠀⠀⠀⠀⠀       ⠀    ⠀⠀⠀       ⡸⢇⡸ ⠀ ⠀⠀
         ⢦⡙⢦⡛⡴⣡⢛⠼⡡⢞⣿⡉⠙⠻⠓⠀⠀⠀⠀⠀⠀⠀⠀⠀         ⠀⠀   CZECH REPUBLIC⠀⠀SLOVAKIA⠀     MOLDOVA ⠀      ⡹⢬⡑    
-        ⢖⡹⢦⡙⡖⣥(Jersey)⡜⡹⢷⡀⠀⠀⠀⠀  ⠀LUXEMBURG⠀⠀     ⠀⠀⠀       ⠀⠀⠀     ⠀   ⠈⠉⠙⠒⠛⠁⣠⣒⣒⠫⣉⠛     ⣒⢕⡣⡝ 
+        ⢖⡹⢦⡙⡖⣥(Jersey)⡜⡹⢷⡀⠀⠀⠀⠀  ⠀LUXEMBOURG⠀⠀     ⠀⠀⠀       ⠀⠀⠀     ⠀   ⠈⠉⠙⠒⠛⠁⣠⣒⣒⠫⣉⠛     ⣒⢕⡣⡝ 
         ⢋⡼⣡⢏⡜⢦⡙⠼⡱⣍⢲⡑⡫⢦⡀⠀⠀FRANCE⠀(Liechtenstein) AUSTRIA⠀ ⠀   HUNGARY            ⠱⣎⡝⢦⢣    ⢕⡣⡝ 
         ⣭⢲⡱⢎⡜⢦⡙⡥⠳⣌⠧⣜⠱⣪⢧⠀⠀⠀⠀⠀⠀SWITZERLAND⠀     SLOVENIA                                  ⢪⠕⣎          
         ⢴⢣⡜⠒⠛⠦⠧⣍⠳⡌⠶⣌⠳⡟⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣻⡽⣷⣷⡄  CROATIA⠀⠀⠀⠀⠀⠀⠀⠀⠀        ROMANIA      ⢎⡝⢦  
@@ -252,27 +253,43 @@ def travel_ascii_art(ascii_num):
         ⣕(Gibraltar)⣝⡪⣚⣄⣃⣢⣄⣘⣉⣲⣦⣉⣆⣩⣂⣅⣇⣜⣠⣌⣪⣝⣆⣣⣍⣷⣼⣜⣰⣃⣞⣢⣝⣦⣙⣙⣆⣛⣌⣞⣤⣓⣜⣫⣙⣬⣓⣜⣆⣳⣥⣛⣔⣫⣱⣌⣳⣉⣎
                 ''')
     if ascii_num == 4:
+        #   •   Green: "\033[32m
+        #   •   Yellow: \033[33m
+        #   •   Blue: \033[34m
+        #   •   Magenta: \033[35m
+        #   •   Cyan: \033[36m
+        #   •   White: \033[37m
+        #   •   Reset (to go back to the normal color): \033[0m
+        #	•	90: Bright Black (gray)
+        #	•	91: Bright Red
+        #	•	92: Bright Green
+        #	•	93: Bright Yellow
+        #	•	94: Bright Blue
+        #	•	95: Bright Magenta
+        #	•	96: Bright Cyan
+        #	•	97: Bright White
         print('''
-  ` : | | | |:  ||  :     `  :  |  |+|: | : : :|   .        `              .
-      ` : | :|  ||  |:  :    `  |  | :| : | : |:   |  .                    :
-         .' ':  ||  |:  |  '       ` || | : | |: : |   .  `           .   :.
-                `'  ||  |  ' |   *    ` : | | :| |*|  :   :               :|
-        *    *       `  |  : :  |  .      ` ' :| | :| . : :         *   :.||
-             .`            | |  |  : .:|       ` | || | : |: |          | ||
-      '          .         + `  |  :  .: .         '| | : :| :    .   |:| ||
-         .                 .    ` *|  || :       `    | | :| | :      |:| |
- .                .          .        || |.: *          | || : :     :|||
-        .            .   . *    .   .  ` |||.  +        + '| |||  .  ||`
-     .             *              .     +:`|!             . ||||  :.||`
- +                      .                ..!|*          . | :`||+ |||`
-     .                         +      : |||`        .| :| | | |.| ||`     .
-       *     +   '               +  :|| |`     :.+. || || | |:`|| `
-                            .      .||` .    ..|| | |: '` `| | |`  +
-  .       +++                      ||        !|!: `       :| |
-              +         .      .    | .      `|||.:      .||    .      .    `
-          '                           `|.   .  `:|||   + ||'     `
-  __    +      *                         `'       `'|.    `:
-"'  `---"""----....____,..^---`^``----.,.___          `.    `.  .    ____,.,-
+        
+  \033[32m` : | | | |:  ||  :     `  :  |  |+|: | : : :|   .        `              .\033[0m
+      \033[32m` : | :|  ||  |:  :    `  |  | :| : | : |:   |  .                    :\033[0m
+         \033[32m.' ':  ||  |:  |  '       ` || | : | |: : |   .  `           .   :.\033[0m
+                \033[32m`'  ||  |  ' |   \033[33m*\033[0m    \033[32m` : | | :| |\033[33m*\033[0m  \033[32m|:   :               :|\033[0m
+        \033[33m*    *\033[0m      \033[32m `  |  : :  |  .      ` ' :| | :| . : :         \033[33m*\033[0m   \033[32m:.||\033[0m
+             .`            \033[32m| |  |  : .:|       ` | || | : |: |          | ||\033[0m
+      '          .         \033[33m+\033[0m \033[32m`  |  :  .: .         '| | : :| :    .   |:| ||\033[0m
+         .                 .    ` \033[33m*\033[0m\033[32m|  || :       `    | | :| | :      |:| |\033[0m
+ .                .          .        \033[32m|| |.: \033[33m*\033[0m          \033[32m| || : :     :|||\033[0m
+        .            .   . \033[33m*\033[0m    .   .  ` \033[32m|||.  +        + '| |||  .  ||`\033[0m
+     .             \033[33m*\033[0m              .     \033[32m+:`|!             . ||||  :.||`\033[0m
+ \033[33m+\033[0m                      .                \033[32m..!|*          . | :`||+ |||`\033[0m
+     .                         \033[33m+\033[0m      \033[32m: |||`        .| :| | | |.| ||`\033[0m     .
+       \033[33m*\033[0m     \033[33m+\033[0m   '               \033[33m+\033[0m  \033[32m:|| |`     :.+. || || | |:`|| `\033[0m
+                            .      \033[32m.||` .    ..|| | |: '` `| | |`\033[0m  \033[33m*\033[0m
+  .       \033[33m+++\033[0m                      \033[32m||        !|!: `       :| |\033[0m
+              \033[33m+\033[0m         .      .    \033[32m| .      `|||.:      .||\033[0m    .      .    `
+          '                           \033[32m`|.   .  `:|||   + ||'\033[0m     `
+      \033[33m+\033[0m      \033[34m\033[33m*\033[34m                         \033[32m`'       `'|.    `:\033[0m
+\033[34m"'  `---"""----....____,..^---`^``----.,.___          `.    `.  .    ____,.,-
     ___,--'""`---"'   ^  ^ ^        ^       """'---,..___ __,..---""'
 --"'                           ^                         ``--..,__ D. Rice''')
     if ascii_num == 3:
