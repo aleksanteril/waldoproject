@@ -76,6 +76,7 @@ def help():
     print("Using command 'destinations' prints the country's you can travel to.")
     print("Using command 'travel' travels you to your country of choosing.")
     print("Using command 'radio' displays signal strength for the location of Waldo's case")
+    print("Using command 'bye' lets you quit the game, your progress will be saved to your username.")
     return
 
 
@@ -493,6 +494,7 @@ while game_on:
             clue_reminder_given = 1
             database.database_update(kyselyt.query_update_clue_unlocked(username, clue_reminder_given))
 
+        #Printtiä varten näytetään missä maassa pelaaja on tällä hetkellä
         user_country = database.database_query_fetchone(kyselyt.query_fetch_user_country(username))
         print(f"\nYou are currently in {user_country[0].upper()} with Waldo!")
         user_command = user_input_command(commands)   #Kysytään käyttäjän input funktiolla
@@ -537,7 +539,7 @@ while game_on:
                 total_kilometers += kilometers #Pelin looppia varten
                 travel_counter += 1 #Pelin looppia varten
 
-                #Päivitetään arvot kilometrit ja co2, travel_count eli +1 pelaajan tietokantaan
+                #Päivitetään arvot kilometrit ja co2, travel_count eli +1, ja location pelaajan tietokantaan
                 database.database_update(kyselyt.query_update_player_travel(username, kilometers, 1, player_country_icao))
 
                 #Tarkistetaan onko pelaaja saavuttanut tavoitetta eli sama maa kun laukku
