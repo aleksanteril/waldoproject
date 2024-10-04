@@ -38,30 +38,6 @@ def list_random(list):
     return random_str[0]
 
 
-#Kysytään käyttäjän nimi ja tarkastetaan löytyykö se tietokannasta, palautetaan nimi
-def input_username():
-    username_exist = False
-    while not username_exist:
-        username = input("\nWaldo greets you! Enter player name: ").lower()
-        username_exist = database.database_check_query(kyselyt.query_check_username(username))
-        if not username_exist:
-            print("\nName doesn't exist")
-    return username
-
-
-#Kysytään käyttäjän nimi, ja palautetaan jos se on uniikki, päivitetään se tietokantaan
-def input_new_username():
-    username_exist = True
-    while username_exist:
-        username = input("\nWaldo greets you! Enter new player name: ").lower()
-        username_exist = database.database_check_query(kyselyt.query_check_username(username))
-        if username_exist:
-            print("\nName already taken!")
-    database.database_update(kyselyt.query_new_username(username))
-    database.database_update(kyselyt.query_new_suitcase(username))
-    return username
-
-
 #Kilometrilaskuri laskee edellisen icaon ja uuden paikan välin kilometrit kyselyn avulla
 def kilometer_counter(new_icao, previous_icao):
     meters_tuple = database.database_query_fetchone(kyselyt.query_distance_between_locations(new_icao,previous_icao))
@@ -401,21 +377,36 @@ def leaderboard():
     return
 
 def load_or_new_game():
-    new_game = None
-    while new_game != 'load' and new_game != 'new':
+    while True:
         new_game = input("\nStart a 'new' or 'load' an existing game: ").lower()
         if new_game != 'load' and new_game != 'new':
             print("Unknown command!")
+        # Uusi käyttäjä, kysytään nimi asetetaan alkuarvot tietokantaan
+        elif new_game == 'new':
+            username = input("\nWaldo greets you! Enter new player name: ").lower()
+            username_exist = database.database_check_query(kyselyt.query_check_username(username))
+            if username_exist:
+                    print("\nName already taken!")
+            elif not username_exist:
+                # Asetetaan alkuarvot tietokantaan
+                database.database_update(kyselyt.query_new_username(username))
+                database.database_update(kyselyt.query_new_suitcase(username))
+                # Arvotaan matkalaukun maa, ja sen jälkeen arvotaan matkalaukun ICAO
+                case_country, case_icao_location = case_randomizer()
+                database.database_update(kyselyt.query_update_suitcase_location(case_icao_location, username))
+                return username
+            elif username == 'back':
+                break
 
-    # Uusi käyttäjä, kysytään nimi asetetaan alkuarvot tietokantaan
-    if new_game == 'new':
-        username = input_new_username()
-        # Arvotaan matkalaukun maa, ja sen jälkeen arvotaan matkalaukun ICAO
-        case_country, case_icao_location = case_randomizer()
-        database.database_update(kyselyt.query_update_suitcase_location(case_icao_location, username))
-    else:  # Load previous game
-        username = input_username()
-    return username
+        elif new_game == 'load':  # Load previous game
+                username = input("\nWaldo greets you! Enter player name: ").lower()
+                username_exist = database.database_check_query(kyselyt.query_check_username(username))
+                if not username_exist:
+                    print("\nName doesn't exist")
+                if username_exist:
+                    return username
+                elif username == 'back':
+                    break
 
 #"Yleiset arvot"
 #Määritetään vakio komennot monikkoon
@@ -429,10 +420,12 @@ countries_list = game_countries_list()
 clear_screen()
 print('''You've arrived at Helsinki-Vantaa airport, where you meet your good friend Waldo.
 
-Waldo is a world-famous adventurer known for his red & white striped shirt and blue hat. He has travelled all over the european continent, but his valuable suitcase mysteriously disappeared. 
+Waldo is a world-famous adventurer known for his red & white striped shirt and blue hat.
+He has travelled all over the european continent, but his valuable suitcase mysteriously disappeared. 
 The suitcase contained Waldo's most important discoveries and notes, but fortunately, Waldo has installed a radio-transmitter in it.
 
-Now Waldo needs your help to find his suitcase. Together, you set off around europe, using the radio-transmitter in the suitcase. 
+Now Waldo needs your help to find his suitcase. 
+Together, you set off around europe, using the radio-transmitter in the suitcase. 
 
 Safe travels!\n''')
 
@@ -487,7 +480,7 @@ while game_on:
         if travel_counter >= travel_counter_limit and clue_reminder_given == 0:
             print("\nHey!!!! WAIT A MINUTE!")
             audio_library.play_game_sound(1)
-            print("Waldo looks at you and says, I guess i remember a little riddle from the country")
+            print("Waldo looks at you and says, I guess I remember a little riddle from the country")
             audio_library.play_waldo_sound(7)
 
             #Asetetaan vihje annetuksi ja päivitetään tietokantaan myös
