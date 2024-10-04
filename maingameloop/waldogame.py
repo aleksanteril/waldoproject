@@ -521,6 +521,7 @@ while user_command != 'bye':
             goal_reached_bool = False  # Vakio arvojen resetointi, jos peli jatkuu suoraan
             clue_reminder_given = 0
             travel_counter = 0
+            player_country_icao = 'EFHK' #Hardcode HEL koska wäääääää!
             clear_screen()
             travel_ascii_art(5)
 
