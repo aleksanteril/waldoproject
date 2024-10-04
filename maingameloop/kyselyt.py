@@ -89,6 +89,9 @@ def query_fetch_suitcase_country(username):
 #Vakio kysely jolla haetaan tietokannasta ihmiset joilla on vähintään yli 1 matkalaukku ja max 5 ihmistä desc order.
 sql_query_fetch_leaderboards = (f"SELECT id, suitcases_found FROM game WHERE suitcases_found >= 1 order by suitcases_found desc LIMIT 5;")
 
+#Vakio kysely jolla saadaan olemassaolevat käyttäjät
+sql_query_fetch_users = (f"SELECT id FROM game")
+
 #UPDATE KYSELYT #####################
 
 def query_update_suitcase_location(location, username):

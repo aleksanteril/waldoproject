@@ -385,8 +385,10 @@ def load_or_new_game():
         elif new_game == 'new':
             username = input("\nWaldo greets you! Enter new player name: ").lower()
             username_exist = database.database_check_query(kyselyt.query_check_username(username))
-            if username_exist:
-                    print("\nName already taken!")
+            if username == 'back':
+                continue
+            elif username_exist:
+                    print("Name already taken!")
             elif not username_exist:
                 # Asetetaan alkuarvot tietokantaan
                 database.database_update(kyselyt.query_new_username(username))
@@ -395,18 +397,24 @@ def load_or_new_game():
                 case_country, case_icao_location = case_randomizer()
                 database.database_update(kyselyt.query_update_suitcase_location(case_icao_location, username))
                 return username
-            elif username == 'back':
-                break
 
         elif new_game == 'load':  # Load previous game
-                username = input("\nWaldo greets you! Enter player name: ").lower()
-                username_exist = database.database_check_query(kyselyt.query_check_username(username))
-                if not username_exist:
-                    print("\nName doesn't exist")
-                if username_exist:
-                    return username
-                elif username == 'back':
-                    break
+            users_list = database.database_query(kyselyt.sql_query_fetch_users)
+            print("\n-----List of users------")
+            for user in users_list:
+                print(user[0].upper())
+            print("------------------------")
+            username = input("\nWaldo greets you! Enter player name: ").lower()
+            username_exist = database.database_check_query(kyselyt.query_check_username(username))
+            if username == 'back':
+                continue
+            elif not username_exist:
+                print("Name doesn't exist")
+            elif username_exist:
+                return username
+
+
+
 
 #"Yleiset arvot"
 #Määritetään vakio komennot monikkoon
@@ -441,153 +449,174 @@ audio_library.play_waldo_sound(10)
 
 
 username = load_or_new_game()
-game_on = True
-
-while game_on:
-    #Ladataan pelin tila ja puretaan se muuttujiin
-    data_tuple = load_game(username)
-    #game.id, game.location, suitcase.location, co2_consumed, total_kilometers, clue_unlocked, travel_count
-    username = data_tuple[0]
-    player_country_icao = data_tuple[1]
-    case_icao_location = data_tuple[2]
-    co2_consumed = data_tuple[3]
-    total_kilometers = data_tuple[4]
-    clue_reminder_given = data_tuple[5]
-    travel_counter = data_tuple[6]
 
 
-    # Asetetaan Vakioarvot pelin alussa
-    last_joke = joke_int = 0
-    travel_counter_limit = 5
-    goal_reached_bool = False
-
-    #Päivitetään ruutu
-    clear_screen()
-
-    #Lasketaan alkusijainti, ja asetetaan se base-etäisyydeksi kuuma/kylmää varten, asetetaan se muuttujaan
-    distance_tuple = database.database_query_fetchone(kyselyt.query_distance_between_player_locations(username, case_icao_location))
-    previous_distance_to_case = distance_tuple[0]
-
-    #PELI ALKAA MAIN GAME LOOP TÄSSÄ
-    print("\nWell let's get going!")
-    audio_library.play_waldo_sound(4)
-    travel_ascii_art(5)
-
-    user_command = None
-    while user_command != 'bye':
-
-        #Jos käyttäjä on matkustanut tarpeeksi askelia ilmoitetaan vihjeen saatavuudesta
-        if travel_counter >= travel_counter_limit and clue_reminder_given == 0:
-            print("\nHey!!!! WAIT A MINUTE!")
-            audio_library.play_game_sound(1)
-            print("Waldo looks at you and says, I guess I remember a little riddle from the country")
-            audio_library.play_waldo_sound(7)
-
-            #Asetetaan vihje annetuksi ja päivitetään tietokantaan myös
-            clue_reminder_given = 1
-            database.database_update(kyselyt.query_update_clue_unlocked(username, clue_reminder_given))
-
-        #Printtiä varten näytetään missä maassa pelaaja on tällä hetkellä
-        user_country = database.database_query_fetchone(kyselyt.query_fetch_user_country(username))
-        print(f"\nYou are currently in {user_country[0].upper()} with Waldo!")
-        user_command = user_input_command(commands)   #Kysytään käyttäjän input funktiolla
+#Ladataan pelin tila ja puretaan se muuttujiin
+data_tuple = load_game(username)
+#game.id, game.location, suitcase.location, co2_consumed, total_kilometers, clue_unlocked, travel_count
+username = data_tuple[0]
+player_country_icao = data_tuple[1]
+case_icao_location = data_tuple[2]
+co2_consumed = data_tuple[3]
+total_kilometers = data_tuple[4]
+clue_reminder_given = data_tuple[5]
+travel_counter = data_tuple[6]
 
 
-        ##Vihje funktio,  joka tulostaa maan vihjeen perustuen matkalaukun ICAO sijaintiin (case_location)
-        if user_command == commands[0]:  #VIHJE
-            if clue_reminder_given == 1:
-                country_clue(case_icao_location)
-            else:
-                print("\nWaldo's memory is still a bit hazy, maybe later")
-                print("Maybe a 'joke' could refresh his mind up!")
-                audio_library.play_waldo_sound(3)
+# Asetetaan Vakioarvot pelin alussa
+last_joke = joke_int = 0
+travel_counter_limit = 5
+goal_reached_bool = False
 
-        #Kohteet funktio,  kohteiden näyttäminen käyttäjälle (tällä hetkellä pelkät maat)
-        elif user_command == commands[1]: #KOHTEET
-            user_search(countries_list)
-            audio_library.play_waldo_sound(5)
+#Päivitetään ruutu
+clear_screen()
 
-        #Matkustus tapahtumat, MAAN VALINTA, SITTEN, PÄIVITYS TIETOKANTAAN, +1 TRAVEL JA KUUMA/KYLMÄ LASKENTA
-        elif user_command == commands[2]: #MATKUSTUS
+#Lasketaan alkusijainti, ja asetetaan se base-etäisyydeksi kuuma/kylmää varten, asetetaan se muuttujaan
+distance_tuple = database.database_query_fetchone(kyselyt.query_distance_between_player_locations(username, case_icao_location))
+previous_distance_to_case = distance_tuple[0]
 
-            #Kutsutaan matkustus funktiota ja otetaan matkustus maa talteen paluuna
-            travel_country = travel(username, countries_list)
-            if travel_country != 'back':
+#PELI ALKAA MAIN GAME LOOP TÄSSÄ
+print("\nWell let's get going!")
+audio_library.play_waldo_sound(4)
+travel_ascii_art(5)
 
-                #Otetaan talteen maa mistä lähdetään, myöhempää laskentaa varten
-                previous_country_icao = player_country_icao
-                country_icaos_list = database.database_query(kyselyt.query_country_airports(travel_country))  #Icaot tulevaisuutta ajatellen jos laajenee lentokenttiin
-                country_icao_tuple = country_icaos_list[0] #Maan ICAO - tarvitaan seuraavaa päivityskyselyä varten
-                player_country_icao = country_icao_tuple[0]
-
-                clear_screen()
-                #Matkustus animaatio ja ääni!
-                animations.start_travel_animation(travel_country)
-                audio_library.play_game_sound(5)
-                clear_screen()
+user_command = None
+while user_command != 'bye':
 
 
-                #Lasketaan kilometrit matkalta ja otetaan ylös
-                kilometers = kilometer_counter(player_country_icao, previous_country_icao) #Kilometrien laskenta
-                total_kilometers += kilometers #Pelin looppia varten
-                travel_counter += 1 #Pelin looppia varten
+    #Jos pelaaja on saavuttanut tavoitteen printataan voitto ruutu
+    if goal_reached_bool:
 
-                #Päivitetään arvot kilometrit ja co2, travel_count eli +1, ja location pelaajan tietokantaan
-                database.database_update(kyselyt.query_update_player_travel(username, kilometers, 1, player_country_icao))
-
-                #Tarkistetaan onko pelaaja saavuttanut tavoitetta eli sama maa kun laukku
-                goal_reached_bool = goal_check(username)
-
-                #Kuuma/kylmä mekaniikka jos ei ole saavuttanut tavoitetta
-                if not goal_reached_bool:
-                    travel_ascii_art(5) #Kartan printtaus
-                    previous_distance_to_case = hot_cold_mechanic(case_icao_location, username, previous_distance_to_case)
-                    signal_strength(case_icao_location, username) #Signaalin printtaus
-                else:
-                    clear_screen()
-                    # Voittoprintti tähän!
-                    travel_ascii_art(4)
-                    audio_library.play_game_sound(1)
-
-                    #Pelin reset, valmiiksi uutta peli kertaa varten
-                    database.database_update(kyselyt.query_reset_game_state(username))  # Resetataan peli pelaajan osalta ja lisätään tilastoihin 1 matkalaukku löydetty
-                    case_country, case_icao_location = case_randomizer() #Asetetaan uusi matkalaukku myös seuraavaa pelikertaa varten
-                    database.database_update(kyselyt.query_update_suitcase_location(case_icao_location, username))
-
-                    #Onnittelu teksti
-                    animations.print_congratulations(
-                        f"CONGRATULATIONS!!! You've found Waldo's suitcase in {travel_country.upper()}. A point has been added to your record!")
-                    animations.display_results(total_kilometers, travel_counter)  # Voittoruutu
-                    audio_library.play_game_sound(8)  # You're the best!
-
-                    #Jos pelaaja haluaa jatkaa peliä
-                    if input("\nType 'yes' to play again: ").lower() != 'yes':
-                         print("Thank you for playing!")
-                         game_on = False
-                         break #Poistutaan peli loopista kokonaan
+        # Voittoprintti tähän!
+        clear_screen()
+        travel_ascii_art(4)
+        audio_library.play_game_sound(1)
 
 
-        #Radio komento signaalin vahvuuden tulostamiseen
-        elif user_command == commands[3]: #RADIO
-            signal_strength(case_icao_location, username)
-            audio_library.play_game_sound(3) #Radio ääni
-
-        #Help komento, tulostetaan help print
-        elif user_command == commands[4]:
-            help() #Help-komento
-            audio_library.play_game_sound(2) #Help ääni
-
-        #Joke komento, pieni hauskuus
-        elif user_command == commands[6]:
-            while last_joke == joke_int:
-                joke_int = random.randint(1, 10)
-            last_joke = joket.joke_for_waldo(joke_int)
-            audio_library.play_waldo_sound(14)
+        #Ladataan tietokannasta, kilometrit ja travel count voitto printtiä varten.
+        data_tuple = load_game(username)
+        total_kilometers = data_tuple[4]
+        travel_counter = data_tuple[6]
 
 
+        # Profiilin reset, valmiiksi uutta peli kertaa varten
+        database.database_update(kyselyt.query_reset_game_state(
+            username))  # Resetataan peli pelaajan osalta ja lisätään tilastoihin 1 matkalaukku löydetty
+        case_country, case_icao_location = case_randomizer()  # Asetetaan uusi matkalaukku myös seuraavaa pelikertaa varten
+        database.database_update(kyselyt.query_update_suitcase_location(case_icao_location, username))
 
-    #Jos pelaaja lähtee kesken pelin!
-    if user_command == 'bye':
-        print("\nWaldo is furious!!")
-        audio_library.play_waldo_sound(12)
-        break
+
+        # Onnittelu teksti
+        animations.print_congratulations(
+            f"CONGRATULATIONS!!! You've found Waldo's suitcase in {travel_country.upper()}. A point has been added to your record!")
+        animations.display_results(total_kilometers, travel_counter)  # Voittoruutu
+        audio_library.play_game_sound(8)  # You're the best!
+
+
+        # Jos pelaaja haluaa jatkaa peliä
+        if input("\nType 'yes' to play again: ").lower() != 'yes':
+            print("Thank you for playing!")
+            break  # Poistutaan peli loopista kokonaan jos ei
+        else:
+            goal_reached_bool = False  # Vakio arvojen resetointi, jos peli jatkuu suoraan
+            clue_reminder_given = 0
+            travel_counter = 0
+            clear_screen()
+            travel_ascii_art(5)
+
+    #Jos käyttäjä on matkustanut tarpeeksi askelia ilmoitetaan vihjeen saatavuudesta
+    if travel_counter >= travel_counter_limit and clue_reminder_given == 0:
+        print("\nHey!!!! WAIT A MINUTE!")
+        audio_library.play_game_sound(1)
+        print("Waldo looks at you and says, I guess I remember a little riddle from the country")
+        audio_library.play_waldo_sound(7)
+
+        #Asetetaan vihje annetuksi ja päivitetään tietokantaan myös
+        clue_reminder_given = 1
+        database.database_update(kyselyt.query_update_clue_unlocked(username, clue_reminder_given))
+
+
+    #Printtiä varten näytetään missä maassa pelaaja on tällä hetkellä
+    user_country = database.database_query_fetchone(kyselyt.query_fetch_user_country(username))
+    print(f"\nYou are currently in {user_country[0].upper()} with Waldo!")
+    user_command = user_input_command(commands)   #Kysytään käyttäjän input funktiolla
+
+
+    ##Vihje funktio,  joka tulostaa maan vihjeen perustuen matkalaukun ICAO sijaintiin (case_location)
+    if user_command == commands[0]:  #VIHJE
+        if clue_reminder_given == 1:
+            country_clue(case_icao_location)
+        else:
+            print("\nWaldo's memory is still a bit hazy, maybe later")
+            print("Maybe a 'joke' could refresh his mind up!")
+            audio_library.play_waldo_sound(3)
+
+
+    #Kohteet funktio,  kohteiden näyttäminen käyttäjälle (tällä hetkellä pelkät maat)
+    elif user_command == commands[1]: #KOHTEET
+        user_search(countries_list)
+        audio_library.play_waldo_sound(5)
+
+
+    #Matkustus tapahtumat, MAAN VALINTA, SITTEN, PÄIVITYS TIETOKANTAAN, +1 TRAVEL JA KUUMA/KYLMÄ LASKENTA
+    elif user_command == commands[2]: #MATKUSTUS
+
+        #Kutsutaan matkustus funktiota ja otetaan matkustus maa talteen paluuna
+        travel_country = travel(username, countries_list)
+        if travel_country != 'back':  #Palataan takaisin jos komento 'back'
+
+            #Otetaan talteen maa mistä lähdetään, myöhempää laskentaa varten
+            previous_country_icao = player_country_icao
+            country_icaos_list = database.database_query(kyselyt.query_country_airports(travel_country))  #Icaot tulevaisuutta ajatellen jos laajenee lentokenttiin
+            country_icao_tuple = country_icaos_list[0] #Maan ICAO - tarvitaan seuraavaa päivityskyselyä varten
+            player_country_icao = country_icao_tuple[0]
+
+            #Matkustus animaatio ja ääni!
+            clear_screen()
+            animations.start_travel_animation(travel_country)
+            audio_library.play_game_sound(5)
+            clear_screen()
+
+            #Lasketaan kilometrit matkalta ja otetaan ylös
+            kilometers = kilometer_counter(player_country_icao, previous_country_icao) #Kilometrien laskenta
+            travel_counter += 1
+
+            #Päivitetään arvot kilometrit ja co2, travel_count eli +1, ja location pelaajan tietokantaan
+            database.database_update(kyselyt.query_update_player_travel(username, kilometers, 1, player_country_icao))
+
+            #Tarkistetaan onko pelaaja saavuttanut tavoitetta eli sama maa kun laukku
+            goal_reached_bool = goal_check(username)
+
+            if not goal_reached_bool:
+                # Kuuma/kylmä mekaniikka jos ei ole saavuttanut tavoitetta
+                travel_ascii_art(5)  # Kartan printtaus
+                previous_distance_to_case = hot_cold_mechanic(case_icao_location, username,
+                                                              previous_distance_to_case)
+                signal_strength(case_icao_location, username)  # Signaalin printtaus
+
+
+
+    #Radio komento signaalin vahvuuden tulostamiseen
+    elif user_command == commands[3]: #RADIO
+        signal_strength(case_icao_location, username)
+        audio_library.play_game_sound(3) #Radio ääni
+
+
+    #Help komento, tulostetaan help print
+    elif user_command == commands[4]:
+        help() #Help-komento
+        audio_library.play_game_sound(2) #Help ääni
+
+
+    #Joke komento, pieni hauskuus
+    elif user_command == commands[6]:
+        while last_joke == joke_int:
+            joke_int = random.randint(1, 10)
+        last_joke = joket.joke_for_waldo(joke_int)
+        audio_library.play_waldo_sound(14)
+
+
+#Jos pelaaja lähtee kesken pelin!
+if user_command == 'bye':
+    print("\nWaldo is furious!!")
+    audio_library.play_waldo_sound(12)
