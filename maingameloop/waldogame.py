@@ -16,6 +16,7 @@ from jokes import joket
 
 #ALIOHJELMAT LÖYTYVÄT TÄSTÄ
 
+#Ruudun päivitys
 def clear_screen():
     print('\n' * 50)
     return
@@ -29,13 +30,6 @@ def goal_check(username):
         return True
     else:
         return False
-
-
-# ottaa listan ja arpoo jonkun arvon listasta
-def list_random(list):
-    random_index = random.randint(0, len(list)-1)
-    random_str = list[random_index]
-    return random_str[0]
 
 
 #Kilometrilaskuri laskee edellisen icaon ja uuden paikan välin kilometrit kyselyn avulla
@@ -212,15 +206,15 @@ def load_game(username):
 
 #Arvotaan matkalaukulle maa ja icao
 def case_randomizer():
-    case_country = 'Finland'
-    while case_country == 'Finland' or case_country == 'Russia':
-        case_country = list_random(
+    case_country = ('Finland',)
+    while case_country[0] == 'Finland' or case_country[0] == 'Russia':
+        case_country = random.choice(
             database.database_query(kyselyt.query_countries)
         )
-    case_icao_location = list_random(
-        database.database_query(kyselyt.query_country_airports(case_country))
+    case_icao_location = random.choice(
+        database.database_query(kyselyt.query_country_airports(case_country[0]))
     )
-    return case_country, case_icao_location
+    return case_country[0], case_icao_location[0]
 
 
 # Pelin aloitus kysely
