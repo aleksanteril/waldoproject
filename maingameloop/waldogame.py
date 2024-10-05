@@ -184,24 +184,21 @@ def signal_strength(case_icao_location, username):
 def travel(username, country_list):
     user_country = database.database_query_fetchone(kyselyt.query_fetch_user_country(username))
     audio_library.play_waldo_sound(13)
-    while True:
+    player_input = None
+    while player_input != 'back' and player_input not in country_list or player_input == user_country[0]:
         player_input = input("\nWaldo is excited! Where do you want to travel?: ").lower()
-        if player_input == 'back':
-            break
-        elif player_input == "destinations":
+        if player_input == "destinations":
             user_search(country_list)
             audio_library.play_waldo_sound(5)
         elif player_input == user_country[0]:
             print("Waldo is confused, we're here already! what do you mean?")
             print("Type 'back' to go to previous menu.")
             audio_library.play_waldo_sound(3)
-        elif player_input not in country_list:
+        elif player_input not in country_list and player_input != 'back':
             print("Waldo is confused, what do you mean?")
             print("Type 'destinations' to see waldo's list of countries.")
             print("Type 'back' to go to previous menu.")
             audio_library.play_waldo_sound(3)
-        else:
-            break
     return player_input
 
 
@@ -228,13 +225,12 @@ def case_randomizer():
 
 # Pelin aloitus kysely
 def start_game():
-    while True:
+    player_input = None
+    while player_input != 'yes':
         player_input = input("\nStart the game? yes/no: ").lower()
         if player_input != 'yes':
             print("\nWaldo looks at you with crying eyes, you need to help me!")
             audio_library.play_waldo_sound(2)
-        else:
-            break
     return
 
 
@@ -380,18 +376,18 @@ def leaderboard():
 #Valintarakenne lataa, tai aloita uusi peli. uudessa pelissä lisää tietokantaan pelaajan
 def load_or_new_game():
     while True:
+        
+        #Kysytään käyttäjältä input
         new_game = input("\nStart a 'new' or 'load' an existing game: ").lower()
-        if new_game != 'load' and new_game != 'new':
-            print("Unknown command!")
+        
         # Uusi käyttäjä, kysytään nimi asetetaan alkuarvot tietokantaan
-        elif new_game == 'new':
+        if new_game == 'new':
+            
             username = input("\nWaldo greets you! Enter new player name: ").lower()
             username_exist = database.database_check_query(kyselyt.query_check_username(username))
-            if username == 'back':
-                continue
-            elif username_exist:
-                    print("Name already taken!")
-            elif not username_exist:
+            if username exist:
+                print("Username already exists")
+            else:
                 # Asetetaan alkuarvot tietokantaan
                 database.database_update(kyselyt.query_new_username(username))
                 database.database_update(kyselyt.query_new_suitcase(username))
@@ -399,21 +395,27 @@ def load_or_new_game():
                 case_country, case_icao_location = case_randomizer()
                 database.database_update(kyselyt.query_update_suitcase_location(case_icao_location, username))
                 return username
-
+                
+        #Ladataan edellinen käyttäjä, tarkistetaan onko olemassa
         elif new_game == 'load':  # Load previous game
+
+            #Lista käyttäjistä pelaajalle
             users_list = database.database_query(kyselyt.sql_query_fetch_users)
             print("\n-----List of users------")
             for user in users_list:
                 print(user[0].upper())
             print("------------------------")
+            
             username = input("\nWaldo greets you! Enter player name: ").lower()
             username_exist = database.database_check_query(kyselyt.query_check_username(username))
-            if username == 'back':
-                continue
-            elif not username_exist:
-                print("Name doesn't exist")
-            elif username_exist:
+            if not username_exist:
+                print("Username doesn't exist")
+            else:
                 return username
+                    
+        #Tuntematon komento        
+        else:
+            print("Unknown command")
 
 #Kuuma/kylmää varten lasketaan etäisyys pelaajan ja matkalaukun välillä, käytetään setupissa
 def base_suitcase_distance():
