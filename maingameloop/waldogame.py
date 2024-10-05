@@ -368,6 +368,7 @@ def game_countries_list():
             countries_list.append(country[0].lower())
     return countries_list
 
+#Hakee pelaajat järjestyksessä löydettyjen matkalaukkujen perusteella
 def leaderboard():
 
     print("---------------LEADERBOARD------------------")
@@ -376,6 +377,7 @@ def leaderboard():
     print("--------------------------------------------")
     return
 
+#Valintarakenne lataa, tai aloita uusi peli. uudessa pelissä lisää tietokantaan pelaajan
 def load_or_new_game():
     while True:
         new_game = input("\nStart a 'new' or 'load' an existing game: ").lower()
@@ -413,6 +415,11 @@ def load_or_new_game():
             elif username_exist:
                 return username
 
+#Kuuma/kylmää varten lasketaan etäisyys pelaajan ja matkalaukun välillä, käytetään setupissa
+def base_suitcase_distance():
+    distance_tuple = database.database_query_fetchone(
+        kyselyt.query_distance_between_player_locations(username, case_icao_location))
+    return distance_tuple[0]
 
 
 
@@ -447,7 +454,7 @@ animations.waldo_animated() #Intro animaatio
 leaderboard()
 audio_library.play_waldo_sound(10)
 
-
+#Load or new game valinta josta palautetaan käyttäjänimi peliä varten
 username = load_or_new_game()
 
 
@@ -463,17 +470,18 @@ clue_reminder_given = data_tuple[5]
 travel_counter = data_tuple[6]
 
 
+
 # Asetetaan Vakioarvot pelin alussa
 last_joke = joke_int = 0
 travel_counter_limit = 5
 goal_reached_bool = False
 
+#Lasketaan alkusijainti, ja asetetaan se base-etäisyydeksi kuuma/kylmää varten
+previous_distance_to_case = base_suitcase_distance()
+
 #Päivitetään ruutu
 clear_screen()
 
-#Lasketaan alkusijainti, ja asetetaan se base-etäisyydeksi kuuma/kylmää varten, asetetaan se muuttujaan
-distance_tuple = database.database_query_fetchone(kyselyt.query_distance_between_player_locations(username, case_icao_location))
-previous_distance_to_case = distance_tuple[0]
 
 #PELI ALKAA MAIN GAME LOOP TÄSSÄ
 print("\nWell let's get going!")
@@ -518,12 +526,16 @@ while user_command != 'bye':
             print("Thank you for playing!")
             break  # Poistutaan peli loopista kokonaan jos ei
         else:
+            previous_distance_to_case = base_suitcase_distance() #Kuuma/kylmä reset
             goal_reached_bool = False  # Vakio arvojen resetointi, jos peli jatkuu suoraan
             clue_reminder_given = 0
             travel_counter = 0
             player_country_icao = 'EFHK' #Hardcode HEL koska wäääääää!
+
+            #Näkymän resetointi
             clear_screen()
             travel_ascii_art(5)
+
 
     #Jos käyttäjä on matkustanut tarpeeksi askelia ilmoitetaan vihjeen saatavuudesta
     if travel_counter >= travel_counter_limit and clue_reminder_given == 0:
