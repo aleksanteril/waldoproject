@@ -385,7 +385,7 @@ def load_or_new_game():
             
             username = input("\nWaldo greets you! Enter new player name: ").lower()
             username_exist = database.database_check_query(kyselyt.query_check_username(username))
-            if username exist:
+            if username_exist:
                 print("Username already exists")
             else:
                 # Asetetaan alkuarvot tietokantaan
